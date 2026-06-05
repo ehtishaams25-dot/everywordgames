@@ -1,9 +1,10 @@
-import { games, siteNav } from "@/data/games";
+import { footerNav, games, siteNav } from "@/data/games";
 
 export function GET() {
   const base = "https://everywordgames.com";
   const paths = [
     ...siteNav.map((item) => item.href),
+    ...footerNav.map((item) => item.href),
     ...games.filter((game) => !game.comingSoon).map((game) => `/games/${game.slug}`)
   ];
   const urls = Array.from(new Set(paths)).map((path) => `

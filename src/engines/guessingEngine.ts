@@ -10,10 +10,14 @@ export interface GuessItem {
 
 function titleHint(answer: string, label: string) {
   const words = answer.split(/\s+/);
+  const compact = answer.replace(/\s+/g, "");
+  const vowels = (compact.match(/[aeiou]/gi) ?? []).length;
   return [
     `${label} with ${words.length} word${words.length === 1 ? "" : "s"}.`,
     `Starts with ${answer[0]?.toUpperCase() ?? "?"}.`,
-    `Length without spaces: ${answer.replace(/\s+/g, "").length}.`
+    `Length without spaces: ${compact.length}.`,
+    `Ends with ${compact.at(-1)?.toUpperCase() ?? "?"}.`,
+    `Contains ${vowels} vowel${vowels === 1 ? "" : "s"}.`
   ];
 }
 
@@ -22,7 +26,13 @@ export function getGuessPool(game: GameConfig): GuessItem[] {
     return dataset.capitals.map(([country, capital]) => ({
       answer: capital,
       display: country,
-      hints: [`Capital city of ${country}.`, `Starts with ${capital[0]}.`, `${capital.length} characters including spaces.`]
+      hints: [
+        `Capital city of ${country}.`,
+        `Starts with ${capital[0]}.`,
+        `${capital.length} characters including spaces.`,
+        `Ends with ${capital.replace(/\s+/g, "").at(-1)?.toUpperCase() ?? "?"}.`,
+        `Length without spaces: ${capital.replace(/\s+/g, "").length}.`
+      ]
     }));
   }
 
@@ -38,7 +48,13 @@ export function getGuessPool(game: GameConfig): GuessItem[] {
     return dataset.countries.map((country, index) => ({
       answer: country,
       display: `Flag challenge ${String(index + 1).padStart(3, "0")}`,
-      hints: [`National flag for ${country.length} letters/spaces.`, `Country starts with ${country[0]}.`, "Use the country name as the answer."]
+      hints: [
+        `National flag for ${country.length} letters/spaces.`,
+        `Country starts with ${country[0]}.`,
+        "Use the country name as the answer.",
+        `Country ends with ${country.replace(/\s+/g, "").at(-1)?.toUpperCase() ?? "?"}.`,
+        `Length without spaces: ${country.replace(/\s+/g, "").length}.`
+      ]
     }));
   }
 
@@ -51,9 +67,9 @@ export function getGuessPool(game: GameConfig): GuessItem[] {
   }));
 }
 
-export function createGuessChallenge(game: GameConfig): GuessItem {
+export function createGuessChallenge(game: GameConfig, run = 0): GuessItem {
   const pool = getGuessPool(game);
-  const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${Date.now()}`;
+  const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${run}:${Date.now()}`;
   return pickSeeded(pool, seed);
 }
 

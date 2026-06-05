@@ -13,12 +13,5 @@ const { game } = Astro.props;
 ---
 
 <SiteLayout title={`${game.name} - EveryWordGames`} description={game.description} path={`/games/${game.slug}`}>
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">{game.difficulty} {game.engine}</p>
-      <h1>{game.name}</h1>
-      <p class="lede">{game.description}</p>
-    </div>
-  </section>
   <GamePlayer game={game} />
 </SiteLayout>

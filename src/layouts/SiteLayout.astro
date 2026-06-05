@@ -1,6 +1,6 @@
 ---
 import "../styles.css";
-import { siteNav } from "@/data/games";
+import { footerNav, siteNav } from "@/data/games";
 
 interface Props {
   title?: string;
@@ -53,9 +53,14 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
       <slot />
     </main>
     <footer class="footer">
-      <div class="container">
-        <strong>EveryWordGames</strong>
-        <p>Static, local-first word games with reusable engines and daily deterministic challenges.</p>
+      <div class="container footer-grid">
+        <div>
+          <strong>EveryWordGames</strong>
+          <p>Fast, local-first word games with Wordle variants, guessing games, puzzle modes, stats, and achievements.</p>
+        </div>
+        <div class="footer-links" aria-label="Footer">
+          {footerNav.map((item) => <a class="pill" href={item.href}>{item.label}</a>)}
+        </div>
       </div>
     </footer>
   </body>

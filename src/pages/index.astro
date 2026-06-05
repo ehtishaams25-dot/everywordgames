@@ -5,9 +5,8 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import { categoryLabels, comingSoonGames, games, playableGames } from "@/data/games";
 
 const featured = games.filter((game) => game.featured).slice(0, 8);
-const daily = games.filter((game) => game.daily).slice(0, 8);
 const trending = games.filter((game) => game.trending).slice(0, 8);
-const categories = Object.entries(categoryLabels).filter(([key]) => key !== "future");
+const categories = Object.entries(categoryLabels).filter(([key]) => key !== "future" && key !== "daily");
 ---
 
 <SiteLayout path="/">
@@ -16,9 +15,9 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
       <div class="hero-content">
         <p class="eyebrow">30+ playable launch modes</p>
         <h1>EveryWordGames</h1>
-        <p class="lede">A fast, polished home for Wordle variants, multi-board challenges, geography guessing, movie clues, hangman, scrambles, word search, daily puzzles, stats, and achievements.</p>
+        <p class="lede">A fast, polished home for Wordle variants, multi-board challenges, geography guessing, movie clues, hangman, scrambles, word search, stats, and achievements.</p>
         <div class="actions">
-          <a class="button" href="/games/daily-wordle">Play Daily Wordle</a>
+          <a class="button" href="/games/5-letter-wordle">Play 5 Letter Wordle</a>
           <a class="button secondary" href="/wordle">Browse Games</a>
         </div>
       </div>
@@ -42,19 +41,6 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Daily Challenges</h2>
-          <p>Date-seeded challenges with the same answer for every player.</p>
-        </div>
-        <a class="pill" href="/daily">View all</a>
-      </div>
-      <GameGrid games={daily} />
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div>
           <h2>Trending Games</h2>
           <p>High-energy modes for repeat play.</p>
         </div>
@@ -63,7 +49,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section band">
+  <section class="section">
     <div class="container">
       <div class="section-header">
         <div>
@@ -75,7 +61,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section">
+  <section class="section band">
     <div class="container">
       <div class="section-header">
         <div>
@@ -98,7 +84,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section band">
+  <section class="section">
     <div class="container">
       <div class="section-header">
         <div>
@@ -111,7 +97,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section">
+  <section class="section band">
     <div class="container">
       <div class="section-header">
         <div>
@@ -128,7 +114,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section band">
+  <section class="section">
     <div class="container">
       <div class="section-header">
         <div>

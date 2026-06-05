@@ -9,9 +9,9 @@ export interface PuzzleChallenge {
   grid?: string[][];
 }
 
-export function createPuzzleChallenge(game: GameConfig): PuzzleChallenge {
+export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChallenge {
   const words = getWords(game.mode === "dailyWord" ? 5 : 6);
-  const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${Date.now()}`;
+  const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${run}:${Date.now()}`;
   const answer = pickSeeded(words, seed);
 
   if (game.mode === "scramble" || game.mode === "unscramble") {

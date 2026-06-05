@@ -208,9 +208,15 @@ export const siteNav = [
   { href: "/multi-wordle", label: "Multi" },
   { href: "/guess", label: "Guess" },
   { href: "/word-games", label: "Puzzles" },
-  { href: "/daily", label: "Daily" },
   { href: "/stats", label: "Stats" },
   { href: "/achievements", label: "Awards" }
+];
+
+export const footerNav = [
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" }
 ];
 
 export function getGame(slug: string) {

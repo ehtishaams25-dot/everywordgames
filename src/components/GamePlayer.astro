@@ -1,11 +1,15 @@
 ---
 import type { GameConfig } from "@/data/games";
+import { playableGames } from "@/data/games";
 
 interface Props {
   game: GameConfig;
 }
 
 const { game } = Astro.props;
+const relatedGames = playableGames
+  .filter((item) => item.slug !== game.slug && (item.category === game.category || item.engine === game.engine))
+  .slice(0, 4);
 ---
 
 <section class="section">
@@ -26,6 +30,11 @@ const { game } = Astro.props;
           <span>Engine</span>
           <strong>{game.engine}</strong>
         </div>
+      </div>
+      <div class="hint-list">
+        {relatedGames.map((item) => (
+          <a class="hint" href={`/games/${item.slug}`}>{item.name}</a>
+        ))}
       </div>
       <p class="muted">Results are saved locally on this device.</p>
     </aside>

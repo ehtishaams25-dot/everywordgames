@@ -1,11 +1,14 @@
 import { games, type GameConfig } from "@/data/games";
-import { createGuessChallenge, normalizeAnswer } from "@/engines/guessingEngine";
+import { createGuessChallenge, normalizeAnswer, type GuessItem } from "@/engines/guessingEngine";
 import { createMultiTargets } from "@/engines/multiWordleEngine";
 import { recordGame } from "@/engines/playerStore";
 import { createPuzzleChallenge } from "@/engines/wordPuzzleEngine";
 import { createWordleTarget, evaluateGuess } from "@/engines/wordleEngine";
 
+type LetterState = "correct" | "present" | "absent";
+
 const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+const stateRank: Record<LetterState, number> = { absent: 1, present: 2, correct: 3 };
 
 export function mountGame(root: HTMLElement) {
   const game = games.find((item) => item.slug === root.dataset.slug);
@@ -26,8 +29,17 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
   let run = 0;
   let target = createWordleTarget(game, run);
   let guesses: ReturnType<typeof evaluateGuess>[] = [];
-  const started = Date.now();
+  let started = Date.now();
   let done = false;
+
+  const reset = () => {
+    run += 1;
+    target = createWordleTarget(game, run);
+    guesses = [];
+    started = Date.now();
+    done = false;
+    render();
+  };
 
   const render = () => {
     const rows = Array.from({ length: game.attempts ?? 6 }, (_, row) => {
@@ -41,16 +53,22 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
     }).join("");
 
     root.innerHTML = `
-      <div class="toolbar"><span class="pill">${game.mode ?? "classic"}</span><span class="pill">${game.wordLength} letters</span><span class="pill">${game.attempts} attempts</span></div>
-      <h2>${game.name}</h2>
+      ${renderGameHeader(game, [
+        `${game.wordLength} letters`,
+        `${game.attempts} attempts`,
+        game.mode ?? "classic"
+      ], done ? "Play again" : "New word")}
       <div class="board">${rows}</div>
       <form class="guess-form">
-        <input name="guess" maxlength="${game.wordLength}" minlength="${game.wordLength}" autocomplete="off" aria-label="Enter guess" />
+        <input name="guess" maxlength="${game.wordLength}" minlength="${game.wordLength}" autocomplete="off" autocapitalize="characters" aria-label="Enter guess" />
         <button class="button" type="submit">Guess</button>
       </form>
       <p class="message">${done ? "Round complete." : "Use the color feedback to solve the word."}</p>
-      ${renderKeyboard()}
+      ${renderKeyboard(getWordleKeyboardState(guesses))}
     `;
+
+    wireRestart(root, reset);
+    wireKeyboard(root, "input[name='guess']");
 
     const form = root.querySelector("form");
     form?.addEventListener("submit", (event) => {
@@ -64,23 +82,14 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
       }
       const result = evaluateGuess(value, target);
       guesses.push(result);
+      input.value = "";
       const won = value === target;
       if (won || guesses.length >= (game.attempts ?? 6)) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
-        setTimeout(() => {
-          if (game.mode === "endless" && won) {
-            run += 1;
-            target = createWordleTarget(game, run);
-            guesses = [];
-            done = false;
-          }
-          render();
-          setMessage(root, won ? `Solved: ${target.toUpperCase()}` : `Answer: ${target.toUpperCase()}`);
-        }, 80);
-        return;
       }
       render();
+      if (done) setMessage(root, won ? `Solved: ${target.toUpperCase()}` : `Answer: ${target.toUpperCase()}`);
     });
   };
 
@@ -88,35 +97,50 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
 }
 
 function mountMultiWordle(root: HTMLElement, game: GameConfig) {
-  const targets = createMultiTargets(game);
-  const guesses: string[] = [];
-  const started = Date.now();
+  let run = 0;
+  let targets = createMultiTargets(game, run);
+  let guesses: string[] = [];
+  let started = Date.now();
   let done = false;
+
+  const reset = () => {
+    run += 1;
+    targets = createMultiTargets(game, run);
+    guesses = [];
+    started = Date.now();
+    done = false;
+    render();
+  };
 
   const render = () => {
     root.innerHTML = `
-      <div class="toolbar"><span class="pill">${game.boardCount} boards</span><span class="pill">${game.attempts} shared attempts</span></div>
-      <h2>${game.name}</h2>
+      ${renderGameHeader(game, [`${game.boardCount} boards`, `${game.attempts} shared attempts`], done ? "Play again" : "New boards")}
       <div class="multi-grid">
         ${targets.map((target, index) => renderMiniBoard(index + 1, target, guesses, game.attempts ?? 8)).join("")}
       </div>
       <form class="guess-form">
-        <input name="guess" maxlength="${game.wordLength}" minlength="${game.wordLength}" autocomplete="off" aria-label="Enter shared guess" />
+        <input name="guess" maxlength="${game.wordLength}" minlength="${game.wordLength}" autocomplete="off" autocapitalize="characters" aria-label="Enter shared guess" />
         <button class="button" type="submit">Guess</button>
       </form>
       <p class="message">One guess updates every board.</p>
+      ${renderKeyboard(getMultiKeyboardState(guesses, targets))}
     `;
+
+    wireRestart(root, reset);
+    wireKeyboard(root, "input[name='guess']");
 
     const form = root.querySelector("form");
     form?.addEventListener("submit", (event) => {
       event.preventDefault();
       if (done) return;
-      const value = form.querySelector<HTMLInputElement>("input")?.value.trim().toLowerCase() ?? "";
+      const input = form.querySelector<HTMLInputElement>("input");
+      const value = input?.value.trim().toLowerCase() ?? "";
       if (value.length !== (game.wordLength ?? 5) || !/^[a-z]+$/.test(value)) {
         setMessage(root, `Enter exactly ${game.wordLength} letters.`);
         return;
       }
       guesses.push(value);
+      if (input) input.value = "";
       const solved = targets.every((target) => guesses.includes(target));
       if (solved || guesses.length >= (game.attempts ?? 8)) {
         done = true;
@@ -144,51 +168,86 @@ function renderMiniBoard(number: number, target: string, guesses: string[], atte
 }
 
 function mountGuessing(root: HTMLElement, game: GameConfig) {
-  const challenge = createGuessChallenge(game);
-  const started = Date.now();
-  let attempts = 0;
+  let run = 0;
+  let challenge = createGuessChallenge(game, run);
+  let started = Date.now();
+  let attempts: string[] = [];
   let hintCount = 1;
   let done = false;
 
+  const reset = () => {
+    run += 1;
+    challenge = createGuessChallenge(game, run);
+    started = Date.now();
+    attempts = [];
+    hintCount = 1;
+    done = false;
+    render();
+  };
+
   const render = () => {
+    const answerLength = getAnswerLetters(challenge).length;
     root.innerHTML = `
-      <h2>${game.name}</h2>
-      <div class="clue-box">
+      ${renderGameHeader(game, [`${answerLength} letters`, `${Math.max(1, 5 - attempts.length)} tries left`], done ? "Play again" : "New clue")}
+      <div class="retention-game-grid">
         <div>
-          <p class="eyebrow">Clue</p>
-          <div class="clue-title">${challenge.display}</div>
+          <div class="clue-box">
+            <div>
+              <p class="eyebrow">Clue</p>
+              <div class="clue-title">${escapeHtml(challenge.display)}</div>
+            </div>
+          </div>
+          <div class="guess-board">
+            ${renderGuessRows(challenge, attempts, 5)}
+          </div>
         </div>
-      </div>
-      <div class="hint-list">
-        ${challenge.hints.slice(0, hintCount).map((hint) => `<div class="hint">${hint}</div>`).join("")}
+        <aside class="hint-panel">
+          <div class="hint-panel-top">
+            <strong>Hints</strong>
+            <button class="button secondary small" type="button" data-hint ${hintCount >= challenge.hints.length ? "disabled" : ""}>Hint</button>
+          </div>
+          <div class="hint-list">
+            ${challenge.hints.slice(0, hintCount).map((hint) => `<div class="hint">${escapeHtml(hint)}</div>`).join("")}
+          </div>
+        </aside>
       </div>
       <form class="guess-form">
-        <input class="answer-input" name="answer" autocomplete="off" aria-label="Enter answer" />
+        <input class="answer-input" name="answer" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" />
         <button class="button" type="submit">Submit</button>
-        <button class="button secondary" type="button" data-hint>Hint</button>
       </form>
-      <p class="message">${attempts ? `${attempts} attempt${attempts === 1 ? "" : "s"}` : "Use hints carefully for a cleaner solve."}</p>
+      <p class="message">${attempts.length ? `${attempts.length} attempt${attempts.length === 1 ? "" : "s"}` : "Type or tap letters. Hints stay beside the board."}</p>
+      ${renderKeyboard(getGuessKeyboardState(attempts, challenge))}
     `;
+
+    wireRestart(root, reset);
+    wireKeyboard(root, "input[name='answer']");
+
     root.querySelector("[data-hint]")?.addEventListener("click", () => {
       hintCount = Math.min(challenge.hints.length, hintCount + 1);
       render();
     });
+
     root.querySelector("form")?.addEventListener("submit", (event) => {
       event.preventDefault();
       if (done) return;
-      attempts += 1;
-      const value = root.querySelector<HTMLInputElement>("input")?.value ?? "";
+      const input = root.querySelector<HTMLInputElement>("input");
+      const value = input?.value.trim() ?? "";
+      if (!normalizeAnswer(value)) {
+        setMessage(root, "Enter a guess first.");
+        return;
+      }
+      attempts.push(value);
+      if (input) input.value = "";
       const won = normalizeAnswer(value) === normalizeAnswer(challenge.answer);
-      if (won || attempts >= 5) {
+      if (won || attempts.length >= 5) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
-        render();
-        setMessage(root, won ? `Correct: ${challenge.answer}` : `Answer: ${challenge.answer}`);
       } else {
         hintCount = Math.min(challenge.hints.length, hintCount + 1);
-        render();
-        setMessage(root, "Not yet. Another hint unlocked.");
       }
+      render();
+      if (done) setMessage(root, won ? `Correct: ${challenge.answer}` : `Answer: ${challenge.answer}`);
+      else setMessage(root, "Not yet. Another hint unlocked.");
     });
   };
 
@@ -196,11 +255,24 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
 }
 
 function mountPuzzle(root: HTMLElement, game: GameConfig) {
-  const challenge = createPuzzleChallenge(game);
-  const started = Date.now();
-  const guessed = new Set<string>();
+  let run = 0;
+  let challenge = createPuzzleChallenge(game, run);
+  let started = Date.now();
+  let guessed = new Set<string>();
+  let attempts: string[] = [];
   let misses = 0;
   let done = false;
+
+  const reset = () => {
+    run += 1;
+    challenge = createPuzzleChallenge(game, run);
+    started = Date.now();
+    guessed = new Set<string>();
+    attempts = [];
+    misses = 0;
+    done = false;
+    render();
+  };
 
   const render = () => {
     const hangmanDisplay = challenge.answer
@@ -209,26 +281,33 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
       .join(" ");
     const display = game.mode === "hangman" ? hangmanDisplay : challenge.display;
     root.innerHTML = `
-      <h2>${game.name}</h2>
+      ${renderGameHeader(game, [game.mode === "hangman" ? `${6 - misses} misses left` : "quick solve"], done ? "Play again" : "New puzzle")}
       <div class="puzzle-box">
         <div>
-          <p class="eyebrow">${challenge.hint}</p>
-          <div class="clue-title">${display}</div>
+          <p class="eyebrow">${escapeHtml(challenge.hint)}</p>
+          <div class="clue-title">${escapeHtml(display)}</div>
           ${challenge.grid ? `<div class="word-search">${challenge.grid.map((row) => `<div class="word-search-row">${row.map((letter) => `<span class="cell">${letter}</span>`).join("")}</div>`).join("")}</div>` : ""}
         </div>
       </div>
       <form class="guess-form">
-        <input class="letter-input" name="answer" autocomplete="off" maxlength="${game.mode === "hangman" ? challenge.answer.length : 40}" aria-label="Enter answer" />
+        <input class="letter-input" name="answer" autocomplete="off" autocapitalize="characters" maxlength="${game.mode === "hangman" ? challenge.answer.length : 40}" aria-label="Enter answer" />
         <button class="button" type="submit">${game.mode === "hangman" ? "Try" : "Submit"}</button>
       </form>
       <p class="message">${game.mode === "hangman" ? `${6 - misses} misses left` : "Solve the puzzle."}</p>
+      ${renderKeyboard(getPuzzleKeyboardState(attempts, guessed, challenge.answer))}
     `;
+
+    wireRestart(root, reset);
+    wireKeyboard(root, "input[name='answer']");
 
     root.querySelector("form")?.addEventListener("submit", (event) => {
       event.preventDefault();
       if (done) return;
-      const value = root.querySelector<HTMLInputElement>("input")?.value.trim().toLowerCase() ?? "";
+      const input = root.querySelector<HTMLInputElement>("input");
+      const value = input?.value.trim().toLowerCase() ?? "";
       if (!value) return;
+      attempts.push(value);
+      if (input) input.value = "";
       let won = value === challenge.answer;
 
       if (game.mode === "hangman" && value.length === 1) {
@@ -240,21 +319,133 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
       if (won || misses >= 6 || (game.mode !== "hangman" && value !== challenge.answer)) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
-        render();
-        setMessage(root, won ? `Solved: ${challenge.answer.toUpperCase()}` : `Answer: ${challenge.answer.toUpperCase()}`);
-      } else {
-        render();
       }
+      render();
+      if (done) setMessage(root, won ? `Solved: ${challenge.answer.toUpperCase()}` : `Answer: ${challenge.answer.toUpperCase()}`);
     });
   };
 
   render();
 }
 
-function renderKeyboard() {
-  return `<div class="keyboard" aria-hidden="true">
-    ${keyboardRows.map((row) => `<div class="keyboard-row">${row.split("").map((letter) => `<button class="key" type="button" tabindex="-1">${letter}</button>`).join("")}</div>`).join("")}
+function renderGameHeader(game: GameConfig, pills: string[], buttonLabel: string) {
+  return `<div class="game-top">
+    <div>
+      <div class="toolbar">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>
+      <h2>${escapeHtml(game.name)}</h2>
+    </div>
+    <button class="button secondary" type="button" data-restart>${buttonLabel}</button>
   </div>`;
+}
+
+function renderGuessRows(challenge: GuessItem, attempts: string[], rows: number) {
+  const answerLetters = getAnswerLetters(challenge);
+  return Array.from({ length: rows }, (_, index) => {
+    const guess = attempts[index];
+    const cells = guess ? evaluateAnswerGuess(guess, challenge) : answerLetters.map(() => ({ letter: "", state: "" }));
+    return `<div class="guess-row">
+      ${cells.map((cell) => `<span class="cell ${cell.state}">${escapeHtml(cell.letter)}</span>`).join("")}
+    </div>`;
+  }).join("");
+}
+
+function evaluateAnswerGuess(guess: string, challenge: GuessItem) {
+  const target = getAnswerLetters(challenge);
+  const input = normalizeAnswer(guess).toUpperCase().split("");
+  return target.map((letter, index) => {
+    const guessLetter = input[index] ?? "";
+    const state = !guessLetter ? "absent" : guessLetter === letter ? "correct" : target.includes(guessLetter) ? "present" : "absent";
+    return { letter: guessLetter, state };
+  });
+}
+
+function getAnswerLetters(challenge: GuessItem) {
+  return normalizeAnswer(challenge.answer).toUpperCase().split("");
+}
+
+function renderKeyboard(states: Record<string, LetterState> = {}) {
+  return `<div class="keyboard" aria-label="On-screen keyboard">
+    ${keyboardRows.map((row, index) => {
+      const keys = index === 2 ? ["ENTER", ...row.split(""), "BACK"] : row.split("");
+      return `<div class="keyboard-row">${keys.map((letter) => {
+        const label = letter === "BACK" ? "⌫" : letter;
+        const state = states[letter] ?? "";
+        return `<button class="key ${state} ${letter.length > 1 ? "wide" : ""}" type="button" data-key="${letter}" aria-label="${letter === "BACK" ? "Backspace" : letter}">${label}</button>`;
+      }).join("")}</div>`;
+    }).join("")}
+  </div>`;
+}
+
+function wireKeyboard(root: HTMLElement, inputSelector: string) {
+  const input = root.querySelector<HTMLInputElement>(inputSelector);
+  if (!input) return;
+  root.querySelectorAll<HTMLButtonElement>("[data-key]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.key ?? "";
+      if (key === "ENTER") {
+        input.form?.requestSubmit();
+        return;
+      }
+      if (key === "BACK") {
+        input.value = input.value.slice(0, -1);
+        input.focus();
+        return;
+      }
+      if (input.value.length < Number(input.maxLength || 40)) {
+        input.value += key;
+        input.focus();
+      }
+    });
+  });
+}
+
+function wireRestart(root: HTMLElement, reset: () => void) {
+  root.querySelector("[data-restart]")?.addEventListener("click", reset);
+}
+
+function getWordleKeyboardState(guesses: ReturnType<typeof evaluateGuess>[]) {
+  const states: Record<string, LetterState> = {};
+  guesses.flat().forEach((cell) => mergeKeyboardState(states, cell.letter, cell.state as LetterState));
+  return states;
+}
+
+function getMultiKeyboardState(guesses: string[], targets: string[]) {
+  const states: Record<string, LetterState> = {};
+  guesses.forEach((guess) => {
+    const mergedForGuess: Record<string, LetterState> = {};
+    targets.forEach((target) => {
+      evaluateGuess(guess, target).forEach((cell) => mergeKeyboardState(mergedForGuess, cell.letter, cell.state as LetterState));
+    });
+    Object.entries(mergedForGuess).forEach(([letter, state]) => mergeKeyboardState(states, letter, state));
+  });
+  return states;
+}
+
+function getGuessKeyboardState(attempts: string[], challenge: GuessItem) {
+  const states: Record<string, LetterState> = {};
+  attempts.forEach((attempt) => {
+    evaluateAnswerGuess(attempt, challenge).forEach((cell) => {
+      if (cell.letter) mergeKeyboardState(states, cell.letter, cell.state as LetterState);
+    });
+  });
+  return states;
+}
+
+function getPuzzleKeyboardState(attempts: string[], guessed: Set<string>, answer: string) {
+  const states: Record<string, LetterState> = {};
+  const target = answer.toUpperCase();
+  guessed.forEach((letter) => mergeKeyboardState(states, letter.toUpperCase(), "correct"));
+  attempts.join("").toUpperCase().split("").forEach((letter) => {
+    if (/^[A-Z]$/.test(letter)) mergeKeyboardState(states, letter, target.includes(letter) ? "present" : "absent");
+  });
+  return states;
+}
+
+function mergeKeyboardState(states: Record<string, LetterState>, letter: string, state: LetterState) {
+  const key = letter.toUpperCase();
+  if (!/^[A-Z]$/.test(key)) return;
+  const current = states[key];
+  if (!current || stateRank[state] > stateRank[current]) states[key] = state;
 }
 
 function setMessage(root: HTMLElement, message: string) {
@@ -270,4 +461,13 @@ function rememberRecent(slug: string) {
   const key = "ewg:recent";
   const recent = JSON.parse(localStorage.getItem(key) ?? "[]") as string[];
   localStorage.setItem(key, JSON.stringify([slug, ...recent.filter((item) => item !== slug)].slice(0, 8)));
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
