@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://everywordgames.com/sitemap-index.xml

@@ -1,0 +1,32 @@
+---
+import type { GameConfig } from "@/data/games";
+
+interface Props {
+  game: GameConfig;
+}
+
+const { game } = Astro.props;
+const initials = game.name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<article class="game-card">
+  <div class="game-card-top">
+    <span class="tile-icon" aria-hidden="true">{initials}</span>
+    <span class="difficulty">{game.difficulty}</span>
+  </div>
+  <div class="card-copy">
+    <h3>{game.name}</h3>
+    <p>{game.description}</p>
+  </div>
+  <div class="card-meta">
+    <span class:list={["status", { soon: game.comingSoon }]}>{game.comingSoon ? "Coming Soon" : "Playable"}</span>
+    <a class="button" href={game.comingSoon ? "#" : `/games/${game.slug}`} aria-disabled={game.comingSoon ? "true" : undefined}>
+      {game.comingSoon ? "Preview" : "Play"}
+    </a>
+  </div>
+</article>

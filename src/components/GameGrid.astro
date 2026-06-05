@@ -1,0 +1,12 @@
+---
+import GameCard from "./GameCard.astro";
+import type { GameConfig } from "@/data/games";
+
+interface Props {
+  games: GameConfig[];
+}
+---
+
+<div class="grid">
+  {Astro.props.games.map((game) => <GameCard game={game} />)}
+</div>

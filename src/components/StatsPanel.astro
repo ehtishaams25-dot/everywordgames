@@ -1,0 +1,31 @@
+<div class="stats-grid" id="stats-panel">
+  <div class="stat"><span>Played</span><strong data-stat="played">0</strong></div>
+  <div class="stat"><span>Wins</span><strong data-stat="wins">0</strong></div>
+  <div class="stat"><span>Losses</span><strong data-stat="losses">0</strong></div>
+  <div class="stat"><span>Win Rate</span><strong data-stat="winRate">0%</strong></div>
+  <div class="stat"><span>Current Streak</span><strong data-stat="currentStreak">0</strong></div>
+  <div class="stat"><span>Longest Streak</span><strong data-stat="longestStreak">0</strong></div>
+  <div class="stat"><span>Fastest Solve</span><strong data-stat="fastestSolve">-</strong></div>
+  <div class="stat"><span>Average Solve</span><strong data-stat="averageSolve">-</strong></div>
+</div>
+
+<script>
+  import { loadStats } from "@/engines/playerStore";
+  const stats = loadStats();
+  const winRate = stats.played ? Math.round((stats.wins / stats.played) * 100) : 0;
+  const average = stats.wins ? Math.round(stats.totalSolveSeconds / stats.wins) : null;
+  const values: Record<string, string | number> = {
+    played: stats.played,
+    wins: stats.wins,
+    losses: stats.losses,
+    winRate: `${winRate}%`,
+    currentStreak: stats.currentStreak,
+    longestStreak: stats.longestStreak,
+    fastestSolve: stats.fastestSolve === null ? "-" : `${stats.fastestSolve}s`,
+    averageSolve: average === null ? "-" : `${average}s`
+  };
+  Object.entries(values).forEach(([key, value]) => {
+    const node = document.querySelector(`[data-stat="${key}"]`);
+    if (node) node.textContent = String(value);
+  });
+</script>

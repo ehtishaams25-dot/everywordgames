@@ -1,0 +1,156 @@
+---
+import GameGrid from "@/components/GameGrid.astro";
+import StatsPanel from "@/components/StatsPanel.astro";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { categoryLabels, comingSoonGames, games, playableGames } from "@/data/games";
+
+const featured = games.filter((game) => game.featured).slice(0, 8);
+const daily = games.filter((game) => game.daily).slice(0, 8);
+const trending = games.filter((game) => game.trending).slice(0, 8);
+const categories = Object.entries(categoryLabels).filter(([key]) => key !== "future");
+---
+
+<SiteLayout path="/">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="eyebrow">30+ playable launch modes</p>
+        <h1>EveryWordGames</h1>
+        <p class="lede">A fast, polished home for Wordle variants, multi-board challenges, geography guessing, movie clues, hangman, scrambles, word search, daily puzzles, stats, and achievements.</p>
+        <div class="actions">
+          <a class="button" href="/games/daily-wordle">Play Daily Wordle</a>
+          <a class="button secondary" href="/wordle">Browse Games</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Featured Games</h2>
+          <p>Core modes powered by reusable engines.</p>
+        </div>
+        <span class="pill">{playableGames.length} playable modes</span>
+      </div>
+      <GameGrid games={featured} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Daily Challenges</h2>
+          <p>Date-seeded challenges with the same answer for every player.</p>
+        </div>
+        <a class="pill" href="/daily">View all</a>
+      </div>
+      <GameGrid games={daily} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Trending Games</h2>
+          <p>High-energy modes for repeat play.</p>
+        </div>
+      </div>
+      <GameGrid games={trending} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Recently Played</h2>
+          <p>Your latest games on this device.</p>
+        </div>
+      </div>
+      <div class="grid" id="recent-games"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Categories</h2>
+          <p>Jump into a family of games.</p>
+        </div>
+      </div>
+      <div class="grid">
+        {categories.map(([key, label]) => (
+          <a class="game-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : `/${key}`}>
+            <span class="tile-icon">{String(label).slice(0, 2).toUpperCase()}</span>
+            <div class="card-copy">
+              <h3>{label}</h3>
+              <p>{games.filter((game) => game.category === key).length} modes available.</p>
+            </div>
+            <span class="status">Browse</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Player Statistics</h2>
+          <p>Local-only progress tracking.</p>
+        </div>
+        <a class="pill" href="/stats">Details</a>
+      </div>
+      <StatsPanel />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Achievement Preview</h2>
+          <p>Milestones unlock automatically as you play.</p>
+        </div>
+        <a class="pill" href="/achievements">All achievements</a>
+      </div>
+      <div class="grid">
+        {["First Win", "10 Wins", "7 Day Streak", "Word Master"].map((name) => (
+          <article class="stat"><span>Achievement</span><strong>{name}</strong></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Future Games</h2>
+          <p>Visible roadmap cards for the next wave.</p>
+        </div>
+      </div>
+      <GameGrid games={comingSoonGames.slice(0, 8)} />
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  import { games } from "@/data/games";
+  const recent = JSON.parse(localStorage.getItem("ewg:recent") ?? "[]") as string[];
+  const root = document.querySelector("#recent-games");
+  if (root) {
+    const cards = recent
+      .map((slug) => games.find((game) => game.slug === slug))
+      .filter(Boolean)
+      .map((game) => `<a class="game-card" href="/games/${game!.slug}"><span class="tile-icon">${game!.name.slice(0, 2).toUpperCase()}</span><div class="card-copy"><h3>${game!.name}</h3><p>${game!.description}</p></div><span class="status">Play again</span></a>`)
+      .join("");
+    root.innerHTML = cards || `<article class="stat"><strong>No recent games yet</strong><p class="muted">Play any mode and it will appear here.</p></article>`;
+  }
+</script>

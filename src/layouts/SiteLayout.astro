@@ -1,0 +1,62 @@
+---
+import "../styles.css";
+import { siteNav } from "@/data/games";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = "EveryWordGames - Play Word, Guessing, Trivia, and Puzzle Games",
+  description = "Play daily word games, Wordle variants, multi-board puzzles, country guessing, flag guessing, movie clues, and fast word puzzles.",
+  path = Astro.url.pathname
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="/assets/hero-platform.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#0F172A" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="/">
+          <span class="brand-mark">EW</span>
+          <span>EveryWordGames</span>
+        </a>
+        <div class="nav-links">
+          {siteNav.map((item) => (
+            <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
+          ))}
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <strong>EveryWordGames</strong>
+        <p>Static, local-first word games with reusable engines and daily deterministic challenges.</p>
+      </div>
+    </footer>
+  </body>
+</html>

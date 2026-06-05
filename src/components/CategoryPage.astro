@@ -1,0 +1,33 @@
+---
+import GameGrid from "./GameGrid.astro";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { categoryLabels, games, type GameCategory } from "@/data/games";
+
+interface Props {
+  title: string;
+  description: string;
+  categories: GameCategory[];
+  path: string;
+}
+
+const { title, description, categories, path } = Astro.props;
+const pageGames = games.filter((game) => categories.includes(game.category));
+---
+
+<SiteLayout title={`${title} - EveryWordGames`} description={description} path={path}>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">EveryWordGames</p>
+      <h1>{title}</h1>
+      <p class="lede">{description}</p>
+      <div class="category-tabs">
+        {categories.map((category) => <span class="pill">{categoryLabels[category]}</span>)}
+      </div>
+    </div>
+  </section>
+  <section class="section band">
+    <div class="container">
+      <GameGrid games={pageGames} />
+    </div>
+  </section>
+</SiteLayout>

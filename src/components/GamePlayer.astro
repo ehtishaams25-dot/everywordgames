@@ -1,0 +1,39 @@
+---
+import type { GameConfig } from "@/data/games";
+
+interface Props {
+  game: GameConfig;
+}
+
+const { game } = Astro.props;
+---
+
+<section class="section">
+  <div class="container layout-split">
+    <div class="game-stage" id="game-root" data-slug={game.slug}>
+      <p class="muted">Loading {game.name}...</p>
+    </div>
+    <aside class="side-panel">
+      <p class="eyebrow">Game Mode</p>
+      <h2>{game.name}</h2>
+      <p class="muted">{game.description}</p>
+      <div class="stats-grid">
+        <div class="stat">
+          <span>Difficulty</span>
+          <strong>{game.difficulty}</strong>
+        </div>
+        <div class="stat">
+          <span>Engine</span>
+          <strong>{game.engine}</strong>
+        </div>
+      </div>
+      <p class="muted">Results are saved locally on this device.</p>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import { mountGame } from "@/lib/gameApp";
+  const root = document.querySelector<HTMLElement>("#game-root");
+  if (root) mountGame(root);
+</script>

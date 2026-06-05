@@ -1,0 +1,28 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+---
+
+<SiteLayout title="Achievements - EveryWordGames" description="Track EveryWordGames achievements and local milestones." path="/achievements">
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Milestones</p>
+      <h1>Achievements</h1>
+      <p class="lede">Achievements unlock from locally stored play history.</p>
+      <div class="achievement-list" id="achievement-list"></div>
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  import { achievements, loadStats } from "@/engines/playerStore";
+  const stats = loadStats();
+  const root = document.querySelector("#achievement-list");
+  if (root) {
+    root.innerHTML = achievements
+      .map((achievement) => {
+        const unlocked = achievement.test(stats);
+        return `<article class="achievement ${unlocked ? "unlocked" : ""}"><div><strong>${achievement.name}</strong><p class="muted">${achievement.description}</p></div><span class="status ${unlocked ? "" : "soon"}">${unlocked ? "Unlocked" : "Locked"}</span></article>`;
+      })
+      .join("");
+  }
+</script>
