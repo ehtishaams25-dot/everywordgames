@@ -25,7 +25,7 @@ const wordleLengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const games: GameConfig[] = [
   ...wordleLengths.map((length) => ({
     slug: `${length}-letter-wordle`,
-    name: `${length} Letter Wordle`,
+    name: `${length} Letter Word Guess`,
     description: `Solve a ${length}-letter hidden word with crisp color feedback.`,
     category: "wordle" as const,
     engine: "wordle" as const,
@@ -38,7 +38,7 @@ export const games: GameConfig[] = [
   })),
   {
     slug: "daily-wordle",
-    name: "Daily Wordle",
+    name: "Daily Word Guess",
     description: "One deterministic daily word for everyone.",
     category: "daily",
     engine: "wordle",
@@ -51,7 +51,7 @@ export const games: GameConfig[] = [
   },
   {
     slug: "endless-wordle",
-    name: "Endless Wordle",
+    name: "Endless Word Guess",
     description: "Keep solving fresh words until you decide to stop.",
     category: "wordle",
     engine: "wordle",
@@ -63,7 +63,7 @@ export const games: GameConfig[] = [
   },
   {
     slug: "survival-wordle",
-    name: "Survival Wordle",
+    name: "Survival Word Guess",
     description: "Win to advance, miss and the run ends.",
     category: "wordle",
     engine: "wordle",
@@ -75,7 +75,7 @@ export const games: GameConfig[] = [
   },
   {
     slug: "hardcore-wordle",
-    name: "Hardcore Wordle",
+    name: "Hardcore Word Guess",
     description: "A sharper Wordle with fewer attempts and strict pacing.",
     category: "wordle",
     engine: "wordle",
@@ -85,11 +85,11 @@ export const games: GameConfig[] = [
     mode: "hardcore"
   },
   ...[
-    ["double-wordle", "Double Wordle", 2, 7, "Easy"],
-    ["triple-wordle", "Triple Wordle", 3, 8, "Medium"],
-    ["quad-wordle", "Quad Wordle", 4, 9, "Medium"],
-    ["hex-wordle", "Hex Wordle", 6, 10, "Hard"],
-    ["octo-wordle", "Octo Wordle", 8, 12, "Hard"],
+    ["double-wordle", "Double Word Guess", 2, 7, "Easy"],
+    ["triple-wordle", "Triple Word Guess", 3, 8, "Medium"],
+    ["quad-wordle", "Quad Word Guess", 4, 9, "Medium"],
+    ["hex-wordle", "Hex Word Guess", 6, 10, "Hard"],
+    ["octo-wordle", "Octo Word Guess", 8, 12, "Hard"],
     ["sedecordle", "Sedecordle", 16, 21, "Expert"]
   ].map(([slug, name, boardCount, attempts, difficulty]) => ({
     slug: slug as string,
@@ -192,8 +192,8 @@ export const playableGames = games.filter((game) => !game.comingSoon);
 export const comingSoonGames = games.filter((game) => game.comingSoon);
 
 export const categoryLabels: Record<GameCategory, string> = {
-  wordle: "Wordle Family",
-  "multi-wordle": "Multi Wordle",
+  wordle: "Word Guess Family",
+  "multi-wordle": "Multi Word Guess",
   geography: "Geography",
   entertainment: "Entertainment",
   brands: "Brands",
@@ -204,7 +204,7 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/wordle", label: "Wordle" },
+  { href: "/wordle", label: "Word Guess" },
   { href: "/multi-wordle", label: "Multi" },
   { href: "/guess", label: "Guess" },
   { href: "/word-games", label: "Puzzles" },

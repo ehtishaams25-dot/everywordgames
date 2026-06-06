@@ -1,13 +1,86 @@
-<div class="stats-grid" id="stats-panel">
-  <div class="stat"><span>Played</span><strong data-stat="played">0</strong></div>
-  <div class="stat"><span>Wins</span><strong data-stat="wins">0</strong></div>
-  <div class="stat"><span>Losses</span><strong data-stat="losses">0</strong></div>
-  <div class="stat"><span>Win Rate</span><strong data-stat="winRate">0%</strong></div>
-  <div class="stat"><span>Current Streak</span><strong data-stat="currentStreak">0</strong></div>
-  <div class="stat"><span>Longest Streak</span><strong data-stat="longestStreak">0</strong></div>
-  <div class="stat"><span>Fastest Solve</span><strong data-stat="fastestSolve">-</strong></div>
-  <div class="stat"><span>Average Solve</span><strong data-stat="averageSolve">-</strong></div>
+<div class="player-panel">
+  <div class="player-avatar">
+    👽
+  </div>
+  <div style="flex-grow: 1; z-index: 1;">
+    <h3 style="margin-bottom: 0.5rem; font-weight: 900; font-size: 1.5rem;">Player 1</h3>
+    <div style="display: flex; gap: 1rem; align-items: center; color: var(--muted); font-weight: 800;">
+      <span style="color: var(--primary);">Level 4</span>
+      <span>450 / 1000 XP</span>
+    </div>
+    <div class="xp-bar-bg">
+      <div class="xp-bar-fill"></div>
+    </div>
+  </div>
 </div>
+
+<div class="stats-grid" id="stats-panel">
+  <div class="stat soul-stat"><span>Played</span><strong data-stat="played">0</strong></div>
+  <div class="stat soul-stat"><span>Wins</span><strong data-stat="wins">0</strong></div>
+  <div class="stat soul-stat"><span>Win Rate</span><strong data-stat="winRate">0%</strong></div>
+  <div class="stat soul-stat"><span>Streak</span><strong data-stat="currentStreak" style="color: #f59e0b; text-shadow: 0 0 10px rgba(245,158,11,0.5);">0 🔥</strong></div>
+</div>
+
+<style>
+  .player-panel {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    background: linear-gradient(145deg, var(--panel), var(--panel-2));
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  .player-panel::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: radial-gradient(circle at top right, rgba(163, 230, 53, 0.1), transparent 60%);
+    pointer-events: none;
+  }
+  .player-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 4px 0 rgba(132, 204, 22, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    display: grid;
+    place-items: center;
+    font-size: 2.5rem;
+    z-index: 1;
+  }
+  .xp-bar-bg {
+    height: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 999px;
+    margin-top: 0.6rem;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .xp-bar-fill {
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 999px;
+    box-shadow: 0 0 10px rgba(163, 230, 53, 0.5);
+  }
+  .soul-stat {
+    background: linear-gradient(145deg, var(--panel), var(--panel-2)) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .soul-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    border-color: rgba(163, 230, 53, 0.2) !important;
+  }
+</style>
 
 <script>
   import { loadStats } from "@/engines/playerStore";

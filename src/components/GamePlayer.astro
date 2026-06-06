@@ -14,30 +14,13 @@ const relatedGames = playableGames
 
 <section class="section game-section">
   <div class="container layout-split">
-    <div class="game-stage" id="game-root" data-slug={game.slug}>
-      <p class="muted">Loading {game.name}...</p>
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+      <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-bottom: 0.5rem; text-align: center;">{game.name}</h1>
+      <p style="color: var(--muted); text-align: center; max-width: 500px; font-size: 1.1rem;">{game.description}</p>
     </div>
-    <aside class="side-panel">
-      <p class="eyebrow">Game Mode</p>
-      <h2>{game.name}</h2>
-      <p class="muted">{game.description}</p>
-      <div class="stats-grid">
-        <div class="stat">
-          <span>Difficulty</span>
-          <strong>{game.difficulty}</strong>
-        </div>
-        <div class="stat">
-          <span>Engine</span>
-          <strong>{game.engine}</strong>
-        </div>
-      </div>
-      <div class="hint-list">
-        {relatedGames.map((item) => (
-          <a class="hint" href={`/games/${item.slug}`}>{item.name}</a>
-        ))}
-      </div>
-      <p class="muted">Results are saved locally on this device.</p>
-    </aside>
+    <div class="game-stage" id="game-root" data-slug={game.slug}>
+      <p class="muted" style="text-align: center;">Loading {game.name}...</p>
+    </div>
   </div>
 </section>
 

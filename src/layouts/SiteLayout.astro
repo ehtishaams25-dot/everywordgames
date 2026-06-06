@@ -10,7 +10,7 @@ interface Props {
 
 const {
   title = "EveryWordGames - The Word Game Website for Every Game on the Market",
-  description = "Play every word game available on the market at everywordgames.com. Find daily word games, Wordle variants, multi-board puzzles, country guessing, and fast word puzzles in one place.",
+  description = "Play every word game available on the market at everywordgames.com. Find daily word games, Word Guess variants, multi-board puzzles, country guessing, and fast word puzzles in one place.",
   path = Astro.url.pathname
 } = Astro.props;
 
@@ -43,6 +43,14 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
           <span>EveryWordGames</span>
         </a>
         <div class="nav-links">
+          <div class="player-stats" style="display: flex; gap: 1rem; align-items: center; margin-right: 1rem;">
+             <div class="streak" style="display: flex; align-items: center; gap: 0.3rem; font-weight: 800; color: #f59e0b;">
+               <span>🔥</span> 12
+             </div>
+             <div class="xp" style="display: flex; align-items: center; gap: 0.3rem; font-weight: 800; color: var(--primary);">
+               <span>⭐</span> 450 XP
+             </div>
+          </div>
           {siteNav.map((item) => (
             <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
           ))}
@@ -55,8 +63,8 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <footer class="footer">
       <div class="container footer-grid">
         <div>
-          <strong>EveryWordGames</strong>
-          <p>Fast, local-first word games with Wordle variants, guessing games, puzzle modes, stats, and achievements.</p>
+          <strong style="font-size: 1.5rem; color: var(--text);">EveryWordGames</strong>
+          <p style="margin-top: 0.5rem; max-width: 300px;">Play the best daily word games and puzzles. Free, fast, and fun.</p>
         </div>
         <div class="footer-links" aria-label="Footer">
           {footerNav.map((item) => <a class="pill" href={item.href}>{item.label}</a>)}

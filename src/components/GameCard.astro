@@ -17,16 +17,14 @@ const initials = game.name
 <article class="game-card">
   <div class="game-card-top">
     <span class="tile-icon" aria-hidden="true">{initials}</span>
-    <span class="difficulty">{game.difficulty}</span>
   </div>
   <div class="card-copy">
-    <h3>{game.name}</h3>
+    <h3 style="font-weight: 800;">{game.name}</h3>
     <p>{game.description}</p>
   </div>
   <div class="card-meta">
-    <span class:list={["status", { soon: game.comingSoon }]}>{game.comingSoon ? "Coming Soon" : "Playable"}</span>
-    <a class="button" href={game.comingSoon ? "#" : `/games/${game.slug}`} aria-disabled={game.comingSoon ? "true" : undefined}>
-      {game.comingSoon ? "Preview" : "Play"}
+    <a class="button" href={game.comingSoon ? "#" : `/games/${game.slug}`} aria-disabled={game.comingSoon ? "true" : undefined} style="width: 100%;">
+      {game.comingSoon ? "Coming Soon" : "Play"}
     </a>
   </div>
 </article>

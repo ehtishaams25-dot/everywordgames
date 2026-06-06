@@ -12,14 +12,24 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
 <SiteLayout path="/">
 
 
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <div style="background: var(--primary); border-radius: 24px; padding: 3rem 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; color: #0f172a; box-shadow: 0 12px 32px rgba(163, 230, 53, 0.2);">
+        <span style="background: rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 900; margin-bottom: 1rem; letter-spacing: 1px;">★ TODAY'S CHALLENGE ★</span>
+        <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; color: #0f172a; font-weight: 900;">Daily Word Guess</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 500px; font-weight: 600;">Keep your streak alive! Solve today's puzzle to earn 50 XP and a special badge.</p>
+        <a href="/wordle" class="button" style="background: #0f172a; color: var(--primary); padding: 1rem 2rem; font-size: 1.2rem; box-shadow: 0 6px 0 rgba(0,0,0,0.4);">Play Now</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Featured Games</h2>
-          <p>Core modes powered by reusable engines.</p>
+          <h2 style="font-weight: 800;">Top Games</h2>
+          <p>The most popular puzzles right now.</p>
         </div>
-        <span class="pill">{playableGames.length} playable modes</span>
       </div>
       <GameGrid games={featured} />
     </div>
@@ -29,8 +39,8 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Trending Games</h2>
-          <p>High-energy modes for repeat play.</p>
+          <h2 style="font-weight: 800;">Trending Now</h2>
+          <p>What everyone is playing today.</p>
         </div>
       </div>
       <GameGrid games={trending} />
@@ -41,8 +51,8 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Recently Played</h2>
-          <p>Your latest games on this device.</p>
+          <h2 style="font-weight: 800;">Jump Back In</h2>
+          <p>Continue your recent games.</p>
         </div>
       </div>
       <div class="grid" id="recent-games"></div>
@@ -53,8 +63,8 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Categories</h2>
-          <p>Jump into a family of games.</p>
+          <h2 style="font-weight: 800;">Categories</h2>
+          <p>Find your favorite type of puzzle.</p>
         </div>
       </div>
       <div class="grid">
@@ -62,10 +72,9 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
           <a class="game-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : `/${key}`}>
             <span class="tile-icon">{String(label).slice(0, 2).toUpperCase()}</span>
             <div class="card-copy">
-              <h3>{label}</h3>
-              <p>{games.filter((game) => game.category === key).length} modes available.</p>
+              <h3 style="font-weight: 800;">{label}</h3>
+              <p>{games.filter((game) => game.category === key).length} games</p>
             </div>
-            <span class="status">Browse</span>
           </a>
         ))}
       </div>
@@ -76,41 +85,12 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     <div class="container">
       <div class="section-header">
         <div>
-          <h2>Player Statistics</h2>
-          <p>Local-only progress tracking.</p>
+          <h2 style="font-weight: 800;">Player Profile</h2>
+          <p>Your stats, streaks, and unlocked badges.</p>
         </div>
-        <a class="pill" href="/stats">Details</a>
+        <a class="button small secondary" href="/stats">View Profile</a>
       </div>
       <StatsPanel />
-    </div>
-  </section>
-
-  <section class="section band">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2>Achievement Preview</h2>
-          <p>Milestones unlock automatically as you play.</p>
-        </div>
-        <a class="pill" href="/achievements">All achievements</a>
-      </div>
-      <div class="grid">
-        {["First Win", "10 Wins", "7 Day Streak", "Word Master"].map((name) => (
-          <article class="stat"><span>Achievement</span><strong>{name}</strong></article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2>Future Games</h2>
-          <p>Visible roadmap cards for the next wave.</p>
-        </div>
-      </div>
-      <GameGrid games={comingSoonGames.slice(0, 8)} />
     </div>
   </section>
 </SiteLayout>

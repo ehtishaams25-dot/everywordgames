@@ -1,14 +1,37 @@
+import { useGameFocus } from "@/lib/useGameFocus";
 import { games, type GameConfig } from "@/data/games";
 import { createGuessChallenge, normalizeAnswer, type GuessItem } from "@/engines/guessingEngine";
 import { createMultiTargets } from "@/engines/multiWordleEngine";
 import { recordGame } from "@/engines/playerStore";
 import { createPuzzleChallenge } from "@/engines/wordPuzzleEngine";
 import { createWordleTarget, evaluateGuess, getWords } from "@/engines/wordleEngine";
+import confetti from "canvas-confetti";
 
 type LetterState = "correct" | "present" | "absent";
 
 const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 const stateRank: Record<LetterState, number> = { absent: 1, present: 2, correct: 3 };
+
+let dictionaryPromise: Promise<void> | null = null;
+let globalDictionary: Set<string> | null = null;
+
+function loadDictionary() {
+  if (!dictionaryPromise) {
+    dictionaryPromise = fetch("/dictionary.json")
+      .then(res => {
+        if (!res.ok) throw new Error("Dictionary fetch failed");
+        return res.json();
+      })
+      .then((words: string[]) => {
+        globalDictionary = new Set(words);
+      })
+      .catch((err) => {
+        console.warn("Failed to load dictionary.json, falling back to answer list.", err);
+        globalDictionary = new Set();
+      });
+  }
+  return dictionaryPromise;
+}
 
 export function mountGame(root: HTMLElement) {
   const game = games.find((item) => item.slug === root.dataset.slug);
@@ -18,6 +41,10 @@ export function mountGame(root: HTMLElement) {
   }
 
   rememberRecent(game.slug);
+
+  if (game.engine === "wordle" || game.engine === "multi-wordle") {
+    loadDictionary();
+  }
 
   if (game.engine === "wordle") mountWordle(root, game);
   if (game.engine === "multi-wordle") mountMultiWordle(root, game);
@@ -69,9 +96,10 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
 
     wireRestart(root, reset);
     wireKeyboard(root, "input[name='guess']");
+    useGameFocus(root, "input[name='guess']");
 
     const form = root.querySelector("form");
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (done) return;
       const input = form.querySelector<HTMLInputElement>("input");
@@ -80,7 +108,13 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
         setMessage(root, `Enter exactly ${game.wordLength} letters.`);
         return;
       }
-      if (!getWords(game.wordLength ?? 5).includes(value)) {
+
+      await loadDictionary();
+      const answerList = getWords(game.wordLength ?? 5);
+      const inAnswerList = answerList.includes(value);
+      const inDictionary = globalDictionary && globalDictionary.size > 0 ? globalDictionary.has(value) : false;
+
+      if (!inAnswerList && !inDictionary) {
         setMessage(root, "Word not in dictionary.");
         return;
       }
@@ -93,7 +127,10 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
         recordGame(game.slug, won, elapsed(started));
       }
       render();
-      if (done) setMessage(root, won ? `Solved: ${target.toUpperCase()}` : `Answer: ${target.toUpperCase()}`);
+      if (done) {
+        setMessage(root, won ? `Solved: ${target.toUpperCase()}` : `Answer: ${target.toUpperCase()}`);
+        showCompletionPopup(root, won, target.toUpperCase(), reset);
+      }
     });
   };
 
@@ -132,9 +169,10 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
 
     wireRestart(root, reset);
     wireKeyboard(root, "input[name='guess']");
+    useGameFocus(root, "input[name='guess']");
 
     const form = root.querySelector("form");
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (done) return;
       const input = form.querySelector<HTMLInputElement>("input");
@@ -143,7 +181,13 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
         setMessage(root, `Enter exactly ${game.wordLength} letters.`);
         return;
       }
-      if (!getWords(game.wordLength ?? 5).includes(value)) {
+
+      await loadDictionary();
+      const answerList = getWords(game.wordLength ?? 5);
+      const inAnswerList = answerList.includes(value);
+      const inDictionary = globalDictionary && globalDictionary.size > 0 ? globalDictionary.has(value) : false;
+
+      if (!inAnswerList && !inDictionary) {
         setMessage(root, "Word not in dictionary.");
         return;
       }
@@ -155,7 +199,10 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
         recordGame(game.slug, solved, elapsed(started));
       }
       render();
-      if (done) setMessage(root, solved ? "All boards solved." : `Answers: ${targets.map((word) => word.toUpperCase()).join(", ")}`);
+      if (done) {
+        setMessage(root, solved ? "All boards solved." : `Answers: ${targets.map((word) => word.toUpperCase()).join(", ")}`);
+        showCompletionPopup(root, solved, targets.join(", ").toUpperCase(), reset);
+      }
     });
   };
 
@@ -180,7 +227,6 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
   let challenge = createGuessChallenge(game, run);
   let started = Date.now();
   let attempts: string[] = [];
-  let hintCount = 1;
   let done = false;
 
   const reset = () => {
@@ -188,7 +234,6 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
     challenge = createGuessChallenge(game, run);
     started = Date.now();
     attempts = [];
-    hintCount = 1;
     done = false;
     render();
   };
@@ -209,10 +254,16 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         <aside class="hint-panel">
           <div class="hint-panel-top">
             <strong>Hints</strong>
-            <button class="button secondary small" type="button" data-hint ${hintCount >= challenge.hints.length ? "disabled" : ""}>Hint</button>
           </div>
           <div class="hint-list">
-            ${challenge.hints.slice(0, hintCount).map((hint) => `<div class="hint">${escapeHtml(hint)}</div>`).join("")}
+            ${challenge.hints.map((hint, index) => {
+              const isUnlocked = index <= attempts.length;
+              const justUnlocked = index === attempts.length && attempts.length > 0;
+              if (isUnlocked) {
+                return `<div class="hint ${justUnlocked ? 'hint-new' : ''}">${escapeHtml(hint)}</div>`;
+              }
+              return `<div class="hint locked"><span class="lock-icon">🔒</span> Locked</div>`;
+            }).join("")}
           </div>
         </aside>
       </div>
@@ -229,11 +280,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
 
     wireRestart(root, reset);
     wireKeyboard(root, "input[name='answer']");
-
-    root.querySelector("[data-hint]")?.addEventListener("click", () => {
-      hintCount = Math.min(challenge.hints.length, hintCount + 1);
-      render();
-    });
+    useGameFocus(root, "input[name='answer']");
 
     root.querySelector("form")?.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -250,12 +297,18 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       if (won || attempts.length >= 5) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
-      } else {
-        hintCount = Math.min(challenge.hints.length, hintCount + 1);
       }
       render();
-      if (done) setMessage(root, won ? `Correct: ${challenge.answer}` : `Answer: ${challenge.answer}`);
-      else setMessage(root, "Not yet. Another hint unlocked.");
+      if (done) {
+        setMessage(root, won ? `Correct: ${challenge.answer}` : `Answer: ${challenge.answer}`);
+        showCompletionPopup(root, won, challenge.answer, reset);
+      } else {
+        if (attempts.length < challenge.hints.length) {
+          setMessage(root, "New Hint Unlocked");
+        } else {
+          setMessage(root, "Not yet. Keep trying.");
+        }
+      }
     });
   };
 
@@ -285,21 +338,26 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
   const render = () => {
     const hangmanDisplay = challenge.answer
       .split("")
-      .map((letter) => (guessed.has(letter) ? letter.toUpperCase() : "_"))
+      .map((letter) => (guessed.has(letter) || done ? letter.toUpperCase() : "_"))
       .join(" ");
     const display = game.mode === "hangman" ? hangmanDisplay : challenge.display;
     const hangmanSvg = game.mode === "hangman" ? `
+      <style>
+        .draw-path {
+          stroke-dasharray: var(--len);
+          transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+      </style>
       <svg viewBox="0 0 200 250" class="hangman-svg" style="width: 100%; max-width: 200px; margin: 0 auto; display: block; stroke: currentColor; stroke-width: 4; stroke-linecap: round; fill: none;">
-        <line x1="20" y1="230" x2="100" y2="230" />
-        <line x1="60" y1="230" x2="60" y2="20" />
-        <line x1="60" y1="20" x2="140" y2="20" />
-        <line x1="140" y1="20" x2="140" y2="50" style="stroke-width: 2;" />
-        <circle cx="140" cy="70" r="20" style="opacity: ${misses > 0 ? 1 : 0}; transition: opacity 0.3s;" />
-        <line x1="140" y1="90" x2="140" y2="150" style="opacity: ${misses > 1 ? 1 : 0}; transition: opacity 0.3s;" />
-        <line x1="140" y1="100" x2="110" y2="130" style="opacity: ${misses > 2 ? 1 : 0}; transition: opacity 0.3s;" />
-        <line x1="140" y1="100" x2="170" y2="130" style="opacity: ${misses > 3 ? 1 : 0}; transition: opacity 0.3s;" />
-        <line x1="140" y1="150" x2="110" y2="190" style="opacity: ${misses > 4 ? 1 : 0}; transition: opacity 0.3s;" />
-        <line x1="140" y1="150" x2="170" y2="190" style="opacity: ${misses > 5 ? 1 : 0}; transition: opacity 0.3s;" />
+        <g class="draw-path" style="--len: 400; stroke-dashoffset: 0;">
+          <path d="M20,230 L100,230 M60,230 L60,20 L140,20 L140,50" style="stroke-linejoin: round;" />
+        </g>
+        <circle cx="140" cy="70" r="20" class="draw-path" style="--len: 126; stroke-dashoffset: ${misses > 0 ? 0 : 126};" />
+        <line x1="140" y1="90" x2="140" y2="150" class="draw-path" style="--len: 60; stroke-dashoffset: ${misses > 1 ? 0 : 60};" />
+        <line x1="140" y1="100" x2="110" y2="130" class="draw-path" style="--len: 45; stroke-dashoffset: ${misses > 2 ? 0 : 45};" />
+        <line x1="140" y1="100" x2="170" y2="130" class="draw-path" style="--len: 45; stroke-dashoffset: ${misses > 3 ? 0 : 45};" />
+        <line x1="140" y1="150" x2="110" y2="190" class="draw-path" style="--len: 50; stroke-dashoffset: ${misses > 4 ? 0 : 50};" />
+        <line x1="140" y1="150" x2="170" y2="190" class="draw-path" style="--len: 50; stroke-dashoffset: ${misses > 5 ? 0 : 50};" />
       </svg>
     ` : "";
     
@@ -323,21 +381,51 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
 
     wireRestart(root, reset);
     wireKeyboard(root, "input[name='answer']");
+    useGameFocus(root, "input[name='answer']");
 
-    root.querySelector("form")?.addEventListener("submit", (event) => {
+    root.querySelector("form")?.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (done) return;
       const input = root.querySelector<HTMLInputElement>("input");
       const value = input?.value.trim().toLowerCase() ?? "";
       if (!value) return;
+
+      if (game.mode === "hangman" && value.length === 1 && (guessed.has(value) || attempts.includes(value))) {
+        setMessage(root, `Already guessed ${value.toUpperCase()}`);
+        if (input) input.value = "";
+        return;
+      }
+
+      if (game.mode === "hangman" && value.length > 1) {
+        await loadDictionary();
+        const answerList = getWords(value.length);
+        const inAnswerList = answerList.includes(value);
+        const inDictionary = globalDictionary && globalDictionary.size > 0 ? globalDictionary.has(value) : false;
+        
+        if (!inAnswerList && !inDictionary) {
+          setMessage(root, "Word not in dictionary.");
+          return;
+        }
+      }
+
       attempts.push(value);
       if (input) input.value = "";
       let won = value === challenge.answer;
 
-      if (game.mode === "hangman" && value.length === 1) {
-        if (challenge.answer.includes(value)) guessed.add(value);
-        else misses += 1;
-        won = challenge.answer.split("").every((letter) => guessed.has(letter));
+      if (game.mode === "hangman") {
+        if (value.length === 1) {
+          if (challenge.answer.includes(value)) guessed.add(value);
+          else misses += 1;
+          won = challenge.answer.split("").every((letter) => guessed.has(letter));
+        } else if (!won) {
+          misses += 1;
+          value.split("").forEach((letter, index) => {
+            if (challenge.answer[index] === letter) {
+              guessed.add(letter);
+            }
+          });
+          won = challenge.answer.split("").every((letter) => guessed.has(letter));
+        }
       }
 
       if (won || misses >= 6 || (game.mode !== "hangman" && value !== challenge.answer)) {
@@ -345,7 +433,10 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
         recordGame(game.slug, won, elapsed(started));
       }
       render();
-      if (done) setMessage(root, won ? `Solved: ${challenge.answer.toUpperCase()}` : `Answer: ${challenge.answer.toUpperCase()}`);
+      if (done) {
+        setMessage(root, won ? `Solved: ${challenge.answer.toUpperCase()}` : `Answer: ${challenge.answer.toUpperCase()}`);
+        showCompletionPopup(root, won, challenge.answer.toUpperCase(), reset);
+      }
     });
   };
 
@@ -494,4 +585,42 @@ function escapeHtml(value: string) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function showCompletionPopup(root: HTMLElement, won: boolean, answer: string, resetCallback: () => void) {
+  if (won) {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      zIndex: 1000
+    });
+  }
+
+  const overlay = document.createElement("div");
+  overlay.className = "completion-popup-overlay";
+  
+  const popup = document.createElement("div");
+  popup.className = "completion-popup";
+  
+  const title = document.createElement("h2");
+  title.textContent = won ? "Solved!" : "Game Over";
+  
+  const message = document.createElement("p");
+  message.textContent = won ? "Congratulations!" : `The answer was ${answer}`;
+  
+  const button = document.createElement("button");
+  button.className = "button";
+  button.textContent = "Play Again";
+  button.onclick = () => {
+    overlay.remove();
+    resetCallback();
+  };
+  
+  popup.appendChild(title);
+  popup.appendChild(message);
+  popup.appendChild(button);
+  overlay.appendChild(popup);
+  
+  root.appendChild(overlay);
 }
