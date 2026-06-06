@@ -3,7 +3,7 @@ import { createGuessChallenge, normalizeAnswer, type GuessItem } from "@/engines
 import { createMultiTargets } from "@/engines/multiWordleEngine";
 import { recordGame } from "@/engines/playerStore";
 import { createPuzzleChallenge } from "@/engines/wordPuzzleEngine";
-import { createWordleTarget, evaluateGuess } from "@/engines/wordleEngine";
+import { createWordleTarget, evaluateGuess, getWords } from "@/engines/wordleEngine";
 
 type LetterState = "correct" | "present" | "absent";
 
@@ -80,6 +80,10 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
         setMessage(root, `Enter exactly ${game.wordLength} letters.`);
         return;
       }
+      if (!getWords(game.wordLength ?? 5).includes(value)) {
+        setMessage(root, "Word not in dictionary.");
+        return;
+      }
       const result = evaluateGuess(value, target);
       guesses.push(result);
       input.value = "";
@@ -137,6 +141,10 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
       const value = input?.value.trim().toLowerCase() ?? "";
       if (value.length !== (game.wordLength ?? 5) || !/^[a-z]+$/.test(value)) {
         setMessage(root, `Enter exactly ${game.wordLength} letters.`);
+        return;
+      }
+      if (!getWords(game.wordLength ?? 5).includes(value)) {
+        setMessage(root, "Word not in dictionary.");
         return;
       }
       guesses.push(value);
@@ -197,9 +205,6 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
               <div class="clue-title">${escapeHtml(challenge.display)}</div>
             </div>
           </div>
-          <div class="guess-board">
-            ${renderGuessRows(challenge, attempts, 5)}
-          </div>
         </div>
         <aside class="hint-panel">
           <div class="hint-panel-top">
@@ -215,6 +220,9 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         <input class="answer-input" name="answer" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" />
         <button class="button" type="submit">Submit</button>
       </form>
+      ${attempts.length > 0 ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem;">
+        ${attempts.map(attempt => `<div class="past-guess" style="padding: 0.5rem; background: var(--bg-surface-hover); border-radius: var(--radius); text-align: center; font-weight: 500; font-family: monospace; letter-spacing: 1px; color: var(--fg-muted); margin-bottom: 0.5rem; text-decoration: line-through;">${escapeHtml(attempt.toUpperCase())}</div>`).join("")}
+      </div>` : ""}
       <p class="message">${attempts.length ? `${attempts.length} attempt${attempts.length === 1 ? "" : "s"}` : "Type or tap letters. Hints stay beside the board."}</p>
       ${renderKeyboard(getGuessKeyboardState(attempts, challenge))}
     `;
@@ -280,12 +288,28 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
       .map((letter) => (guessed.has(letter) ? letter.toUpperCase() : "_"))
       .join(" ");
     const display = game.mode === "hangman" ? hangmanDisplay : challenge.display;
+    const hangmanSvg = game.mode === "hangman" ? `
+      <svg viewBox="0 0 200 250" class="hangman-svg" style="width: 100%; max-width: 200px; margin: 0 auto; display: block; stroke: currentColor; stroke-width: 4; stroke-linecap: round; fill: none;">
+        <line x1="20" y1="230" x2="100" y2="230" />
+        <line x1="60" y1="230" x2="60" y2="20" />
+        <line x1="60" y1="20" x2="140" y2="20" />
+        <line x1="140" y1="20" x2="140" y2="50" style="stroke-width: 2;" />
+        <circle cx="140" cy="70" r="20" style="opacity: ${misses > 0 ? 1 : 0}; transition: opacity 0.3s;" />
+        <line x1="140" y1="90" x2="140" y2="150" style="opacity: ${misses > 1 ? 1 : 0}; transition: opacity 0.3s;" />
+        <line x1="140" y1="100" x2="110" y2="130" style="opacity: ${misses > 2 ? 1 : 0}; transition: opacity 0.3s;" />
+        <line x1="140" y1="100" x2="170" y2="130" style="opacity: ${misses > 3 ? 1 : 0}; transition: opacity 0.3s;" />
+        <line x1="140" y1="150" x2="110" y2="190" style="opacity: ${misses > 4 ? 1 : 0}; transition: opacity 0.3s;" />
+        <line x1="140" y1="150" x2="170" y2="190" style="opacity: ${misses > 5 ? 1 : 0}; transition: opacity 0.3s;" />
+      </svg>
+    ` : "";
+    
     root.innerHTML = `
       ${renderGameHeader(game, [game.mode === "hangman" ? `${6 - misses} misses left` : "quick solve"], done ? "Play again" : "New puzzle")}
-      <div class="puzzle-box">
+      <div class="puzzle-box" style="text-align: center;">
         <div>
           <p class="eyebrow">${escapeHtml(challenge.hint)}</p>
-          <div class="clue-title">${escapeHtml(display)}</div>
+          ${hangmanSvg}
+          <div class="clue-title" style="margin-top: 1rem; font-family: monospace; letter-spacing: 0.25em;">${escapeHtml(display)}</div>
           ${challenge.grid ? `<div class="word-search">${challenge.grid.map((row) => `<div class="word-search-row">${row.map((letter) => `<span class="cell">${letter}</span>`).join("")}</div>`).join("")}</div>` : ""}
         </div>
       </div>

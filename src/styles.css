@@ -244,6 +244,10 @@ h3 {
   padding: clamp(2.2rem, 6vw, 5rem) 0;
 }
 
+.section.game-section {
+  padding: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
 .section-header {
   display: flex;
   align-items: end;
@@ -361,8 +365,8 @@ h3 {
 }
 
 .game-stage {
-  min-height: 30rem;
-  padding: clamp(1rem, 3vw, 1.4rem);
+  min-height: auto;
+  padding: clamp(0.75rem, 2vw, 1.4rem);
 }
 
 .side-panel {
@@ -538,11 +542,11 @@ h3 {
 .clue-box,
 .puzzle-box {
   display: grid;
-  min-height: 12rem;
+  min-height: 8rem;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 1.2rem;
+  padding: 0.8rem;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(139, 92, 246, 0.08));
   text-align: center;
 }
