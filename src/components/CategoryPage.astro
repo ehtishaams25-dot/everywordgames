@@ -17,12 +17,8 @@ const pageGames = games.filter((game) => categories.includes(game.category));
 <SiteLayout title={`${title} - EveryWordGames`} description={description} path={path}>
   <section class="section">
     <div class="container">
-      <p class="eyebrow">EveryWordGames</p>
-      <h1>{title}</h1>
-      <p class="lede">{description}</p>
-      <div class="category-tabs">
-        {categories.map((category) => <span class="pill">{categoryLabels[category]}</span>)}
-      </div>
+      <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.5rem;">{title}</h1>
+      <p class="lede" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{description}</p>
     </div>
   </section>
   <section class="section band">
