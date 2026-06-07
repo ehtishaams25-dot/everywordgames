@@ -6,25 +6,54 @@ interface Props {
 }
 
 const { game } = Astro.props;
+
+let bannerUrl = "";
+if (game.slug === "daily-wordle") {
+  bannerUrl = "/assets/daily word guess.png";
+} else if (game.slug === "5-letter-wordle") {
+  bannerUrl = "/assets/5 letter word guess.png";
+} else if (game.slug === "2-letter-wordle") {
+  bannerUrl = "/assets/2 letter.png";
+} else if (game.slug === "3-letter-wordle") {
+  bannerUrl = "/assets/3 letter.png";
+} else if (game.slug === "4-letter-wordle") {
+  bannerUrl = "/assets/4 letter.png";
+} else if (game.slug === "6-letter-wordle") {
+  bannerUrl = "/assets/6 letter.png";
+} else if (game.slug === "7-letter-wordle") {
+  bannerUrl = "/assets/7 letter.png";
+} else if (game.slug === "8-letter-wordle") {
+  bannerUrl = "/assets/8 letter.png";
+} else if (game.slug === "9-letter-wordle") {
+  bannerUrl = "/assets/9 letter.png";
+} else if (game.slug === "10-letter-wordle") {
+  bannerUrl = "/assets/10 letter.png";
+}
+
 const initials = game.name
   .split(/\s+/)
   .map((part) => part[0])
   .join("")
   .slice(0, 2)
   .toUpperCase();
+
+const linkHref = game.comingSoon ? "#" : `/games/${game.slug}`;
 ---
 
-<article class="game-card">
-  <div class="game-card-top">
-    <span class="tile-icon" aria-hidden="true">{initials}</span>
+<a class="game-card" href={linkHref} aria-disabled={game.comingSoon ? "true" : undefined}>
+  <div class="card-banner" style={!bannerUrl ? "background: linear-gradient(135deg, #1A1C18 0%, #2A2E24 100%); display: grid; place-items: center;" : ""}>
+    {bannerUrl ? (
+      <img src={bannerUrl} alt={game.name} />
+    ) : (
+      <span class="tile-icon" style="box-shadow: none;">{initials}</span>
+    )}
+    {game.daily && <span class="card-tag">DAILY</span>}
+    {game.comingSoon && <span class="card-tag" style="color: #FF7800; border-color: rgba(255,120,0,0.3); background: rgba(255,120,0,0.15);">SOON</span>}
   </div>
-  <div class="card-copy">
-    <h3 style="font-weight: 800;">{game.name}</h3>
-    <p>{game.description}</p>
+
+  <div class="card-body">
+    <span class="game-name">{game.name}</span>
+    <span class="game-desc">{game.description}</span>
+    <div class="play-btn">{game.comingSoon ? "Coming Soon" : "▶ Play"}</div>
   </div>
-  <div class="card-meta">
-    <a class="button" href={game.comingSoon ? "#" : `/games/${game.slug}`} aria-disabled={game.comingSoon ? "true" : undefined} style="width: 100%;">
-      {game.comingSoon ? "Coming Soon" : "Play"}
-    </a>
-  </div>
-</article>
+</a>

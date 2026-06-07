@@ -14,11 +14,36 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
 
   <section class="section" style="padding-top: 2rem;">
     <div class="container">
-      <div style="background: var(--primary); border-radius: 24px; padding: 3rem 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; color: #0f172a; box-shadow: 0 12px 32px rgba(163, 230, 53, 0.2);">
-        <span style="background: rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 900; margin-bottom: 1rem; letter-spacing: 1px;">★ TODAY'S CHALLENGE ★</span>
-        <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; color: #0f172a; font-weight: 900;">Daily Word Guess</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 500px; font-weight: 600;">Keep your streak alive! Solve today's puzzle to earn 50 XP and a special badge.</p>
-        <a href="/wordle" class="button" style="background: #0f172a; color: var(--primary); padding: 1rem 2rem; font-size: 1.2rem; box-shadow: 0 6px 0 rgba(0,0,0,0.4);">Play Now</a>
+      <div class="hero-banner">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            ★ TODAY'S CHALLENGE ★
+          </div>
+          <h1 class="hero-title">
+            DAILY<br /><span>WORD</span><br />GUESS
+          </h1>
+          <p class="hero-subtext">Solve today's puzzle to keep your streak alive — earn 50 XP and a special badge.</p>
+          <div class="hero-actions">
+            <a href="/wordle" class="btn-lime">▶ Play Now</a>
+            <button class="btn-ghost">How to play</button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="stat-label">CURRENT STREAK</div>
+          <div class="stat-value">12</div>
+          <div class="stat-subtext">days without missing</div>
+          
+          <div class="hero-divider"></div>
+          
+          <div class="level-stat">
+            <span class="stat-label">YOUR LEVEL</span>
+            <span class="level-value">4</span>
+          </div>
+          <div class="xp-track">
+            <div class="xp-fill"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -43,7 +68,25 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
           <p>What everyone is playing today.</p>
         </div>
       </div>
-      <GameGrid games={trending} />
+      <div class="trending-grid">
+        {trending.map((game, index) => {
+          const initials = game.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+          return (
+            <a class="trend-card" href={`/games/${game.slug}`}>
+              <div class="trend-rank">{index + 1}</div>
+              <div class="tile-icon">{initials}</div>
+              <div class="trend-copy">
+                <h4>{game.name}</h4>
+                <p>{categoryLabels[game.category]}</p>
+              </div>
+              <div class="trend-tags">
+                {index < 2 && <span class="trend-tag hot">HOT</span>}
+                {index >= 2 && index < 4 && <span class="trend-tag new">NEW</span>}
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </section>
 
@@ -67,14 +110,12 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
           <p>Find your favorite type of puzzle.</p>
         </div>
       </div>
-      <div class="grid">
+      <div class="categories-grid">
         {categories.map(([key, label]) => (
-          <a class="game-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : `/${key}`}>
-            <span class="tile-icon">{String(label).slice(0, 2).toUpperCase()}</span>
-            <div class="card-copy">
-              <h3 style="font-weight: 800;">{label}</h3>
-              <p>{games.filter((game) => game.category === key).length} games</p>
-            </div>
+          <a class="category-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : `/${key}`}>
+            <span class="category-icon">{String(label).slice(0, 2).toUpperCase()}</span>
+            <span class="category-name">{label}</span>
+            <span class="category-count">{games.filter((game) => game.category === key).length} games</span>
           </a>
         ))}
       </div>
@@ -88,7 +129,6 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
           <h2 style="font-weight: 800;">Player Profile</h2>
           <p>Your stats, streaks, and unlocked badges.</p>
         </div>
-        <a class="button small secondary" href="/stats">View Profile</a>
       </div>
       <StatsPanel />
     </div>
@@ -103,7 +143,41 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     const cards = recent
       .map((slug) => games.find((game) => game.slug === slug))
       .filter(Boolean)
-      .map((game) => `<a class="game-card" href="/games/${game!.slug}"><span class="tile-icon">${game!.name.slice(0, 2).toUpperCase()}</span><div class="card-copy"><h3>${game!.name}</h3><p>${game!.description}</p></div><span class="status">Play again</span></a>`)
+      .map((game) => {
+        let bannerUrl = "";
+        if (game.slug === "daily-wordle") bannerUrl = "/assets/daily word guess.png";
+        else if (game.slug === "5-letter-wordle") bannerUrl = "/assets/5 letter word guess.png";
+        else if (game.slug === "2-letter-wordle") bannerUrl = "/assets/2 letter.png";
+        else if (game.slug === "3-letter-wordle") bannerUrl = "/assets/3 letter.png";
+        else if (game.slug === "4-letter-wordle") bannerUrl = "/assets/4 letter.png";
+        else if (game.slug === "6-letter-wordle") bannerUrl = "/assets/6 letter.png";
+        else if (game.slug === "7-letter-wordle") bannerUrl = "/assets/7 letter.png";
+        else if (game.slug === "8-letter-wordle") bannerUrl = "/assets/8 letter.png";
+        else if (game.slug === "9-letter-wordle") bannerUrl = "/assets/9 letter.png";
+        else if (game.slug === "10-letter-wordle") bannerUrl = "/assets/10 letter.png";
+
+        const initials = game.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+        
+        let bannerHtml = bannerUrl 
+          ? `<img src="${bannerUrl}" alt="${game.name}" />`
+          : `<span class="tile-icon" style="box-shadow: none;">${initials}</span>`;
+          
+        const tagHtml = game.daily ? `<span class="card-tag">DAILY</span>` : (game.comingSoon ? `<span class="card-tag" style="color: #FF7800; border-color: rgba(255,120,0,0.3); background: rgba(255,120,0,0.15);">SOON</span>` : "");
+
+        return `
+          <a class="game-card" href="/games/${game.slug}">
+            <div class="card-banner" style="${!bannerUrl ? 'background: linear-gradient(135deg, #1A1C18 0%, #2A2E24 100%); display: grid; place-items: center;' : ''}">
+              ${bannerHtml}
+              ${tagHtml}
+            </div>
+            <div class="card-body">
+              <span class="game-name">${game.name}</span>
+              <span class="game-desc">${game.description}</span>
+              <div class="play-btn">▶ Play</div>
+            </div>
+          </a>
+        `;
+      })
       .join("");
     root.innerHTML = cards || `<article class="stat"><strong>No recent games yet</strong><p class="muted">Play any mode and it will appear here.</p></article>`;
   }

@@ -44,11 +44,11 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         </a>
         <div class="nav-links">
           <div class="player-stats" style="display: flex; gap: 1rem; align-items: center; margin-right: 1rem;">
-             <div class="streak" style="display: flex; align-items: center; gap: 0.3rem; font-weight: 800; color: #f59e0b;">
-               <span>🔥</span> 12
+             <div class="streak" style="display: flex; align-items: center; justify-content: center; background: rgba(255,120,0,0.12); border: 1px solid rgba(255,120,0,0.3); color: #FF7800; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
+               🔥 12 day streak
              </div>
-             <div class="xp" style="display: flex; align-items: center; gap: 0.3rem; font-weight: 800; color: var(--primary);">
-               <span>⭐</span> 450 XP
+             <div class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(190,255,0,0.1); border: 1px solid rgba(190,255,0,0.25); color: #BEFF00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
+               ⭐ 450 XP
              </div>
           </div>
           {siteNav.map((item) => (
