@@ -9,6 +9,42 @@ export interface PuzzleChallenge {
   grid?: string[][];
 }
 
+const synonymPairs = [
+  { answer: "bright", display: "Luminous" },
+  { answer: "fast", display: "Quick" },
+  { answer: "smart", display: "Intelligent" },
+  { answer: "happy", display: "Joyful" },
+  { answer: "sad", display: "Sorrowful" },
+  { answer: "big", display: "Large" },
+  { answer: "small", display: "Tiny" },
+  { answer: "rich", display: "Wealthy" },
+  { answer: "poor", display: "Destitute" },
+  { answer: "brave", display: "Courageous" },
+  { answer: "calm", display: "Peaceful" },
+  { answer: "cold", display: "Chilly" },
+  { answer: "hot", display: "Boiling" },
+  { answer: "easy", display: "Simple" },
+  { answer: "hard", display: "Difficult" }
+];
+
+const antonymPairs = [
+  { answer: "quiet", display: "Loud" },
+  { answer: "hot", display: "Cold" },
+  { answer: "fast", display: "Slow" },
+  { answer: "happy", display: "Sad" },
+  { answer: "good", display: "Bad" },
+  { answer: "light", display: "Dark" },
+  { answer: "hard", display: "Soft" },
+  { answer: "rich", display: "Poor" },
+  { answer: "wet", display: "Dry" },
+  { answer: "tall", display: "Short" },
+  { answer: "old", display: "New" },
+  { answer: "open", display: "Closed" },
+  { answer: "full", display: "Empty" },
+  { answer: "brave", display: "Cowardly" },
+  { answer: "clean", display: "Dirty" }
+];
+
 export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChallenge {
   const words = getWords(game.mode === "dailyWord" ? 5 : 6);
   const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${run}:${Date.now()}`;
@@ -40,11 +76,13 @@ export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChalleng
   }
 
   if (game.mode === "synonym") {
-    return { answer: "bright", display: "Luminous", hint: "Enter a synonym." };
+    const pair = pickSeeded(synonymPairs, seed);
+    return { answer: pair.answer, display: pair.display, hint: "Enter a synonym." };
   }
 
   if (game.mode === "antonym") {
-    return { answer: "quiet", display: "Loud", hint: "Enter an antonym." };
+    const pair = pickSeeded(antonymPairs, seed);
+    return { answer: pair.answer, display: pair.display, hint: "Enter an antonym." };
   }
 
   return {

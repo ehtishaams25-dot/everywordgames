@@ -14,10 +14,7 @@ const relatedGames = playableGames
 
 <section class="section game-section">
   <div class="container layout-split">
-    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
-      <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-bottom: 0.5rem; text-align: center;">{game.name}</h1>
-      <p style="color: var(--muted); text-align: center; max-width: 500px; font-size: 1.1rem;">{game.description}</p>
-    </div>
+
     <div class="game-stage" id="game-root" data-slug={game.slug}>
       <p class="muted" style="text-align: center;">Loading {game.name}...</p>
     </div>
