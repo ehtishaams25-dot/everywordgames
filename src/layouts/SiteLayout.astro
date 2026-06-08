@@ -72,5 +72,64 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         </div>
       </div>
     </footer>
+    <script>
+      import { loadStats, achievements } from "@/engines/playerStore";
+
+      function showPopup(ach: { name: string; description: string }) {
+        const popup = document.createElement("div");
+        popup.className = "achievement-popup";
+        popup.innerHTML = `
+          <div class="achievement-icon">🏆</div>
+          <div class="achievement-text">
+            <strong>Achievement Unlocked!</strong>
+            <span>${ach.name}</span>
+          </div>
+        `;
+        document.body.appendChild(popup);
+
+        // trigger reflow
+        void popup.offsetWidth;
+
+        setTimeout(() => popup.classList.add("show"), 100);
+        setTimeout(() => {
+          popup.classList.remove("show");
+          setTimeout(() => popup.remove(), 500);
+        }, 4000);
+      }
+
+      export function checkAndShowAchievements() {
+        if (typeof localStorage === "undefined") return;
+        const stats = loadStats();
+        const shownIds = JSON.parse(
+          localStorage.getItem("ewg:shownAchievements") || "[]",
+        );
+        let newlyShown = false;
+        let delay = 0;
+
+        for (const ach of achievements) {
+          if (ach.test(stats) && !shownIds.includes(ach.id)) {
+            shownIds.push(ach.id);
+            newlyShown = true;
+            setTimeout(() => showPopup(ach), delay);
+            delay += 1500;
+          }
+        }
+
+        if (newlyShown) {
+          localStorage.setItem(
+            "ewg:shownAchievements",
+            JSON.stringify(shownIds),
+          );
+        }
+      }
+
+      // Run on page load
+      checkAndShowAchievements();
+
+      // Listen for game completion
+      window.addEventListener("gamecompleted", () => {
+        checkAndShowAchievements();
+      });
+    </script>
   </body>
 </html>

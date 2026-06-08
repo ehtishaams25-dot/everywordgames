@@ -158,6 +158,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
     if (won || guesses.length >= (game.attempts ?? 6)) {
       done = true;
       recordGame(game.slug, won, elapsed(started));
+      window.dispatchEvent(new Event("gamecompleted"));
     }
     render();
     if (done) {
@@ -305,6 +306,7 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
     if (solved || guesses.length >= (game.attempts ?? 8)) {
       done = true;
       recordGame(game.slug, solved, elapsed(started));
+      window.dispatchEvent(new Event("gamecompleted"));
     }
     render();
     if (done) {
@@ -547,6 +549,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       if (won || attempts.length >= 5) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
+        window.dispatchEvent(new Event("gamecompleted"));
       }
       render();
       if (done) {
@@ -705,6 +708,7 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
       ) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
+        window.dispatchEvent(new Event("gamecompleted"));
       }
       render();
       if (done) {
