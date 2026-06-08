@@ -13,7 +13,7 @@ import {
   getWords,
 } from "@/engines/wordleEngine";
 import confetti from "canvas-confetti";
-import dataset from "@/data/datasets.json";
+import dataset from "@/data/categories";
 import { useGameFocus } from "./useGameFocus";
 
 type LetterState = "correct" | "present" | "absent";
@@ -563,6 +563,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         }
       }
     });
+    useGameFocus(root, ".answer-input");
   };
 
   render();
@@ -716,6 +717,7 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
         showCompletionPopup(root, won, challenge.answer.toUpperCase(), reset);
       }
     });
+    useGameFocus(root, ".letter-input");
   };
 
   render();
@@ -726,12 +728,33 @@ function renderGameHeader(
   pills: string[],
   buttonLabel: string,
 ) {
-  return `<div class="game-top">
+  let selectHtml = "";
+  if ((game.engine === "wordle" || game.engine === "multi-wordle") && game.mode !== "daily" && game.mode !== "endless" && game.mode !== "survival" && game.mode !== "hardcore") {
+    const wordleOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}-letter-wordle" ${game.slug === `${n}-letter-wordle` ? 'selected' : ''}>${n} Letter</option>`).join("");
+    const multiOptions = [
+      ["double-wordle", "Double"],
+      ["triple-wordle", "Triple"],
+      ["quad-wordle", "Quad"],
+      ["hex-wordle", "Hex"],
+      ["octo-wordle", "Octo"],
+      ["sedecordle", "Sedecordle"]
+    ].map(([slug, name]) => `<option value="${slug}" ${game.slug === slug ? 'selected' : ''}>${name}</option>`).join("");
+    
+    selectHtml = `
+      <select class="variant-select" onchange="window.location.href='/games/'+this.value" style="margin-left: auto; padding: 0.25rem 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-weight: 500; font-family: inherit; font-size: 0.875rem; cursor: pointer; height: fit-content; align-self: center;">
+        <optgroup label="Wordle">${wordleOptions}</optgroup>
+        <optgroup label="Multi">${multiOptions}</optgroup>
+      </select>
+    `;
+  }
+
+  return `<div class="game-top" style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; width: 100%;">
     <div>
       <div class="toolbar">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>
-      <h2>${escapeHtml(game.name)}</h2>
+      <h2 style="margin: 0; padding-top: 0.25rem;">${escapeHtml(game.name)}</h2>
     </div>
-    <button class="button secondary" type="button" data-restart>${buttonLabel}</button>
+    ${selectHtml}
+    <button class="button secondary" type="button" data-restart style="${selectHtml ? '' : 'margin-left: auto;'} height: fit-content; align-self: center;">${buttonLabel}</button>
   </div>`;
 }
 

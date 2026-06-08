@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: dark;
-  --bg: #111210;
+  --bg: darkgreen;
   --surface: #1A1C18;
   --surface2: #222420;
   --border: rgba(255,255,255,0.07);
@@ -174,7 +174,7 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--lime);
+  color: var(--bg);
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 12px;
@@ -185,7 +185,7 @@ input {
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background-color: var(--lime);
+  background-color: var(--bg);
   border-radius: 50%;
   animation: pulse-dot 1.8s infinite;
 }
@@ -203,16 +203,17 @@ input {
   letter-spacing: 2px;
   margin-bottom: 16px;
   text-align: left;
+  text-shadow: 2px 2px 2px var(--bg);
 }
 
 .hero-title span {
-  color: var(--lime);
+  color: var(--success);
 }
 
 .hero-subtext {
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
-  color: var(--muted);
+  color: var(--bg);
   max-width: 400px;
   margin-bottom: 24px;
   line-height: 1.5;
@@ -224,8 +225,9 @@ input {
 }
 
 .btn-lime {
-  background: var(--lime);
-  color: #111;
+  background: var(--success);
+  color: #fff;
+  box-shadow: 2px 2px 2px var(--bg);
   font-weight: 600;
   border-radius: 999px;
   padding: 10px 24px;
@@ -244,8 +246,8 @@ input {
 
 .btn-ghost {
   background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
+  color: var(--bg);
+  border: 1px solid var(--bg);
   border-radius: 999px;
   padding: 10px 24px;
   display: inline-flex;
@@ -255,8 +257,9 @@ input {
   text-decoration: none;
   transition: background 0.2s;
 }
+
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.5);
 }
 
 .hero-right {
@@ -488,8 +491,7 @@ h3 {
 }
 
 .game-card {
-  background: #1A1C18;
-  border: 0.5px solid rgba(255,255,255,0.07);
+  background: #F9FFE0;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -498,8 +500,9 @@ h3 {
   display: block;
 }
 
+
 .game-card:hover {
-  transform: translateY(-3px);
+  /* transform: translateY(-3px); */
   border-color: rgba(190,255,0,0.3);
 }
 
@@ -516,10 +519,12 @@ h3 {
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
+  padding:10px;
+  border-radius: 20px;
 }
 
 .game-card:hover .card-banner img {
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
 .card-tag {
@@ -548,7 +553,7 @@ h3 {
 .game-name {
   font-weight: 600;
   font-size: 13px;
-  color: #F0F0ED;
+  color: var(--success);
   font-family: "DM Sans", sans-serif;
   letter-spacing: 0;
 }
@@ -562,9 +567,8 @@ h3 {
 
 .play-btn {
   margin-top: 4px;
-  background: rgba(190,255,0,0.1);
-  border: 0.5px solid rgba(190,255,0,0.25);
-  color: #BEFF00;
+  background: var(--success);
+  color: white;
   border-radius: 6px;
   padding: 7px 12px;
   font-size: 12px;
@@ -797,19 +801,20 @@ h3 {
 }
 
 .key {
-  min-width: clamp(1.75rem, 6.7vw, 2.75rem);
-  min-height: clamp(2.3rem, 7vw, 3.1rem);
+  min-width: clamp(2rem, 6vw, 3.2rem);
+  min-height: clamp(3.2rem, 8vw, 4rem);
   border: 1px solid var(--line);
   border-radius: 6px;
   background: rgba(55, 65, 81, 0.9);
   color: var(--text);
   font-weight: 800;
   cursor: pointer;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
 }
 
 .key.wide {
-  min-width: clamp(3rem, 12vw, 4.6rem);
-  font-size: 0.74rem;
+  min-width: clamp(3.5rem, 10vw, 5.5rem);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
 }
 
 .key.correct {
@@ -1040,16 +1045,16 @@ h3 {
   }
 
   .key {
-    min-width: 1.3rem;
-    min-height: 2.35rem;
+    min-width: 1.8rem;
+    min-height: 3.2rem;
     border-radius: 5px;
     padding: 0;
-    font-size: 0.82rem;
+    font-size: 1.1rem;
   }
 
   .key.wide {
-    min-width: 2.7rem;
-    font-size: 0.62rem;
+    min-width: 3rem;
+    font-size: 0.9rem;
   }
 }
 

@@ -1,5 +1,5 @@
 import type { GameConfig } from "@/data/games";
-import { getWords } from "./wordleEngine";
+import { getWords, pickUniqueWord } from "./wordleEngine";
 import { pickSeeded, shuffleSeeded, todayKey } from "./random";
 
 export interface PuzzleChallenge {
@@ -48,7 +48,7 @@ const antonymPairs = [
 export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChallenge {
   const words = getWords(game.mode === "dailyWord" ? 5 : 6);
   const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${run}:${Date.now()}`;
-  const answer = pickSeeded(words, seed);
+  const answer = pickUniqueWord(words, game, run);
 
   if (game.mode === "scramble" || game.mode === "unscramble") {
     return {

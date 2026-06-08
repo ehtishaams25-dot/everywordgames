@@ -9,25 +9,31 @@ const { game } = Astro.props;
 
 let bannerUrl = "";
 if (game.slug === "hangman") {
-  bannerUrl = "/thumbnails/Hangman Thumbnail 1.png";
+  bannerUrl = "/thumbnails/Hangman new.png";
 } else if (game.slug === "guess-country") {
-  bannerUrl = "/thumbnails/Guess Country Thumbnail 2.png";
+  bannerUrl = "/thumbnails/guess country new.png";
+} else if (game.slug === "guess-flag") {
+  bannerUrl = "/thumbnails/guess flag.png";
+} else if (game.slug === "guess-capital") {
+  bannerUrl = "/thumbnails/guess capital.png";
 } else if (game.slug === "guess-movie") {
-  bannerUrl = "/thumbnails/Guess Movie Thumbnail 1.png";
+  bannerUrl = "/thumbnails/guess movie new.png";
+} else if (game.slug === "guess-tv-show") {
+  bannerUrl = "/thumbnails/guess tv show.png";
 } else if (game.slug === "guess-anime") {
-  bannerUrl = "/thumbnails/Guess Anime Thumbnail 1.png";
+  bannerUrl = "/thumbnails/anime new.png";
 } else if (game.category === "wordle" || game.category === "multi-wordle") {
-  bannerUrl = "/thumbnails/Word Guess Thumbnail .png";
+  bannerUrl = "/thumbnails/word guess new.png";
 } else if (game.slug === "daily-wordle") {
-  bannerUrl = "/thumbnails/Word Guess Thumbnail .png";
+  bannerUrl = "/thumbnails/word guess new.png";
 } else if (game.category === "geography") {
-  bannerUrl = "/thumbnails/Geography category 1.png";
+  bannerUrl = "/thumbnails/geography category.png";
 } else if (game.category === "entertainment") {
-  bannerUrl = "/thumbnails/Entertainment category 1.png";
+  bannerUrl = "/thumbnails/movie category.png";
 } else if (game.category === "brands") {
-  bannerUrl = "/thumbnails/brand category 1.png";
+  bannerUrl = ""; // No brand thumbnail provided in update, falling back to initials.
 } else if (game.category === "word-games" || game.category === "daily") {
-  bannerUrl = "/thumbnails/word category 1.png";
+  bannerUrl = "/thumbnails/word category.png";
 }
 
 const initials = game.name

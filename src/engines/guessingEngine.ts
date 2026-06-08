@@ -1,4 +1,4 @@
-import dataset from "@/data/datasets.json";
+import dataset from "@/data/categories";
 import type { GameConfig } from "@/data/games";
 import { pickSeeded, todayKey } from "./random";
 

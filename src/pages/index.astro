@@ -112,7 +112,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
       </div>
       <div class="categories-grid">
         {categories.map(([key, label]) => (
-          <a class="category-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : `/${key}`}>
+          <a class="category-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : (key === "wordle" || key === "multi-wordle") ? "/games/5-letter-wordle" : `/${key}`}>
             <span class="category-icon">{String(label).slice(0, 2).toUpperCase()}</span>
             <span class="category-name">{label}</span>
             <span class="category-count">{games.filter((game) => game.category === key).length} games</span>

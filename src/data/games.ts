@@ -1,5 +1,18 @@
-export type GameEngine = "wordle" | "multi-wordle" | "guessing" | "word-puzzle" | "coming-soon";
-export type GameCategory = "wordle" | "multi-wordle" | "geography" | "entertainment" | "brands" | "word-games" | "daily" | "future";
+export type GameEngine =
+  | "wordle"
+  | "multi-wordle"
+  | "guessing"
+  | "word-puzzle"
+  | "coming-soon";
+export type GameCategory =
+  | "wordle"
+  | "multi-wordle"
+  | "geography"
+  | "entertainment"
+  | "brands"
+  | "word-games"
+  | "daily"
+  | "future";
 export type Difficulty = "Easy" | "Medium" | "Hard" | "Expert";
 
 export interface GameConfig {
@@ -29,12 +42,17 @@ export const games: GameConfig[] = [
     description: `Solve a ${length}-letter hidden word with crisp color feedback.`,
     category: "wordle" as const,
     engine: "wordle" as const,
-    difficulty: length <= 4 ? "Easy" as const : length <= 6 ? "Medium" as const : "Hard" as const,
+    difficulty:
+      length <= 4
+        ? ("Easy" as const)
+        : length <= 6
+          ? ("Medium" as const)
+          : ("Hard" as const),
     featured: length === 5,
     trending: length === 6,
     wordLength: length,
     attempts: Math.max(5, length + 1),
-    mode: "classic"
+    mode: "classic",
   })),
   {
     slug: "daily-wordle",
@@ -43,11 +61,10 @@ export const games: GameConfig[] = [
     category: "daily",
     engine: "wordle",
     difficulty: "Medium",
-    featured: true,
     daily: true,
     wordLength: 5,
     attempts: 6,
-    mode: "daily"
+    mode: "daily",
   },
   {
     slug: "endless-wordle",
@@ -59,7 +76,7 @@ export const games: GameConfig[] = [
     trending: true,
     wordLength: 5,
     attempts: 6,
-    mode: "endless"
+    mode: "endless",
   },
   {
     slug: "survival-wordle",
@@ -71,7 +88,7 @@ export const games: GameConfig[] = [
     trending: true,
     wordLength: 5,
     attempts: 5,
-    mode: "survival"
+    mode: "survival",
   },
   {
     slug: "hardcore-wordle",
@@ -82,7 +99,7 @@ export const games: GameConfig[] = [
     difficulty: "Expert",
     wordLength: 5,
     attempts: 4,
-    mode: "hardcore"
+    mode: "hardcore",
   },
   ...[
     ["double-wordle", "Double Word Guess", 2, 7, "Easy"],
@@ -90,7 +107,7 @@ export const games: GameConfig[] = [
     ["quad-wordle", "Quad Word Guess", 4, 9, "Medium"],
     ["hex-wordle", "Hex Word Guess", 6, 10, "Hard"],
     ["octo-wordle", "Octo Word Guess", 8, 12, "Hard"],
-    ["sedecordle", "Sedecordle", 16, 21, "Expert"]
+    ["sedecordle", "Sedecordle", 16, 21, "Expert"],
   ].map(([slug, name, boardCount, attempts, difficulty]) => ({
     slug: slug as string,
     name: name as string,
@@ -98,23 +115,61 @@ export const games: GameConfig[] = [
     category: "multi-wordle" as const,
     engine: "multi-wordle" as const,
     difficulty: difficulty as Difficulty,
-    featured: boardCount === 4,
     trending: boardCount === 8,
     boardCount: boardCount as number,
     attempts: attempts as number,
     wordLength: 5,
-    mode: "multi"
+    mode: "multi",
   })),
   ...[
-    ["guess-country", "Guess Country", "Identify the country from layered geography clues.", "geography", "countries", "Medium"],
-    ["guess-flag", "Guess Flag", "Use color and region hints to name the flag.", "geography", "flags", "Medium"],
-    ["guess-capital", "Guess Capital", "Match capitals to their countries.", "geography", "capitals", "Hard"],
-    ["guess-movie", "Guess Movie", "Guess the movie from cast, year, and genre hints.", "entertainment", "movies", "Medium"],
-    ["guess-tv-show", "Guess TV Show", "Spot the series through progressive clues.", "entertainment", "tvShows", "Medium"],
-    ["guess-anime", "Guess Anime", "Name the anime from studio and story clues.", "entertainment", "anime", "Medium"],
-    ["guess-logo", "Guess Logo", "Decode brand identity from text-safe logo clues.", "brands", "brands", "Medium"],
-    ["guess-brand", "Guess Brand", "Guess the brand using category and origin hints.", "brands", "brands", "Easy"],
-    ["guess-company", "Guess Company", "Identify companies by sector and founding clues.", "brands", "brands", "Hard"]
+    [
+      "guess-country",
+      "Guess Country",
+      "Identify the country from layered geography clues.",
+      "geography",
+      "countries",
+      "Medium",
+    ],
+    [
+      "guess-flag",
+      "Guess Flag",
+      "Use color and region hints to name the flag.",
+      "geography",
+      "flags",
+      "Medium",
+    ],
+    [
+      "guess-capital",
+      "Guess Capital",
+      "Match capitals to their countries.",
+      "geography",
+      "capitals",
+      "Hard",
+    ],
+    [
+      "guess-movie",
+      "Guess Movie",
+      "Guess the movie from cast, year, and genre hints.",
+      "entertainment",
+      "movies",
+      "Medium",
+    ],
+    [
+      "guess-tv-show",
+      "Guess TV Show",
+      "Spot the series through progressive clues.",
+      "entertainment",
+      "tvShows",
+      "Medium",
+    ],
+    [
+      "guess-anime",
+      "Guess Anime",
+      "Name the anime from studio and story clues.",
+      "entertainment",
+      "anime",
+      "Medium",
+    ],
   ].map(([slug, name, description, category, dataset, difficulty]) => ({
     slug: slug as string,
     name: name as string,
@@ -125,16 +180,44 @@ export const games: GameConfig[] = [
     featured: slug === "guess-country",
     trending: slug === "guess-movie",
     dataset: dataset as string,
-    mode: slug as string
+    mode: slug as string,
   })),
   ...[
-    ["hangman", "Hangman", "Reveal the hidden word before the misses run out.", "Medium", "hangman"],
-    ["word-scramble", "Word Scramble", "Rearrange the shuffled letters into the target word.", "Easy", "scramble"],
-    ["unscramble", "Unscramble", "A faster scramble mode with score pressure.", "Easy", "unscramble"],
-    ["word-search", "Word Search", "Find the hidden word in a compact letter grid.", "Medium", "word-search"],
-    ["missing-letters", "Missing Letters", "Fill in the blanks to complete the word.", "Medium", "missing-letters"],
-    ["synonym-challenge", "Synonym Challenge", "Guess a close match for the clue word.", "Hard", "synonym"],
-    ["antonym-challenge", "Antonym Challenge", "Find the opposite of the clue word.", "Hard", "antonym"]
+    [
+      "hangman",
+      "Hangman",
+      "Reveal the hidden word before the misses run out.",
+      "Medium",
+      "hangman",
+    ],
+    [
+      "word-scramble",
+      "Word Scramble",
+      "Rearrange the shuffled letters into the target word.",
+      "Easy",
+      "scramble",
+    ],
+    [
+      "missing-letters",
+      "Missing Letters",
+      "Fill in the blanks to complete the word.",
+      "Medium",
+      "missing-letters",
+    ],
+    [
+      "synonym-challenge",
+      "Synonym Challenge",
+      "Guess a close match for the clue word.",
+      "Hard",
+      "synonym",
+    ],
+    [
+      "antonym-challenge",
+      "Antonym Challenge",
+      "Find the opposite of the clue word.",
+      "Hard",
+      "antonym",
+    ],
   ].map(([slug, name, description, difficulty, mode]) => ({
     slug: slug as string,
     name: name as string,
@@ -143,24 +226,52 @@ export const games: GameConfig[] = [
     engine: "word-puzzle" as const,
     difficulty: difficulty as Difficulty,
     featured: slug === "hangman",
-    trending: slug === "word-search",
-    mode: mode as string
+    trending: false,
+    mode: mode as string,
   })),
   ...[
-    ["daily-word", "Daily Word", "A date-seeded word puzzle challenge.", "dailyWord"],
-    ["daily-country", "Daily Country", "A daily geography clue challenge.", "dailyCountry"],
-    ["daily-flag", "Daily Flag", "A same-for-everyone flag challenge.", "dailyFlag"],
-    ["daily-movie", "Daily Movie", "A daily movie clue challenge.", "dailyMovie"]
+    [
+      "daily-word",
+      "Daily Word",
+      "A date-seeded word puzzle challenge.",
+      "dailyWord",
+    ],
+    [
+      "daily-country",
+      "Daily Country",
+      "A daily geography clue challenge.",
+      "dailyCountry",
+    ],
+    [
+      "daily-flag",
+      "Daily Flag",
+      "A same-for-everyone flag challenge.",
+      "dailyFlag",
+    ],
+    [
+      "daily-movie",
+      "Daily Movie",
+      "A daily movie clue challenge.",
+      "dailyMovie",
+    ],
   ].map(([slug, name, description, mode]) => ({
     slug: slug as string,
     name: name as string,
     description: description as string,
     category: "daily" as const,
-    engine: mode === "dailyWord" ? "word-puzzle" as const : "guessing" as const,
+    engine:
+      mode === "dailyWord" ? ("word-puzzle" as const) : ("guessing" as const),
     difficulty: "Medium" as const,
     daily: true,
-    dataset: mode === "dailyMovie" ? "movies" : mode === "dailyCountry" ? "countries" : mode === "dailyFlag" ? "flags" : undefined,
-    mode: mode as string
+    dataset:
+      mode === "dailyMovie"
+        ? "movies"
+        : mode === "dailyCountry"
+          ? "countries"
+          : mode === "dailyFlag"
+            ? "flags"
+            : undefined,
+    mode: mode as string,
   })),
   ...[
     "Crossword",
@@ -176,7 +287,7 @@ export const games: GameConfig[] = [
     "Guess Historical Figure",
     "Guess Scientist",
     "Guess Invention",
-    "Guess Celebrity"
+    "Guess Celebrity",
   ].map((name) => ({
     slug: name.toLowerCase().replaceAll(" ", "-"),
     name,
@@ -184,8 +295,8 @@ export const games: GameConfig[] = [
     category: "future" as const,
     engine: "coming-soon" as const,
     difficulty: "Medium" as const,
-    comingSoon: true
-  }))
+    comingSoon: true,
+  })),
 ];
 
 export const playableGames = games.filter((game) => !game.comingSoon);
@@ -199,24 +310,23 @@ export const categoryLabels: Record<GameCategory, string> = {
   brands: "Brands",
   "word-games": "Word Games",
   daily: "Daily Challenges",
-  future: "Coming Soon"
+  future: "Coming Soon",
 };
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/wordle", label: "Word Guess" },
-  { href: "/multi-wordle", label: "Multi" },
+  { href: "/games/5-letter-wordle", label: "Wordle" },
   { href: "/guess", label: "Guess" },
   { href: "/word-games", label: "Puzzles" },
   { href: "/stats", label: "Stats" },
-  { href: "/achievements", label: "Awards" }
+  { href: "/achievements", label: "Awards" },
 ];
 
 export const footerNav = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" }
+  { href: "/terms", label: "Terms" },
 ];
 
 export function getGame(slug: string) {
