@@ -8,26 +8,26 @@ interface Props {
 const { game } = Astro.props;
 
 let bannerUrl = "";
-if (game.slug === "daily-wordle") {
-  bannerUrl = "/assets/daily word guess.png";
-} else if (game.slug === "5-letter-wordle") {
-  bannerUrl = "/assets/5 letter word guess.png";
-} else if (game.slug === "2-letter-wordle") {
-  bannerUrl = "/assets/2 letter.png";
-} else if (game.slug === "3-letter-wordle") {
-  bannerUrl = "/assets/3 letter.png";
-} else if (game.slug === "4-letter-wordle") {
-  bannerUrl = "/assets/4 letter.png";
-} else if (game.slug === "6-letter-wordle") {
-  bannerUrl = "/assets/6 letter.png";
-} else if (game.slug === "7-letter-wordle") {
-  bannerUrl = "/assets/7 letter.png";
-} else if (game.slug === "8-letter-wordle") {
-  bannerUrl = "/assets/8 letter.png";
-} else if (game.slug === "9-letter-wordle") {
-  bannerUrl = "/assets/9 letter.png";
-} else if (game.slug === "10-letter-wordle") {
-  bannerUrl = "/assets/10 letter.png";
+if (game.slug === "hangman") {
+  bannerUrl = "/thumbnails/Hangman Thumbnail 1.png";
+} else if (game.slug === "guess-country") {
+  bannerUrl = "/thumbnails/Guess Country Thumbnail 2.png";
+} else if (game.slug === "guess-movie") {
+  bannerUrl = "/thumbnails/Guess Movie Thumbnail 1.png";
+} else if (game.slug === "guess-anime") {
+  bannerUrl = "/thumbnails/Guess Anime Thumbnail 1.png";
+} else if (game.category === "wordle" || game.category === "multi-wordle") {
+  bannerUrl = "/thumbnails/Word Guess Thumbnail .png";
+} else if (game.slug === "daily-wordle") {
+  bannerUrl = "/thumbnails/Word Guess Thumbnail .png";
+} else if (game.category === "geography") {
+  bannerUrl = "/thumbnails/Geography category 1.png";
+} else if (game.category === "entertainment") {
+  bannerUrl = "/thumbnails/Entertainment category 1.png";
+} else if (game.category === "brands") {
+  bannerUrl = "/thumbnails/brand category 1.png";
+} else if (game.category === "word-games" || game.category === "daily") {
+  bannerUrl = "/thumbnails/word category 1.png";
 }
 
 const initials = game.name

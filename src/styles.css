@@ -148,8 +148,7 @@ input {
   min-height: 220px;
   background-color: var(--surface);
   background-image: 
-    linear-gradient(to right, rgba(17,18,16,0.92) 0%, rgba(17,18,16,0.7) 50%, rgba(17,18,16,0.2) 100%),
-    url("/assets/daily word guess.png");
+    url("/thumbnails/banner 1.jpg");
   background-size: cover;
   background-position: center;
   border-radius: 16px;
@@ -477,13 +476,14 @@ h3 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
+  gap: 16px;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 300px));
   }
 }
 
@@ -506,7 +506,7 @@ h3 {
 .card-banner {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 1/1;
   overflow: hidden;
 }
 
