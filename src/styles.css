@@ -66,9 +66,16 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  width: min(1600px, calc(100% - 1rem));
+  width: calc(100% - 1rem);
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0.5rem 0;
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    width: 60%;
+  }
 }
 
 .brand {
@@ -138,13 +145,20 @@ input {
 }
 
 .container {
-  width: min(1600px, calc(100% - 1rem));
+  width: calc(100% - 1rem);
+  max-width: 1600px;
   margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 60%;
+  }
 }
 
 .hero-banner {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr;
   min-height: 220px;
   background-color: var(--surface);
   background-image: 

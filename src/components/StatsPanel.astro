@@ -4,7 +4,7 @@
   <div class="profile-main">
     <div class="profile-header">
       <h3 class="profile-name">Player 1</h3>
-      <span class="profile-level">Level 4</span>
+      <span class="profile-level" id="profile-level-badge">Level 1</span>
     </div>
     
     <div class="xp-track">
@@ -180,4 +180,18 @@
     const node = document.querySelector(`[data-stat="${key}"]`);
     if (node) node.textContent = String(value);
   });
+
+  const xp = (stats.wins * 50) + (stats.played * 10);
+  const level = Math.floor(xp / 500) + 1;
+  const levelBadge = document.getElementById("profile-level-badge");
+  if (levelBadge) {
+    levelBadge.textContent = `Level ${level}`;
+  }
+  
+  // Update XP fill track (assuming max 500 XP per level, so xp % 500 is progress)
+  const xpFill = document.querySelector(".xp-fill") as HTMLElement;
+  if (xpFill) {
+    const progress = ((xp % 500) / 500) * 100;
+    xpFill.style.width = `${progress}%`;
+  }
 </script>

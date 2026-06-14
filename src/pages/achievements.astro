@@ -13,6 +13,101 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
   </section>
 </SiteLayout>
 
+<style is:global>
+  .achievement-list {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    margin-top: 2rem;
+  }
+  
+  .achievement {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.2rem;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    filter: grayscale(1);
+  }
+
+  .achievement.unlocked {
+    opacity: 1;
+    filter: grayscale(0);
+    background: linear-gradient(145deg, rgba(190, 255, 0, 0.06) 0%, var(--surface) 100%);
+    border: 1px solid rgba(190, 255, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(190, 255, 0, 0.04);
+  }
+  
+  .achievement-icon {
+    font-size: 1.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--muted);
+  }
+  
+  .achievement-main {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex: 1;
+  }
+
+  .achievement.unlocked .achievement-icon {
+    background: rgba(190, 255, 0, 0.15);
+    color: var(--lime);
+  }
+  
+  .achievement-content {
+    flex: 1;
+  }
+  
+  .achievement-content strong {
+    display: block;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .achievement.unlocked .achievement-content strong {
+    color: var(--lime);
+  }
+  
+  .achievement-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .achievement-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--muted);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .achievement.unlocked .achievement-badge {
+    background: var(--lime);
+    color: #111;
+  }
+</style>
+
 <script>
   import { achievements, loadStats } from "@/engines/playerStore";
   const stats = loadStats();
@@ -21,7 +116,20 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
     root.innerHTML = achievements
       .map((achievement) => {
         const unlocked = achievement.test(stats);
-        return `<article class="achievement ${unlocked ? "unlocked" : ""}"><div><strong>${achievement.name}</strong><p class="muted">${achievement.description}</p></div><span class="status ${unlocked ? "" : "soon"}">${unlocked ? "Unlocked" : "Locked"}</span></article>`;
+        return `
+          <article class="achievement ${unlocked ? "unlocked" : ""}">
+            <div class="achievement-main">
+              <div class="achievement-icon">
+                ${unlocked ? "🏆" : "🔒"}
+              </div>
+              <div class="achievement-content">
+                <strong>${achievement.name}</strong>
+                <p class="muted">${achievement.description}</p>
+              </div>
+            </div>
+            <span class="achievement-badge">${unlocked ? "Unlocked" : "Locked"}</span>
+          </article>
+        `;
       })
       .join("");
   }

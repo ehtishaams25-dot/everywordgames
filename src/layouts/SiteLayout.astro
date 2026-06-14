@@ -45,11 +45,11 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         </a>
         <div class="nav-links">
           <div class="player-stats" style="display: flex; gap: 1rem; align-items: center; margin-right: 1rem;">
-             <div class="streak" style="display: flex; align-items: center; justify-content: center; background: rgba(255,120,0,0.12); border: 1px solid rgba(255,120,0,0.3); color: #FF7800; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
-               🔥 12 day streak
+             <div id="nav-streak" class="streak" style="display: flex; align-items: center; justify-content: center; background: rgba(255,120,0,0.12); border: 1px solid rgba(255,120,0,0.3); color: #FF7800; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
+               🔥 0 day streak
              </div>
-             <div class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(190,255,0,0.1); border: 1px solid rgba(190,255,0,0.25); color: #BEFF00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
-               ⭐ 450 XP
+             <div id="nav-xp" class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(190,255,0,0.1); border: 1px solid rgba(190,255,0,0.25); color: #BEFF00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
+               ⭐ 0 XP
              </div>
           </div>
           {siteNav.map((item) => (
@@ -123,12 +123,29 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         }
       }
 
+      export function updateNavStats() {
+        if (typeof localStorage === "undefined") return;
+        const stats = loadStats();
+        const streakEl = document.getElementById("nav-streak");
+        const xpEl = document.getElementById("nav-xp");
+        
+        if (streakEl) {
+          streakEl.innerText = `🔥 ${stats.currentStreak} day streak`;
+        }
+        if (xpEl) {
+          const xp = (stats.wins * 50) + (stats.played * 10);
+          xpEl.innerText = `⭐ ${xp} XP`;
+        }
+      }
+
       // Run on page load
       checkAndShowAchievements();
+      updateNavStats();
 
       // Listen for game completion
       window.addEventListener("gamecompleted", () => {
         checkAndShowAchievements();
+        updateNavStats();
       });
     </script>
   </body>
