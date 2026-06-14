@@ -21,6 +21,10 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -34,7 +38,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#0F172A" />
+    <meta name="theme-color" content="#FDFBF7" />
   </head>
   <body>
     <header class="site-header">
@@ -48,13 +52,17 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
              <div id="nav-streak" class="streak" style="display: flex; align-items: center; justify-content: center; background: rgba(255,120,0,0.12); border: 1px solid rgba(255,120,0,0.3); color: #FF7800; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
                🔥 0 win streak
              </div>
-             <div id="nav-xp" class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(190,255,0,0.1); border: 1px solid rgba(190,255,0,0.25); color: #BEFF00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
+             <div id="nav-xp" class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(99,158,66,0.1); border: 1px solid rgba(99,158,66,0.3); color: #639E42; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
                ⭐ 0 XP
              </div>
           </div>
           {siteNav.map((item) => (
             <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
           ))}
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-moon">🌙</span>
+            <span class="icon-sun">☀️</span>
+          </button>
         </div>
       </nav>
     </header>
@@ -147,6 +155,17 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         checkAndShowAchievements();
         updateNavStats();
       });
+
+      // Theme Toggle Logic
+      const toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          const newTheme = isDark ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      }
     </script>
   </body>
 </html>

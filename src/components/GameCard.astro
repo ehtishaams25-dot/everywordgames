@@ -55,7 +55,7 @@ const linkHref = `/games/${game.slug}`;
 ---
 
 <a class="game-card" href={linkHref}>
-  <div class="card-banner" style={!bannerUrl ? "background: linear-gradient(135deg, #1A1C18 0%, #2A2E24 100%); display: grid; place-items: center; position: relative;" : "position: relative;"}>
+  <div class="card-banner" style={!bannerUrl ? "background: linear-gradient(135deg, #F4EFE6 0%, #EBE5DC 100%); display: grid; place-items: center; position: relative;" : "position: relative;"}>
     {bannerUrl ? (
       <img src={bannerUrl} alt={game.name} />
     ) : (
@@ -63,8 +63,8 @@ const linkHref = `/games/${game.slug}`;
     )}
     {game.daily && <span class="card-tag">DAILY</span>}
     {game.comingSoon && (
-      <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
-        <span style="background: rgba(255,120,0,0.9); color: white; padding: 0.5rem 1.5rem; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid white; border-radius: 4px;">Coming Soon</span>
+      <div style="position: absolute; inset: 0; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
+        <span style="background: rgba(255,120,0,0.9); color: white; padding: 0.5rem 1.5rem; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid white; border-radius: 4px;">Coming Soon</span>
       </div>
     )}
   </div>

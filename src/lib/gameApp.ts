@@ -544,7 +544,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
             <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0px; pointer-events: none;">
               ${Array.from({ length: 6 }, (_, i) => {
         const isRevealed = revealOrder.indexOf(i) < attempts.length + 1;
-        return `<div style="background: var(--surface); opacity: ${isRevealed ? 0 : 1}; transition: opacity 0.5s;"></div>`;
+        return `<div style="background: var(--surface2); opacity: ${isRevealed ? 0 : 1}; transition: opacity 0.5s;"></div>`;
       }).join('')}
             </div>
           </div>
@@ -559,7 +559,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
           <p class="eyebrow" style="margin-bottom: 1rem;">Guess the Country from the Map</p>
           ${mapSvgUrl ? `
           <div class="map-container" style="position: relative; display: inline-block; width: 100%; max-width: 300px; aspect-ratio: 1; padding: 1rem; user-select: none; -webkit-user-select: none; pointer-events: none;">
-            <img src="${mapSvgUrl}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; filter: invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.2));" draggable="false" />
+            <img src="${mapSvgUrl}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));" draggable="false" />
           </div>
           ` : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading map...</div>`}
         </div>
