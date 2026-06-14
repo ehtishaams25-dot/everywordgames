@@ -1,6 +1,6 @@
 ---
 import "../styles.css";
-import { footerNav, siteNav } from "@/data/games";
+import { footerNav, siteNav, games } from "@/data/games";
 
 interface Props {
   title?: string;
@@ -40,6 +40,19 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <meta name="twitter:description" content={description} />
     <meta name="theme-color" content="#FDFBF7" />
 
+    <style is:global>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXT09C57E5" is:inline></script>
     <script is:inline>
@@ -88,6 +101,16 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         <div class="footer-links" aria-label="Footer">
           {footerNav.map((item) => <a class="pill" href={item.href}>{item.label}</a>)}
         </div>
+      </div>
+      <div class="sr-only">
+        <h2>All Games Sitemap</h2>
+        <ul>
+          {siteNav.map(item => <li><a href={item.href}>{item.label}</a></li>)}
+          {footerNav.map(item => <li><a href={item.href}>{item.label}</a></li>)}
+          {games.filter(g => !g.comingSoon).map(game => (
+            <li><a href={`/games/${game.slug}/`}>{game.name}</a></li>
+          ))}
+        </ul>
       </div>
     </footer>
     <script>

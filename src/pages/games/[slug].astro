@@ -12,6 +12,8 @@ export function getStaticPaths() {
 const { game } = Astro.props;
 ---
 
-<SiteLayout title={`${game.name} - EveryWordGames`} description={game.description} path={`/games/${game.slug}`}>
+<SiteLayout title={`${game.name} - EveryWordGames`} description={game.description} path={`/games/${game.slug}/`}>
+  <h1 class="sr-only">{game.name}</h1>
+  <p class="sr-only game-seo-description">{game.description}</p>
   <GamePlayer game={game} />
 </SiteLayout>

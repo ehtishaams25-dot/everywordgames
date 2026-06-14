@@ -5,7 +5,7 @@ export function GET() {
   const paths = [
     ...siteNav.map((item) => item.href),
     ...footerNav.map((item) => item.href),
-    ...games.filter((game) => !game.comingSoon).map((game) => `/games/${game.slug}`)
+    ...games.filter((game) => !game.comingSoon).map((game) => `/games/${game.slug}/`)
   ];
   const urls = Array.from(new Set(paths)).map((path) => `
   <url>

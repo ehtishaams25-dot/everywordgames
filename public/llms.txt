@@ -1,0 +1,16 @@
+# EveryWordGames
+
+EveryWordGames is the ultimate hub for free online word games. We offer a variety of daily and endless word puzzles.
+
+## Games Overview
+
+- **Word Guess Variants**: 2 to 10 letter Word Guess, Endless mode, Survival mode, and Hardcore mode.
+- **Multi-Word Guess**: Double, Triple, Quad, Hex, and Sedecordle (up to 16 words at once).
+- **Geography & Entertainment Guesser**: Guess countries, flags, movies, TV shows, and anime based on layered clues.
+- **Word Puzzles**: Hangman, Word Scramble, Missing Letters, Synonym Challenge, and Antonym Challenge.
+- **Daily Challenges**: Daily seeded versions of Word Guess, Country, Flag, and Movie games.
+
+## Features
+- Player Stats and XP tracking.
+- Achievements and Win Streaks.
+- Light and Dark modes.

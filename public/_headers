@@ -1,2 +1,5 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
 https://everywordgames.pages.dev/*
-    X-Robots-Tag: noindex
+  X-Robots-Tag: noindex

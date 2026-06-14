@@ -305,18 +305,18 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/games/5-letter-word-guess", label: "Word Guess" },
-  { href: "/guess", label: "Guess" },
-  { href: "/word-games", label: "Puzzles" },
-  { href: "/stats", label: "Stats" },
-  { href: "/achievements", label: "Awards" },
+  { href: "/games/5-letter-word-guess/", label: "Word Guess" },
+  { href: "/guess/", label: "Guess" },
+  { href: "/word-games/", label: "Puzzles" },
+  { href: "/stats/", label: "Stats" },
+  { href: "/achievements/", label: "Awards" },
 ];
 
 export const footerNav = [
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" },
+  { href: "/about/", label: "About" },
+  { href: "/contact/", label: "Contact" },
+  { href: "/privacy/", label: "Privacy" },
+  { href: "/terms/", label: "Terms" },
 ];
 
 export function getGame(slug: string) {
