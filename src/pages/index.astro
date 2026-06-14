@@ -242,7 +242,7 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
         ` : "");
 
         return `
-          <a class="game-card" href="/games/${game.slug}">
+          <a class="game-card" href="/games/${game.slug}/">
             <div class="card-banner" style="${!bannerUrl ? 'background: var(--surface); display: grid; place-items: center;' : ''}">
               ${bannerHtml}
               ${tagHtml}
