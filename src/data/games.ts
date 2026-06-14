@@ -93,7 +93,7 @@ export const games: GameConfig[] = [
   {
     slug: "hardcore-wordle",
     name: "Hardcore Word Guess",
-    description: "A sharper Wordle with fewer attempts and strict pacing.",
+    description: "A sharper Word Guess with fewer attempts and strict pacing.",
     category: "wordle",
     engine: "wordle",
     difficulty: "Expert",
@@ -316,7 +316,7 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/games/5-letter-wordle", label: "Wordle" },
+  { href: "/games/5-letter-wordle", label: "Word Guess" },
   { href: "/guess", label: "Guess" },
   { href: "/word-games", label: "Puzzles" },
   { href: "/stats", label: "Stats" },

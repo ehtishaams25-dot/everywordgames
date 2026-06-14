@@ -301,11 +301,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
     root.innerHTML = `
       ${renderGameHeader(
       game,
-      [
-        `${game.wordLength} letters`,
-        `${game.attempts} attempts`,
-        game.mode ?? "classic",
-      ],
+      [],
       done ? "Play again" : "New word",
     )}
       <div class="board" style="margin-bottom: 1.5rem;">${rows}</div>
@@ -932,7 +928,7 @@ function renderGameHeader(
 
     selectHtml = `
       <select class="variant-select" onchange="window.location.href='/games/'+this.value" style="margin-left: auto; padding: 0.25rem 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-weight: 500; font-family: inherit; font-size: 0.875rem; cursor: pointer; height: fit-content; align-self: center;">
-        <optgroup label="Wordle">${wordleOptions}</optgroup>
+        <optgroup label="Word Guess">${wordleOptions}</optgroup>
         <optgroup label="Multi">${multiOptions}</optgroup>
       </select>
     `;

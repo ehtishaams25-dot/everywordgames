@@ -60,25 +60,6 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section band">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Categories</h2>
-          <p>Find your favorite type of puzzle.</p>
-        </div>
-      </div>
-      <div class="categories-grid">
-        {categories.map(([key, label]) => (
-          <a class="category-card" href={key === "geography" || key === "entertainment" || key === "brands" ? "/guess" : (key === "wordle" || key === "multi-wordle") ? "/games/5-letter-wordle" : `/${key}`}>
-            <span class="category-icon">{String(label).slice(0, 2).toUpperCase()}</span>
-            <span class="category-name">{label}</span>
-            <span class="category-count">{games.filter((game) => game.category === key).length} games</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <section class="section">
     <div class="container">
@@ -127,11 +108,15 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
           ? `<img src="${bannerUrl}" alt="${game.name}" />`
           : `<span class="tile-icon" style="box-shadow: none;">${initials}</span>`;
           
-        const tagHtml = game.daily ? `<span class="card-tag">DAILY</span>` : (game.comingSoon ? `<span class="card-tag" style="color: #FF7800; border-color: rgba(255,120,0,0.3); background: rgba(255,120,0,0.15);">SOON</span>` : "");
+        const tagHtml = game.daily ? `<span class="card-tag">DAILY</span>` : (game.comingSoon ? `
+          <div style="position: absolute; inset: 0; background: var(--header-bg); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
+            <span style="background: rgba(255,120,0,0.9); color: white; padding: 0.5rem 1.5rem; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid white; border-radius: 4px;">Coming Soon</span>
+          </div>
+        ` : "");
 
         return `
           <a class="game-card" href="/games/${game.slug}">
-            <div class="card-banner" style="${!bannerUrl ? 'background: linear-gradient(135deg, #F4EFE6 0%, #EBE5DC 100%); display: grid; place-items: center;' : ''}">
+            <div class="card-banner" style="${!bannerUrl ? 'background: var(--surface); display: grid; place-items: center;' : ''}">
               ${bannerHtml}
               ${tagHtml}
             </div>

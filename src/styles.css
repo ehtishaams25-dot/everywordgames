@@ -10,7 +10,7 @@
   --muted: #7A7571;
   --lime: #FF7A00;
   --lime-dim: #E86A00;
-  
+
   /* Compatibility mapping */
   --panel: var(--surface);
   --panel-2: var(--surface2);
@@ -18,10 +18,12 @@
   --primary: var(--lime);
   --secondary: var(--lime-dim);
   --accent: var(--lime);
-  
+
   --success: #639E42;
   --danger: #da373c;
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --header-bg: rgba(255, 255, 255, 0.84);
+  --key-bg: #EBE5DC;
   --radius: 16px;
   font-family: "DM Sans", sans-serif;
 }
@@ -38,6 +40,8 @@
   --lime-dim: #9ACC00;
   --success: #22C55E;
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --header-bg: rgba(26, 28, 24, 0.84);
+  --key-bg: #444A3C;
 }
 
 * {
@@ -71,7 +75,7 @@ input {
   top: 0;
   z-index: 20;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.84);
+  background: var(--header-bg);
   backdrop-filter: blur(18px);
 }
 
@@ -175,7 +179,7 @@ input {
   grid-template-columns: 1fr;
   min-height: 220px;
   background-color: var(--surface);
-  background-image: 
+  background-image:
     url("/thumbnails/banner 1.jpg");
   background-size: cover;
   background-position: center;
@@ -219,9 +223,20 @@ input {
 }
 
 @keyframes pulse-dot {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .hero-title {
@@ -231,7 +246,7 @@ input {
   letter-spacing: 2px;
   margin-bottom: 16px;
   text-align: left;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .hero-title span {
@@ -255,7 +270,7 @@ input {
 .btn-lime {
   background: var(--success);
   color: #fff;
-  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   font-weight: 600;
   border-radius: 999px;
   padding: 10px 24px;
@@ -268,6 +283,7 @@ input {
   text-decoration: none;
   transition: opacity 0.2s;
 }
+
 .btn-lime:hover {
   opacity: 0.9;
 }
@@ -287,11 +303,11 @@ input {
 }
 
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .hero-right {
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   border-left: 1px solid var(--border);
   padding: 28px 32px;
   display: flex;
@@ -339,7 +355,7 @@ input {
 }
 
 .xp-track {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   height: 6px;
   border-radius: 3px;
   width: 100%;
@@ -355,7 +371,9 @@ input {
 }
 
 @keyframes fillIn {
-  to { width: 45%; }
+  to {
+    width: 45%;
+  }
 }
 
 .eyebrow {
@@ -474,14 +492,15 @@ h3 {
 }
 
 .button.secondary {
-  background: var(--panel-2);
+  background: var(--surface);
   color: var(--text);
-  box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 0 var(--border);
 }
 
 .button.secondary:hover {
-  background: #EBE5DC;
-  box-shadow: 0 6px 0 rgba(0,0,0,0.05);
+  background: var(--surface2);
+  box-shadow: 0 6px 0 var(--border);
 }
 
 .section {
@@ -519,21 +538,21 @@ h3 {
 }
 
 .game-card {
-  background: var(--surface2);
+  background: var(--surface);
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   text-decoration: none;
   display: block;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border);
 }
 
 
 .game-card:hover {
   /* transform: translateY(-3px); */
-  border-color: rgba(190,255,0,0.3);
+  border-color: rgba(190, 255, 0, 0.3);
 }
 
 .card-banner {
@@ -549,7 +568,7 @@ h3 {
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
-  padding:10px;
+  padding: 10px;
   border-radius: 20px;
 }
 
@@ -561,8 +580,8 @@ h3 {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(190,255,0,0.15);
-  border: 0.5px solid rgba(190,255,0,0.35);
+  background: rgba(190, 255, 0, 0.15);
+  border: 0.5px solid rgba(190, 255, 0, 0.35);
   color: #BEFF00;
   font-size: 10px;
   font-weight: 600;
@@ -608,7 +627,7 @@ h3 {
 }
 
 .play-btn:hover {
-  background: rgba(190,255,0,0.2);
+  background: rgba(190, 255, 0, 0.2);
 }
 
 .game-card-top {
@@ -768,29 +787,68 @@ h3 {
 .cell.pop {
   animation: pop 0.1s ease-in-out;
 }
+
 @keyframes pop {
-  0% { transform: scale(1); border-color: rgba(148, 163, 184, 0.4); }
-  50% { transform: scale(1.1); border-color: var(--text); }
-  100% { transform: scale(1); border-color: rgba(148, 163, 184, 0.4); }
+  0% {
+    transform: scale(1);
+    border-color: rgba(148, 163, 184, 0.4);
+  }
+
+  50% {
+    transform: scale(1.1);
+    border-color: var(--text);
+  }
+
+  100% {
+    transform: scale(1);
+    border-color: rgba(148, 163, 184, 0.4);
+  }
 }
 
 .cell.flip {
   animation: flip 0.5s ease-in-out forwards;
 }
+
 @keyframes flip {
-  0% { transform: rotateX(0); }
-  50% { transform: rotateX(90deg); }
-  100% { transform: rotateX(0); }
+  0% {
+    transform: rotateX(0);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0);
+  }
 }
 
 .shake {
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
 }
+
 @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 .guess-form {
@@ -835,7 +893,7 @@ h3 {
   min-height: clamp(3.2rem, 8vw, 4rem);
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #EBE5DC;
+  background: var(--key-bg);
   color: var(--text);
   font-weight: 800;
   cursor: pointer;
@@ -945,6 +1003,7 @@ h3 {
     opacity: 0;
     background: rgba(16, 185, 129, 0.2);
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -1283,10 +1342,11 @@ h3 {
     transform: scale(0.8);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
-}
+  }
 }
 
 .achievement-popup {
@@ -1294,7 +1354,7 @@ h3 {
   top: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(-150%);
-  background: var(--surface2);
+  background: var(--surface);
   border: 1px solid var(--primary);
   border-radius: var(--radius);
   padding: 12px 20px;
