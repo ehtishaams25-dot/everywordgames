@@ -1,0 +1,58 @@
+---
+import GameCard from "./GameCard.astro";
+import type { GameConfig } from "@/data/games";
+
+interface Props {
+  games: GameConfig[];
+}
+---
+
+<div class="slider">
+  {Astro.props.games.map((game) => <div class="slide"><GameCard game={game} /></div>)}
+</div>
+
+<style>
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  
+  .slider::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .slider::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .slider::-webkit-scrollbar-thumb {
+    background-color: var(--line);
+    border-radius: 4px;
+  }
+  
+  .slide {
+    flex: 0 0 85%;
+  }
+  
+  @media (min-width: 640px) {
+    .slide {
+      flex: 0 0 calc(50% - 6px);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .slide {
+      flex: 0 0 calc(33.333% - 8px);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .slide {
+      flex: 0 0 calc(25% - 9px);
+    }
+  }
+</style>

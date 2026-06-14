@@ -54,18 +54,7 @@ export const games: GameConfig[] = [
     attempts: Math.max(5, length + 1),
     mode: "classic",
   })),
-  {
-    slug: "daily-wordle",
-    name: "Daily Word Guess",
-    description: "One deterministic daily word for everyone.",
-    category: "daily",
-    engine: "wordle",
-    difficulty: "Medium",
-    daily: true,
-    wordLength: 5,
-    attempts: 6,
-    mode: "daily",
-  },
+
   {
     slug: "endless-wordle",
     name: "Endless Word Guess",

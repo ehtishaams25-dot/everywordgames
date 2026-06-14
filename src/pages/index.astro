@@ -1,40 +1,18 @@
 ---
 import GameGrid from "@/components/GameGrid.astro";
+import GameSlider from "@/components/GameSlider.astro";
 import StatsPanel from "@/components/StatsPanel.astro";
 import SiteLayout from "@/layouts/SiteLayout.astro";
-import { categoryLabels, comingSoonGames, games, playableGames } from "@/data/games";
+import { games } from "@/data/games";
 
 const featured = games.filter((game) => game.featured).slice(0, 8);
-
-const categories = Object.entries(categoryLabels).filter(([key]) => key !== "future" && key !== "daily");
+const guessingGames = games.filter((game) => ["geography", "entertainment", "brands"].includes(game.category) && !game.comingSoon);
+const puzzleGames = games.filter((game) => ["word-games"].includes(game.category) && !game.comingSoon);
+const comingSoonGames = games.filter((game) => game.comingSoon);
 ---
 
 <SiteLayout path="/">
-
-
   <section class="section" style="padding-top: 2rem;">
-    <div class="container">
-      <div class="hero-banner">
-        <div class="hero-left">
-          <div class="hero-badge">
-            <span class="pulse-dot"></span>
-            TODAY'S CHALLENGE
-          </div>
-          <h1 class="hero-title">
-            DAILY<br /><span>WORD</span><br />GUESS
-          </h1>
-          <p class="hero-subtext">Solve today's puzzle to keep your streak alive — earn 50 XP and a special badge.</p>
-          <div class="hero-actions">
-            <a href="/wordle" class="btn-lime">▶ Play Now</a>
-            <button class="btn-ghost">How to play</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
     <div class="container">
       <div class="section-header">
         <div>
@@ -45,8 +23,6 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
       <GameGrid games={featured} />
     </div>
   </section>
-
-
 
   <section class="section">
     <div class="container">
@@ -60,6 +36,41 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 style="font-weight: 800;">Guessing Games</h2>
+          <p>Country, flag, capital, movie, TV, anime guessing modes.</p>
+        </div>
+      </div>
+      {guessingGames.length > 4 ? <GameSlider games={guessingGames} /> : <GameGrid games={guessingGames} />}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 style="font-weight: 800;">Word Puzzles</h2>
+          <p>Hangman, scrambles, missing letters, synonym challenges.</p>
+        </div>
+      </div>
+      {puzzleGames.length > 4 ? <GameSlider games={puzzleGames} /> : <GameGrid games={puzzleGames} />}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 style="font-weight: 800;">Coming Soon</h2>
+          <p>Exciting new modes currently in development.</p>
+        </div>
+      </div>
+      {comingSoonGames.length > 4 ? <GameSlider games={comingSoonGames} /> : <GameGrid games={comingSoonGames} />}
+    </div>
+  </section>
 
   <section class="section">
     <div class="container">
@@ -96,7 +107,6 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
         else if (game.slug === "synonym-challenge") bannerUrl = "/thumbnails/synonym.png";
         else if (game.slug === "word-scramble") bannerUrl = "/thumbnails/word scramble.png";
         else if (game.category === "wordle" || game.category === "multi-wordle") bannerUrl = "/thumbnails/word guess new.png";
-        else if (game.slug === "daily-wordle") bannerUrl = "/thumbnails/word guess new.png";
         else if (game.category === "geography") bannerUrl = "/thumbnails/geography category.png";
         else if (game.category === "entertainment") bannerUrl = "/thumbnails/movie category.png";
         else if (game.category === "brands") bannerUrl = "";
