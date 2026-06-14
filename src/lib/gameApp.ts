@@ -18,6 +18,32 @@ import { useGameFocus } from "./useGameFocus";
 
 type LetterState = "correct" | "present" | "absent";
 
+function levenshteinDistance(a: string, b: string): number {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+
+  for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+  for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+
+  return matrix[a.length][b.length];
+}
+
 let activeKeydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
 const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
@@ -33,17 +59,67 @@ let globalDictionary: Set<string> | null = null;
 let countryFlagsPromise: Promise<void> | null = null;
 let countryFlagsCache: Record<string, string> = {};
 
-function loadCountryFlags() {
-  if (!countryFlagsPromise) {
-    countryFlagsPromise = fetch(
-      "https://restcountries.com/v3.1/all?fields=name,flags",
-    )
+let countryDataPromise: Promise<void> | null = null;
+let countryDataCache: Record<string, { lat: number, lng: number, code: string }> = {};
+
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371; // Radius of the earth in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in km
+}
+
+function calculateBearing(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const toRad = (val: number) => (val * Math.PI) / 180;
+  const toDeg = (val: number) => (val * 180) / Math.PI;
+  const dLon = toRad(lon2 - lon1);
+  const lat1Rad = toRad(lat1);
+  const lat2Rad = toRad(lat2);
+  const y = Math.sin(dLon) * Math.cos(lat2Rad);
+  const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+  const brng = toDeg(Math.atan2(y, x));
+  return (brng + 360) % 360;
+}
+
+function getDirectionArrow(bearing: number): string {
+  if (bearing >= 337.5 || bearing < 22.5) return "⬆️";
+  if (bearing >= 22.5 && bearing < 67.5) return "↗️";
+  if (bearing >= 67.5 && bearing < 112.5) return "➡️";
+  if (bearing >= 112.5 && bearing < 157.5) return "↘️";
+  if (bearing >= 157.5 && bearing < 202.5) return "⬇️";
+  if (bearing >= 202.5 && bearing < 247.5) return "↙️";
+  if (bearing >= 247.5 && bearing < 292.5) return "⬅️";
+  if (bearing >= 292.5 && bearing < 337.5) return "↖️";
+  return "";
+}
+
+function loadCountryData() {
+  if (!countryDataPromise) {
+    countryDataPromise = fetch("/country-data.json")
       .then((res) => res.json())
       .then((data) => {
-        data.forEach((country: any) => {
-          if (country.name?.common && country.flags?.svg) {
-            countryFlagsCache[country.name.common.toLowerCase()] =
-              country.flags.svg;
+        countryDataCache = data;
+      })
+      .catch((err) => {
+        console.warn("Failed to load country data", err);
+      });
+  }
+  return countryDataPromise;
+}
+
+function loadCountryFlags() {
+  if (!countryFlagsPromise) {
+    countryFlagsPromise = fetch("https://flagcdn.com/en/codes.json")
+      .then((res) => res.json())
+      .then((data) => {
+        Object.entries(data).forEach(([code, name]) => {
+          if (typeof name === "string" && !code.includes("-")) {
+            countryFlagsCache[name.toLowerCase()] = `https://flagcdn.com/${code}.svg`;
           }
         });
       })
@@ -141,7 +217,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
       setTimeout(() => { invalidGuess = false; render(); }, 500);
       return;
     }
-    
+
     if (guesses.map(g => g.map(c => c.letter).join('')).includes(currentGuess.toLowerCase())) {
       setMessage(root, "Word already guessed.");
       invalidGuess = true;
@@ -194,28 +270,28 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
       const guess = guesses[row];
       return `<div class="wordle-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${game.wordLength}, auto)">
         ${Array.from({ length: game.wordLength ?? 5 }, (_, col) => {
-          if (isCurrentRow) {
-            const letter = currentGuess[col] ?? "";
-            const isLast = letter !== "" && col === currentGuess.length - 1;
-            return `<span class="cell ${isLast ? 'pop' : ''}">${letter}</span>`;
-          }
-          const cell = guess?.[col];
-          const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
-          return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? 'flip' : ''}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
-        }).join("")}
+        if (isCurrentRow) {
+          const letter = currentGuess[col] ?? "";
+          const isLast = letter !== "" && col === currentGuess.length - 1;
+          return `<span class="cell ${isLast ? 'pop' : ''}">${letter}</span>`;
+        }
+        const cell = guess?.[col];
+        const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
+        return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? 'flip' : ''}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
+      }).join("")}
       </div>`;
     }).join("");
 
     root.innerHTML = `
       ${renderGameHeader(
-        game,
-        [
-          `${game.wordLength} letters`,
-          `${game.attempts} attempts`,
-          game.mode ?? "classic",
-        ],
-        done ? "Play again" : "New word",
-      )}
+      game,
+      [
+        `${game.wordLength} letters`,
+        `${game.attempts} attempts`,
+        game.mode ?? "classic",
+      ],
+      done ? "Play again" : "New word",
+    )}
       <div class="board" style="margin-bottom: 1.5rem;">${rows}</div>
       <p class="message">${done ? "Round complete." : "Type your guess."}</p>
       <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
@@ -227,7 +303,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
     wireRestart(root, reset);
     wireKeyboard(root, handleKey);
     root.querySelector("#guess-btn")?.addEventListener("click", () => handleKey("ENTER"));
-    
+
     if (activeKeydownHandler) {
       window.removeEventListener("keydown", activeKeydownHandler);
     }
@@ -356,7 +432,7 @@ function mountMultiWordle(root: HTMLElement, game: GameConfig) {
     wireRestart(root, reset);
     wireKeyboard(root, handleKey);
     root.querySelector("#guess-btn")?.addEventListener("click", () => handleKey("ENTER"));
-    
+
     if (activeKeydownHandler) {
       window.removeEventListener("keydown", activeKeydownHandler);
     }
@@ -392,15 +468,15 @@ function renderMiniBoard(
       : undefined;
     return `<div class="wordle-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${target.length}, auto)">
       ${Array.from({ length: target.length }, (_, col) => {
-        if (isCurrentRow) {
-          const letter = currentGuess[col] ?? "";
-          const isLast = letter !== "" && col === currentGuess.length - 1;
-          return `<span class="cell ${isLast ? 'pop' : ''}">${letter}</span>`;
-        }
-        const cell = result?.[col];
-        const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
-        return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? 'flip' : ''}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
-      }).join("")}
+      if (isCurrentRow) {
+        const letter = currentGuess[col] ?? "";
+        const isLast = letter !== "" && col === currentGuess.length - 1;
+        return `<span class="cell ${isLast ? 'pop' : ''}">${letter}</span>`;
+      }
+      const cell = result?.[col];
+      const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
+      return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? 'flip' : ''}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
+    }).join("")}
     </div>`;
   }).join("");
   return `<section class="mini-board"><h3>Board ${number}</h3>${rows}</section>`;
@@ -414,8 +490,16 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
   let done = false;
 
   const isCountryGame = game.slug === "guess-country";
+  const isFlagGame = game.slug === "guess-flag";
+
   if (isCountryGame) {
-    loadCountryFlags();
+    loadCountryData().then(() => {
+      if (!done) render();
+    });
+  } else if (isFlagGame) {
+    Promise.all([loadCountryFlags(), loadCountryData()]).then(() => {
+      if (!done) render();
+    });
   }
 
   const reset = () => {
@@ -429,8 +513,43 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
 
   const render = () => {
     const answerLength = getAnswerLetters(challenge).length;
-    root.innerHTML = `
-      ${renderGameHeader(game, [`${answerLength} letters`, `${Math.max(1, 5 - attempts.length)} tries left`], done ? "Play again" : "New clue")}
+    const maxAttempts = isCountryGame ? 6 : 5;
+
+    let mainContent = "";
+    if (isFlagGame) {
+      const flagSvg = countryFlagsCache[challenge.answer.toLowerCase()] || "";
+      const revealOrder = [2, 4, 0, 5, 1, 3];
+      mainContent = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-bottom: 2rem;">
+          <p class="eyebrow" style="margin-bottom: 1rem;">Guess the Country from the Flag</p>
+          ${flagSvg ? `
+          <div class="flag-container" style="position: relative; display: inline-block; width: 100%; max-width: 300px; aspect-ratio: 3/2; background: #eee; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1); user-select: none; -webkit-user-select: none;">
+            <img src="${flagSvg}" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none;" draggable="false" />
+            <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0px; pointer-events: none;">
+              ${Array.from({ length: 6 }, (_, i) => {
+        const isRevealed = revealOrder.indexOf(i) < attempts.length + 1;
+        return `<div style="background: var(--surface); opacity: ${isRevealed ? 0 : 1}; transition: opacity 0.5s;"></div>`;
+      }).join('')}
+            </div>
+          </div>
+          ` : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading flag...</div>`}
+        </div>
+      `;
+    } else if (isCountryGame) {
+      const code = countryDataCache[challenge.answer.toLowerCase()]?.code || "";
+      const mapSvgUrl = code ? `https://raw.githubusercontent.com/djaiss/mapsicon/master/all/${code}/vector.svg` : "";
+      mainContent = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-bottom: 2rem;">
+          <p class="eyebrow" style="margin-bottom: 1rem;">Guess the Country from the Map</p>
+          ${mapSvgUrl ? `
+          <div class="map-container" style="position: relative; display: inline-block; width: 100%; max-width: 300px; aspect-ratio: 1; padding: 1rem; user-select: none; -webkit-user-select: none; pointer-events: none;">
+            <img src="${mapSvgUrl}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; filter: invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.2));" draggable="false" />
+          </div>
+          ` : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading map...</div>`}
+        </div>
+      `;
+    } else {
+      mainContent = `
       <div class="retention-game-grid">
         <div>
           <div class="clue-box">
@@ -446,90 +565,124 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
           </div>
           <div class="hint-list">
             ${challenge.hints
-              .map((hint, index) => {
-                const isUnlocked = index <= attempts.length;
-                const justUnlocked =
-                  index === attempts.length && attempts.length > 0;
-                if (isUnlocked) {
-                  return `<div class="hint ${justUnlocked ? "hint-new" : ""}">${escapeHtml(hint)}</div>`;
-                }
-                return `<div class="hint locked"><span class="lock-icon">🔒</span> Locked</div>`;
-              })
-              .join("")}
+          .map((hint, index) => {
+            const isUnlocked = index <= attempts.length;
+            const justUnlocked =
+              index === attempts.length && attempts.length > 0;
+            if (isUnlocked) {
+              return `<div class="hint ${justUnlocked ? "hint-new" : ""}"><span class="hint-text">${escapeHtml(hint)}</span></div>`;
+            }
+            return `<div class="hint locked"><span class="lock-icon">🔒</span> Locked</div>`;
+          })
+          .join("")}
           </div>
         </aside>
       </div>
-      <form class="guess-form" style="position: relative;">
-        <input class="answer-input" name="answer" inputmode="none" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" />
-        <button class="button" type="submit">Submit</button>
-        ${
-          isCountryGame
-            ? `
-        <div id="autocomplete-list" class="autocomplete-items" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 99; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.5); margin-top: 0.25rem;"></div>
-        <style>
-          .autocomplete-item { padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); color: var(--text); text-align: left; display: flex; align-items: center; }
-          .autocomplete-item:last-child { border-bottom: none; }
-          .autocomplete-item:hover { background: var(--surface2); }
-        </style>
-        `
-            : ""
-        }
+      `;
+    }
+
+    root.innerHTML = `
+      ${renderGameHeader(game, [`${answerLength} letters`, `${Math.max(0, maxAttempts - attempts.length)} tries left`], done ? "Play again" : (isCountryGame || isFlagGame ? "New game" : "New clue"))}
+      ${mainContent}
+      <form class="guess-form" style="position: relative; margin-top: 1rem;">
+        <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? 'Country, territory...' : 'Enter guess'}" inputmode="${isCountryGame || isFlagGame ? 'text' : 'none'}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="text-align: center; font-weight: bold; padding: 0.75rem;" />
+        <button class="button" type="submit">${isCountryGame || isFlagGame ? '🌍 GUESS' : 'Submit'}</button>
+        ${isCountryGame || isFlagGame ? `
+        <div id="suggestion-container" style="display: none; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; text-align: center; color: var(--text-muted); font-size: 0.875rem;">
+          Did you mean <a href="#" id="suggestion-link" style="text-decoration: underline; font-weight: 500;"></a>?
+        </div>
+        ` : ""}
       </form>
-      ${
-        attempts.length > 0
-          ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem;">
-        ${attempts.map((attempt) => `<div class="past-guess" style="padding: 0.5rem; background: var(--bg-surface-hover); border-radius: var(--radius); text-align: center; font-weight: 500; font-family: monospace; letter-spacing: 1px; color: var(--fg-muted); margin-bottom: 0.5rem; text-decoration: line-through;">${escapeHtml(attempt.toUpperCase())}</div>`).join("")}
+      ${(isCountryGame || isFlagGame)
+        ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.25rem;">
+        ${Array.from({ length: maxAttempts }, (_, i) => {
+          const attempt = attempts[i];
+          if (!attempt) {
+            return `<div style="display: flex; gap: 0.25rem; height: 2.5rem;">
+              <div style="flex: 1; border: 2px solid var(--border); border-radius: 4px; background: rgba(0,0,0,0.1);"></div>
+            </div>`;
+          }
+          let distanceHtml = "";
+          let dist = 0;
+          let arrow = "";
+          let pct = 0;
+
+          if (countryDataCache[attempt.toLowerCase()] && countryDataCache[challenge.answer.toLowerCase()]) {
+            const guessData = countryDataCache[attempt.toLowerCase()];
+            const answerData = countryDataCache[challenge.answer.toLowerCase()];
+            dist = Math.round(calculateDistance(guessData.lat, guessData.lng, answerData.lat, answerData.lng));
+            const bearing = calculateBearing(guessData.lat, guessData.lng, answerData.lat, answerData.lng);
+            arrow = getDirectionArrow(bearing);
+            pct = Math.round(Math.max(0, 100 - (dist / 20000) * 100));
+            if (dist === 0) pct = 100;
+
+            distanceHtml = `
+              <div style="flex: 1; border: 2px solid ${dist === 0 ? 'var(--green)' : 'var(--border)'}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; background: ${dist === 0 ? 'var(--green)' : 'transparent'}; color: ${dist === 0 ? 'white' : 'inherit'};${dist === 0 ? 'box-shadow: 0 0 10px var(--green);' : ''}">${dist}km</div>
+              <div style="width: 3rem; border: 2px solid ${dist === 0 ? 'var(--green)' : 'var(--border)'}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; background: ${dist === 0 ? 'var(--green)' : 'transparent'};">${dist === 0 ? '🎉' : arrow}</div>
+              <div style="width: 4rem; border: 2px solid ${dist === 0 ? 'var(--green)' : 'var(--border)'}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; background: ${dist === 0 ? 'var(--green)' : 'transparent'}; color: ${dist === 0 ? 'white' : 'inherit'}">${pct}%</div>
+            `;
+          }
+
+          return `<div class="past-guess" style="display: flex; gap: 0.25rem; height: 2.5rem; text-transform: uppercase;">
+            <div style="flex: 2; border: 2px solid ${dist === 0 ? 'var(--green)' : 'var(--border)'}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: ${dist === 0 ? 'var(--green)' : 'transparent'}; color: ${dist === 0 ? 'white' : 'inherit'};${dist === 0 ? 'box-shadow: 0 0 10px var(--green);' : ''}">${escapeHtml(attempt)}</div>
+            ${distanceHtml}
+          </div>`;
+        }).join("")}
       </div>`
-          : ""
+        : attempts.length > 0 ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem;">
+        ${attempts.map((attempt) => {
+          return `<div class="past-guess" style="padding: 0.5rem; background: var(--bg-surface-hover); border-radius: var(--radius); text-align: center; font-weight: 500; font-family: monospace; letter-spacing: 1px; color: var(--fg-muted); margin-bottom: 0.5rem; ${normalizeAnswer(attempt) === normalizeAnswer(challenge.answer) ? 'color: var(--green);' : 'text-decoration: line-through;'}">${escapeHtml(attempt.toUpperCase())}</div>`;
+        }).join("")}
+      </div>` : ""
       }
-      <p class="message">${attempts.length ? `${attempts.length} attempt${attempts.length === 1 ? "" : "s"}` : "Type or tap letters. Hints stay beside the board."}</p>
-      ${renderKeyboard(getGuessKeyboardState(attempts, challenge))}
+      <p class="message">${attempts.length ? `${attempts.length} attempt${attempts.length === 1 ? "" : "s"}` : (isCountryGame || isFlagGame) ? "" : "Type or tap letters. Hints stay beside the board."}</p>
+      ${(isCountryGame || isFlagGame) ? "" : renderKeyboard(getGuessKeyboardState(attempts, challenge))}
     `;
 
     wireRestart(root, reset);
     wireKeyboard(root, "input[name='answer']");
 
-    if (isCountryGame) {
+    if (isCountryGame || isFlagGame) {
       const input = root.querySelector<HTMLInputElement>("input");
-      const autocompleteList =
-        root.querySelector<HTMLDivElement>("#autocomplete-list");
-      if (input && autocompleteList) {
-        const updateAutocomplete = () => {
-          const val = input.value.toLowerCase();
-          autocompleteList.innerHTML = "";
-          if (!val) {
-            autocompleteList.style.display = "none";
+      const suggestionContainer = root.querySelector<HTMLDivElement>("#suggestion-container");
+      const suggestionLink = root.querySelector<HTMLAnchorElement>("#suggestion-link");
+
+      if (input && suggestionContainer && suggestionLink) {
+        input.addEventListener("input", () => {
+          const val = input.value.trim().toLowerCase();
+          if (val.length < 3) {
+            suggestionContainer.style.display = "none";
             return;
           }
-          const matches = dataset.countries
-            .filter((c: string) => c.toLowerCase().includes(val))
-            .slice(0, 5);
-          if (matches.length > 0) {
-            autocompleteList.style.display = "block";
-            matches.forEach((match: string) => {
-              const div = document.createElement("div");
-              div.className = "autocomplete-item";
-              const flagSvg = countryFlagsCache[match.toLowerCase()] || "";
-              div.innerHTML = `
-                ${flagSvg ? `<img src="${flagSvg}" style="width: 24px; height: auto; margin-right: 12px; border-radius: 2px;" />` : ""}
-                <span>${match}</span>
-              `;
-              div.addEventListener("click", () => {
-                input.value = match;
-                autocompleteList.style.display = "none";
-                input.form?.requestSubmit();
-              });
-              autocompleteList.appendChild(div);
-            });
+          if (dataset.countries.some((c: string) => c.toLowerCase() === val)) {
+            suggestionContainer.style.display = "none";
+            return;
+          }
+
+          let bestMatch = "";
+          let minDistance = Infinity;
+
+          for (const country of dataset.countries) {
+            const d = levenshteinDistance(val, country.toLowerCase());
+            if (d < minDistance) {
+              minDistance = d;
+              bestMatch = country;
+            }
+          }
+
+          const threshold = bestMatch.length > 6 ? 3 : 2;
+          if (minDistance > 0 && minDistance <= threshold) {
+            suggestionLink.textContent = bestMatch;
+            suggestionContainer.style.display = "block";
           } else {
-            autocompleteList.style.display = "none";
+            suggestionContainer.style.display = "none";
           }
-        };
-        input.addEventListener("input", updateAutocomplete);
-        document.addEventListener("click", (e) => {
-          if (e.target !== input) {
-            autocompleteList.style.display = "none";
-          }
+        });
+
+        suggestionLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          input.value = suggestionLink.textContent ?? "";
+          suggestionContainer.style.display = "none";
         });
       }
     }
@@ -543,10 +696,18 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         setMessage(root, "Enter a guess first.");
         return;
       }
+      if (isCountryGame || isFlagGame) {
+        const isValidCountry = dataset.countries.some((c: string) => c.toLowerCase() === value.toLowerCase());
+        if (!isValidCountry) {
+          setMessage(root, "Not a valid country.");
+          return;
+        }
+      }
       attempts.push(value);
       if (input) input.value = "";
       const won = normalizeAnswer(value) === normalizeAnswer(challenge.answer);
-      if (won || attempts.length >= 5) {
+      const maxAttempts = (isCountryGame || isFlagGame) ? 6 : 5;
+      if (won || attempts.length >= maxAttempts) {
         done = true;
         recordGame(game.slug, won, elapsed(started));
         window.dispatchEvent(new Event("gamecompleted"));
@@ -559,10 +720,19 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         );
         showCompletionPopup(root, won, challenge.answer, reset);
       } else {
-        if (attempts.length < challenge.hints.length) {
-          setMessage(root, "New Hint Unlocked");
+        if (isCountryGame || isFlagGame) {
+          if (attempts.length === maxAttempts - 1) {
+            setMessage(root, "Last chance!");
+          } else {
+            if (isFlagGame) setMessage(root, "Flag piece revealed.");
+            else setMessage(root, "Try again!");
+          }
         } else {
-          setMessage(root, "Not yet. Keep trying.");
+          if (attempts.length < challenge.hints.length) {
+            setMessage(root, "New Hint Unlocked");
+          } else {
+            setMessage(root, "Not yet. Keep trying.");
+          }
         }
       }
     });
@@ -743,7 +913,7 @@ function renderGameHeader(
       ["octo-wordle", "Octo"],
       ["sedecordle", "Sedecordle"]
     ].map(([slug, name]) => `<option value="${slug}" ${game.slug === slug ? 'selected' : ''}>${name}</option>`).join("");
-    
+
     selectHtml = `
       <select class="variant-select" onchange="window.location.href='/games/'+this.value" style="margin-left: auto; padding: 0.25rem 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-weight: 500; font-family: inherit; font-size: 0.875rem; cursor: pointer; height: fit-content; align-self: center;">
         <optgroup label="Wordle">${wordleOptions}</optgroup>
@@ -752,10 +922,10 @@ function renderGameHeader(
     `;
   }
 
-  return `<div class="game-top" style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; width: 100%;">
-    <div>
-      <div class="toolbar">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>
-      <h2 style="margin: 0; padding-top: 0.25rem;">${escapeHtml(game.name)}</h2>
+  return `<div class="game-top" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; width: 100%;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <h2 style="margin: 0;">${escapeHtml(game.name)}</h2>
+      <div class="toolbar" style="margin: 0;">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>
     </div>
     ${selectHtml}
     <button class="button secondary" type="button" data-restart style="${selectHtml ? '' : 'margin-left: auto;'} height: fit-content; align-self: center;">${buttonLabel}</button>
