@@ -5,7 +5,7 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import { categoryLabels, comingSoonGames, games, playableGames } from "@/data/games";
 
 const featured = games.filter((game) => game.featured).slice(0, 8);
-const trending = games.filter((game) => game.trending).slice(0, 8);
+
 const categories = Object.entries(categoryLabels).filter(([key]) => key !== "future" && key !== "daily");
 ---
 
@@ -46,35 +46,7 @@ const categories = Object.entries(categoryLabels).filter(([key]) => key !== "fut
     </div>
   </section>
 
-  <section class="section band">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Trending Now</h2>
-          <p>What everyone is playing today.</p>
-        </div>
-      </div>
-      <div class="trending-grid">
-        {trending.map((game, index) => {
-          const initials = game.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
-          return (
-            <a class="trend-card" href={`/games/${game.slug}`}>
-              <div class="trend-rank">{index + 1}</div>
-              <div class="tile-icon">{initials}</div>
-              <div class="trend-copy">
-                <h4>{game.name}</h4>
-                <p>{categoryLabels[game.category]}</p>
-              </div>
-              <div class="trend-tags">
-                {index < 2 && <span class="trend-tag hot">HOT</span>}
-                {index >= 2 && index < 4 && <span class="trend-tag new">NEW</span>}
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  </section>
+
 
   <section class="section">
     <div class="container">

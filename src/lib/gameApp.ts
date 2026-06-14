@@ -158,6 +158,12 @@ export function mountGame(root: HTMLElement) {
     return;
   }
 
+  const comingSoonSlugs = ["guess-capital", "guess-movie", "guess-tv-show", "guess-anime"];
+  if (comingSoonSlugs.includes(game.slug) || game.engine === "coming-soon") {
+    mountComingSoon(root, game);
+    return;
+  }
+
   rememberRecent(game.slug);
 
   if (game.engine === "wordle" || game.engine === "multi-wordle") {
@@ -168,6 +174,16 @@ export function mountGame(root: HTMLElement) {
   if (game.engine === "multi-wordle") mountMultiWordle(root, game);
   if (game.engine === "guessing") mountGuessing(root, game);
   if (game.engine === "word-puzzle") mountPuzzle(root, game);
+}
+
+function mountComingSoon(root: HTMLElement, game: GameConfig) {
+  root.innerHTML = `
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 1rem; text-align: center; min-height: 50vh;">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text);">🚀 Coming Soon</h2>
+      <p style="color: var(--text-muted); font-size: 1.125rem; max-width: 400px; line-height: 1.5;">We are currently building <strong>${game.name}</strong>. It will be available in a future update. Stay tuned!</p>
+      <a href="/" class="button" style="margin-top: 2rem; display: inline-block;">Return Home</a>
+    </div>
+  `;
 }
 
 function mountWordle(root: HTMLElement, game: GameConfig) {

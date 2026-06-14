@@ -46,7 +46,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         <div class="nav-links">
           <div class="player-stats" style="display: flex; gap: 1rem; align-items: center; margin-right: 1rem;">
              <div id="nav-streak" class="streak" style="display: flex; align-items: center; justify-content: center; background: rgba(255,120,0,0.12); border: 1px solid rgba(255,120,0,0.3); color: #FF7800; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
-               🔥 0 day streak
+               🔥 0 win streak
              </div>
              <div id="nav-xp" class="xp" style="display: flex; align-items: center; justify-content: center; background: rgba(190,255,0,0.1); border: 1px solid rgba(190,255,0,0.25); color: #BEFF00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;">
                ⭐ 0 XP
@@ -130,7 +130,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         const xpEl = document.getElementById("nav-xp");
         
         if (streakEl) {
-          streakEl.innerText = `🔥 ${stats.currentStreak} day streak`;
+          streakEl.innerText = `🔥 ${stats.currentStreak} win streak`;
         }
         if (xpEl) {
           const xp = (stats.wins * 50) + (stats.played * 10);
