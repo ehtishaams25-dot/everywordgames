@@ -1,12 +1,12 @@
 export type GameEngine =
-  | "wordle"
-  | "multi-wordle"
+  | "word-guess"
+  | "multi-word-guess"
   | "guessing"
   | "word-puzzle"
   | "coming-soon";
 export type GameCategory =
-  | "wordle"
-  | "multi-wordle"
+  | "word-guess"
+  | "multi-word-guess"
   | "geography"
   | "entertainment"
   | "brands"
@@ -33,15 +33,15 @@ export interface GameConfig {
   dataset?: string;
 }
 
-const wordleLengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+const wordGuessLengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const games: GameConfig[] = [
-  ...wordleLengths.map((length) => ({
-    slug: `${length}-letter-wordle`,
+  ...wordGuessLengths.map((length) => ({
+    slug: `${length}-letter-word-guess`,
     name: `${length} Letter Word Guess`,
     description: `Solve a ${length}-letter hidden word with crisp color feedback.`,
-    category: "wordle" as const,
-    engine: "wordle" as const,
+    category: "word-guess" as const,
+    engine: "word-guess" as const,
     difficulty:
       length <= 4
         ? ("Easy" as const)
@@ -56,11 +56,11 @@ export const games: GameConfig[] = [
   })),
 
   {
-    slug: "endless-wordle",
+    slug: "endless-word-guess",
     name: "Endless Word Guess",
     description: "Keep solving fresh words until you decide to stop.",
-    category: "wordle",
-    engine: "wordle",
+    category: "word-guess",
+    engine: "word-guess",
     difficulty: "Medium",
     trending: true,
     wordLength: 5,
@@ -68,11 +68,11 @@ export const games: GameConfig[] = [
     mode: "endless",
   },
   {
-    slug: "survival-wordle",
+    slug: "survival-word-guess",
     name: "Survival Word Guess",
     description: "Win to advance, miss and the run ends.",
-    category: "wordle",
-    engine: "wordle",
+    category: "word-guess",
+    engine: "word-guess",
     difficulty: "Hard",
     trending: true,
     wordLength: 5,
@@ -80,29 +80,29 @@ export const games: GameConfig[] = [
     mode: "survival",
   },
   {
-    slug: "hardcore-wordle",
+    slug: "hardcore-word-guess",
     name: "Hardcore Word Guess",
     description: "A sharper Word Guess with fewer attempts and strict pacing.",
-    category: "wordle",
-    engine: "wordle",
+    category: "word-guess",
+    engine: "word-guess",
     difficulty: "Expert",
     wordLength: 5,
     attempts: 4,
     mode: "hardcore",
   },
   ...[
-    ["double-wordle", "Double Word Guess", 2, 7, "Easy"],
-    ["triple-wordle", "Triple Word Guess", 3, 8, "Medium"],
-    ["quad-wordle", "Quad Word Guess", 4, 9, "Medium"],
-    ["hex-wordle", "Hex Word Guess", 6, 10, "Hard"],
-    ["octo-wordle", "Octo Word Guess", 8, 12, "Hard"],
+    ["double-word-guess", "Double Word Guess", 2, 7, "Easy"],
+    ["triple-word-guess", "Triple Word Guess", 3, 8, "Medium"],
+    ["quad-word-guess", "Quad Word Guess", 4, 9, "Medium"],
+    ["hex-word-guess", "Hex Word Guess", 6, 10, "Hard"],
+    ["octo-word-guess", "Octo Word Guess", 8, 12, "Hard"],
     ["sedecordle", "Sedecordle", 16, 21, "Expert"],
   ].map(([slug, name, boardCount, attempts, difficulty]) => ({
     slug: slug as string,
     name: name as string,
     description: `Solve ${boardCount} hidden words using one shared guess stream.`,
-    category: "multi-wordle" as const,
-    engine: "multi-wordle" as const,
+    category: "multi-word-guess" as const,
+    engine: "multi-word-guess" as const,
     difficulty: difficulty as Difficulty,
     trending: boardCount === 8,
     boardCount: boardCount as number,
@@ -293,8 +293,8 @@ export const playableGames = games.filter((game) => !game.comingSoon);
 export const comingSoonGames = games.filter((game) => game.comingSoon);
 
 export const categoryLabels: Record<GameCategory, string> = {
-  wordle: "Word Guess Family",
-  "multi-wordle": "Multi Word Guess",
+  "word-guess": "Word Guess Family",
+  "multi-word-guess": "Multi Word Guess",
   geography: "Geography",
   entertainment: "Entertainment",
   brands: "Brands",
@@ -305,7 +305,7 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/games/5-letter-wordle", label: "Word Guess" },
+  { href: "/games/5-letter-word-guess", label: "Word Guess" },
   { href: "/guess", label: "Guess" },
   { href: "/word-games", label: "Puzzles" },
   { href: "/stats", label: "Stats" },

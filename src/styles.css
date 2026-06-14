@@ -730,7 +730,7 @@ h3 {
   justify-content: center;
 }
 
-.wordle-row {
+.word-guess-row {
   display: grid;
   gap: 0.35rem;
   justify-content: center;

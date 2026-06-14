@@ -39,6 +39,16 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="theme-color" content="#FDFBF7" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXT09C57E5" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DXT09C57E5');
+    </script>
   </head>
   <body>
     <header class="site-header">

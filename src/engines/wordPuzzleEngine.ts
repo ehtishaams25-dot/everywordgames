@@ -1,5 +1,5 @@
 import type { GameConfig } from "@/data/games";
-import { getWords, pickUniqueWord } from "./wordleEngine";
+import { getWords, pickUniqueWord } from "./wordGuessEngine";
 import { pickSeeded, shuffleSeeded, todayKey } from "./random";
 
 export interface PuzzleChallenge {

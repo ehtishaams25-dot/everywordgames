@@ -1,5 +1,5 @@
 import type { GameConfig } from "@/data/games";
-import { getWords } from "./wordleEngine";
+import { getWords } from "./wordGuessEngine";
 import { pickSeeded, todayKey } from "./random";
 
 export function createMultiTargets(game: GameConfig, run = 0) {

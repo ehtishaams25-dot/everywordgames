@@ -35,8 +35,8 @@ export const achievements = [
   { id: "word-master", name: "Word Master", description: "Play twenty word games.", test: (s: PlayerStats) => s.played >= 20 },
   { id: "quick-solve", name: "Fast Hands", description: "Solve any game in 30 seconds or less.", test: (s: PlayerStats) => s.fastestSolve !== null && s.fastestSolve <= 30 },
   { id: "daily-regular", name: "Daily Regular", description: "Play any daily mode.", test: (s: PlayerStats) => Object.keys(s.gameCounts).some((slug) => slug.startsWith("daily")) },
-  { id: "multi-board", name: "Board Splitter", description: "Play a multi-board Word Guess mode.", test: (s: PlayerStats) => ["double-wordle", "triple-wordle", "quad-wordle", "hex-wordle", "octo-wordle", "sedecordle"].some((slug) => s.gameCounts[slug] > 0) },
-  { id: "classic-five", name: "Classic Solver", description: "Play 5 Letter Word Guess.", test: (s: PlayerStats) => s.gameCounts["5-letter-wordle"] > 0 },
+  { id: "multi-board", name: "Board Splitter", description: "Play a multi-board Word Guess mode.", test: (s: PlayerStats) => ["double-word-guess", "triple-word-guess", "quad-word-guess", "hex-word-guess", "octo-word-guess", "sedecordle"].some((slug) => s.gameCounts[slug] > 0) },
+  { id: "classic-five", name: "Classic Solver", description: "Play 5 Letter Word Guess.", test: (s: PlayerStats) => s.gameCounts["5-letter-word-guess"] > 0 },
   { id: "geography-expert", name: "Geography Expert", description: "Make geography your favorite game family.", test: (s: PlayerStats) => s.favoriteGame.toLowerCase().includes("guess") },
   { id: "movie-buff", name: "Movie Buff", description: "Play a movie guessing challenge.", test: (s: PlayerStats) => s.gameCounts["guess-movie"] > 0 },
   { id: "puzzle-runner", name: "Puzzle Runner", description: "Play hangman, scramble, or word search.", test: (s: PlayerStats) => ["hangman", "word-scramble", "word-search"].some((slug) => s.gameCounts[slug] > 0) }

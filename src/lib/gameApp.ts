@@ -4,14 +4,14 @@ import {
   normalizeAnswer,
   type GuessItem,
 } from "@/engines/guessingEngine";
-import { createMultiTargets } from "@/engines/multiWordleEngine";
+import { createMultiTargets } from "@/engines/multiWordGuessEngine";
 import { recordGame } from "@/engines/playerStore";
 import { createPuzzleChallenge } from "@/engines/wordPuzzleEngine";
 import {
-  createWordleTarget,
+  createWordGuessTarget,
   evaluateGuess,
   getWords,
-} from "@/engines/wordleEngine";
+} from "@/engines/wordGuessEngine";
 import confetti from "canvas-confetti";
 import dataset from "@/data/categories";
 import { useGameFocus } from "./useGameFocus";
@@ -166,12 +166,12 @@ export function mountGame(root: HTMLElement) {
 
   rememberRecent(game.slug);
 
-  if (game.engine === "wordle" || game.engine === "multi-wordle") {
+  if (game.engine === "word-guess" || game.engine === "multi-word-guess") {
     loadDictionary();
   }
 
-  if (game.engine === "wordle") mountWordle(root, game);
-  if (game.engine === "multi-wordle") mountMultiWordle(root, game);
+  if (game.engine === "word-guess") mountWordGuess(root, game);
+  if (game.engine === "multi-word-guess") mountMultiWordGuess(root, game);
   if (game.engine === "guessing") mountGuessing(root, game);
   if (game.engine === "word-puzzle") mountPuzzle(root, game);
 }
@@ -186,9 +186,9 @@ function mountComingSoon(root: HTMLElement, game: GameConfig) {
   `;
 }
 
-function mountWordle(root: HTMLElement, game: GameConfig) {
+function mountWordGuess(root: HTMLElement, game: GameConfig) {
   let run = 0;
-  let target = createWordleTarget(game, run);
+  let target = createWordGuessTarget(game, run);
   let guesses: ReturnType<typeof evaluateGuess>[] = [];
   let started = Date.now();
   let done = false;
@@ -199,7 +199,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
 
   const reset = () => {
     run += 1;
-    target = createWordleTarget(game, run);
+    target = createWordGuessTarget(game, run);
     guesses = [];
     currentGuess = "";
     started = Date.now();
@@ -284,7 +284,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
       const isCurrentRow = row === guesses.length && !done;
       const isJustSubmittedRow = row === guesses.length - 1 && justSubmitted;
       const guess = guesses[row];
-      return `<div class="wordle-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${game.wordLength}, auto)">
+      return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${game.wordLength}, auto)">
         ${Array.from({ length: game.wordLength ?? 5 }, (_, col) => {
         if (isCurrentRow) {
           const letter = currentGuess[col] ?? "";
@@ -309,7 +309,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
       <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
         <button class="button" id="guess-btn" type="button" style="width: min(100%, 22rem);">Submit Guess</button>
       </div>
-      ${renderKeyboard(getWordleKeyboardState(guesses))}
+      ${renderKeyboard(getWordGuessKeyboardState(guesses))}
     `;
 
     wireRestart(root, reset);
@@ -331,7 +331,7 @@ function mountWordle(root: HTMLElement, game: GameConfig) {
   render();
 }
 
-function mountMultiWordle(root: HTMLElement, game: GameConfig) {
+function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
   let run = 0;
   let targets = createMultiTargets(game, run);
   let guesses: string[] = [];
@@ -478,7 +478,7 @@ function renderMiniBoard(
     const result = guesses[row]
       ? evaluateGuess(guesses[row], target)
       : undefined;
-    return `<div class="wordle-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${target.length}, auto)">
+    return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? 'shake' : ''}" style="grid-template-columns: repeat(${target.length}, auto)">
       ${Array.from({ length: target.length }, (_, col) => {
       if (isCurrentRow) {
         const letter = currentGuess[col] ?? "";
@@ -915,20 +915,20 @@ function renderGameHeader(
   buttonLabel: string,
 ) {
   let selectHtml = "";
-  if ((game.engine === "wordle" || game.engine === "multi-wordle") && game.mode !== "daily" && game.mode !== "endless" && game.mode !== "survival" && game.mode !== "hardcore") {
-    const wordleOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}-letter-wordle" ${game.slug === `${n}-letter-wordle` ? 'selected' : ''}>${n} Letter</option>`).join("");
+  if ((game.engine === "word-guess" || game.engine === "multi-word-guess") && game.mode !== "daily" && game.mode !== "endless" && game.mode !== "survival" && game.mode !== "hardcore") {
+    const wordGuessOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}-letter-word-guess" ${game.slug === `${n}-letter-word-guess` ? 'selected' : ''}>${n} Letter</option>`).join("");
     const multiOptions = [
-      ["double-wordle", "Double"],
-      ["triple-wordle", "Triple"],
-      ["quad-wordle", "Quad"],
-      ["hex-wordle", "Hex"],
-      ["octo-wordle", "Octo"],
+      ["double-word-guess", "Double"],
+      ["triple-word-guess", "Triple"],
+      ["quad-word-guess", "Quad"],
+      ["hex-word-guess", "Hex"],
+      ["octo-word-guess", "Octo"],
       ["sedecordle", "Sedecordle"]
     ].map(([slug, name]) => `<option value="${slug}" ${game.slug === slug ? 'selected' : ''}>${name}</option>`).join("");
 
     selectHtml = `
       <select class="variant-select" onchange="window.location.href='/games/'+this.value" style="margin-left: auto; padding: 0.25rem 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-weight: 500; font-family: inherit; font-size: 0.875rem; cursor: pointer; height: fit-content; align-self: center;">
-        <optgroup label="Word Guess">${wordleOptions}</optgroup>
+        <optgroup label="Word Guess">${wordGuessOptions}</optgroup>
         <optgroup label="Multi">${multiOptions}</optgroup>
       </select>
     `;
@@ -1031,7 +1031,7 @@ function wireRestart(root: HTMLElement, reset: () => void) {
   root.querySelector("[data-restart]")?.addEventListener("click", reset);
 }
 
-function getWordleKeyboardState(guesses: ReturnType<typeof evaluateGuess>[]) {
+function getWordGuessKeyboardState(guesses: ReturnType<typeof evaluateGuess>[]) {
   const states: Record<string, LetterState> = {};
   guesses
     .flat()

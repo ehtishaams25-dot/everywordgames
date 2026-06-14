@@ -4,7 +4,7 @@ import { pickSeeded, todayKey } from "./random";
 
 export type LetterState = "correct" | "present" | "absent";
 
-export interface WordleResult {
+export interface WordGuessResult {
   letter: string;
   state: LetterState;
 }
@@ -60,15 +60,15 @@ export function pickUniqueWord(words: string[], game: GameConfig, run = 0): stri
   return chosen;
 }
 
-export function createWordleTarget(game: GameConfig, run = 0) {
+export function createWordGuessTarget(game: GameConfig, run = 0) {
   const words = getWords(game.wordLength ?? 5);
   return pickUniqueWord(words, game, run);
 }
 
-export function evaluateGuess(guessInput: string, targetInput: string): WordleResult[] {
+export function evaluateGuess(guessInput: string, targetInput: string): WordGuessResult[] {
   const guess = guessInput.toLowerCase();
   const target = targetInput.toLowerCase();
-  const result: WordleResult[] = guess.split("").map((letter) => ({ letter, state: "absent" }));
+  const result: WordGuessResult[] = guess.split("").map((letter) => ({ letter, state: "absent" }));
   const remaining = new Map<string, number>();
 
   target.split("").forEach((letter, index) => {
