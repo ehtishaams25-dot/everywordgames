@@ -7,7 +7,8 @@
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
-    "test": "node --test test/validation.test.js"
+    "test": "node --test test/validation.test.js",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name everywordgames --branch main"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
