@@ -15,8 +15,8 @@ const { Content } = await post.render();
 
 <SiteLayout title={`${post.data.title} | EveryWordGames Blog`} description={post.data.description} path={`/blog/${post.slug}`}>
   <section class="section" style="padding-top: 2rem;">
-    <div class="container" style="max-width: 800px; margin: 0 auto;">
-      <article style="background: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+    <div class="container">
+      <article>
         <header style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
           <h1 style="font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--text);">{post.data.title}</h1>
           <div style="color: var(--muted); font-size: 1rem;">
