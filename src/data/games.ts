@@ -310,6 +310,7 @@ export const siteNav = [
   { href: "/word-games/", label: "Puzzles" },
   { href: "/stats/", label: "Stats" },
   { href: "/achievements/", label: "Awards" },
+  { href: "/blog/", label: "Blog" },
 ];
 
 export const footerNav = [

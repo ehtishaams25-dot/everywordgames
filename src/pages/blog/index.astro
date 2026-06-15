@@ -1,0 +1,35 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<SiteLayout title="Blog | EveryWordGames" description="Read the latest news, updates, and strategies for your favorite word games on the EveryWordGames blog." path="/blog">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h1 style="font-weight: 800; font-size: 2.5rem;">EveryWordGames Blog</h1>
+          <p style="font-size: 1.1rem; color: var(--muted); margin-top: 0.5rem;">News, tips, and updates about your favorite word and guessing games.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top: 2rem;">
+        {allPosts.map((post) => (
+          <a class="game-card" href={`/blog/${post.slug}/`}>
+            <div class="card-body">
+              <span class="game-name" style="font-size: 1.25rem;">{post.data.title}</span>
+              <p class="game-desc" style="margin-top: 0.5rem;">{post.data.description}</p>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
+                <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                <span style="font-weight: bold; color: var(--accent);">Read more →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</SiteLayout>
