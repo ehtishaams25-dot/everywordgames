@@ -241,8 +241,13 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
           </div>
         ` : "");
 
+        const wrapperTag = game.comingSoon ? 'div' : 'a';
+        const hrefAttr = game.comingSoon ? '' : `href="/games/${game.slug}/"`;
+        const styleAttr = game.comingSoon ? 'style="cursor: default;"' : '';
+        const playBtnStyle = game.comingSoon ? 'style="background: var(--surface2); color: var(--muted);"' : '';
+
         return `
-          <a class="game-card" href="/games/${game.slug}/">
+          <${wrapperTag} class="game-card" ${hrefAttr} ${styleAttr}>
             <div class="card-banner" style="${!bannerUrl ? 'background: var(--surface); display: grid; place-items: center;' : ''}">
               ${bannerHtml}
               ${tagHtml}
@@ -250,9 +255,9 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
             <div class="card-body">
               <span class="game-name">${game.name}</span>
               <span class="game-desc">${game.description}</span>
-              <div class="play-btn">▶ Play</div>
+              <div class="play-btn" ${playBtnStyle}>${game.comingSoon ? "Coming Soon" : "▶ Play"}</div>
             </div>
-          </a>
+          </${wrapperTag}>
         `;
       })
       .join("");

@@ -51,10 +51,11 @@ const initials = game.name
   .slice(0, 2)
   .toUpperCase();
 
-const linkHref = `/games/${game.slug}/`;
+const linkHref = game.comingSoon ? undefined : `/games/${game.slug}/`;
+const CardWrapper = game.comingSoon ? 'div' : 'a';
 ---
 
-<a class="game-card" href={linkHref}>
+<CardWrapper class="game-card" href={linkHref} style={game.comingSoon ? "cursor: default;" : undefined}>
   <div class="card-banner" style={!bannerUrl ? "background: var(--surface); display: grid; place-items: center; position: relative;" : "position: relative;"}>
     {bannerUrl ? (
       <img src={bannerUrl} alt={game.name} />
@@ -72,6 +73,6 @@ const linkHref = `/games/${game.slug}/`;
   <div class="card-body">
     <span class="game-name">{game.name}</span>
     <span class="game-desc">{game.description}</span>
-    <div class="play-btn">{game.comingSoon ? "Preview" : "▶ Play"}</div>
+    <div class="play-btn" style={game.comingSoon ? "background: var(--surface2); color: var(--muted);" : ""}>{game.comingSoon ? "Coming Soon" : "▶ Play"}</div>
   </div>
-</a>
+</CardWrapper>
