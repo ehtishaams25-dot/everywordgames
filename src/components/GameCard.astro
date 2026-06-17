@@ -55,24 +55,40 @@ const linkHref = game.comingSoon ? undefined : `/games/${game.slug}/`;
 const CardWrapper = game.comingSoon ? 'div' : 'a';
 ---
 
-<CardWrapper class="game-card" href={linkHref} style={game.comingSoon ? "cursor: default;" : undefined}>
-  <div class="card-banner" style={!bannerUrl ? "background: var(--surface); display: grid; place-items: center; position: relative;" : "position: relative;"}>
+<CardWrapper class="v2-feature-card game-card" href={linkHref} style={game.comingSoon ? "cursor: default;" : undefined}>
+  <div class="v2-feature-img">
     {bannerUrl ? (
-      <img src={bannerUrl} alt={game.name} />
+      <img src={bannerUrl} alt={game.name} loading="lazy" />
     ) : (
-      <span class="tile-icon" style="box-shadow: none;">{initials}</span>
+      <div class="fallback-img">{initials}</div>
     )}
-    {game.daily && <span class="card-tag">DAILY</span>}
+    <div class="v2-feature-overlay"></div>
+    {game.daily && <span class="v2-feature-diff" style="top:auto; bottom:12px; left:12px; right:auto; background:var(--v2-orange); color:#fff;">DAILY</span>}
     {game.comingSoon && (
-      <div style="position: absolute; inset: 0; background: var(--header-bg); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
-        <span style="background: rgba(255,120,0,0.9); color: white; padding: 0.5rem 1.5rem; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid white; border-radius: 4px;">Coming Soon</span>
+      <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
+        <span style="background: rgba(255,122,0,0.9); color: white; padding: 0.5rem 1rem; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px;">Coming Soon</span>
       </div>
     )}
+    {!game.comingSoon && <span class="v2-feature-diff" data-diff={game.difficulty || "Easy"}>{game.difficulty || "Easy"}</span>}
   </div>
 
-  <div class="card-body">
-    <span class="game-name">{game.name}</span>
-    <span class="game-desc">{game.description}</span>
-    <div class="play-btn" style={game.comingSoon ? "background: var(--surface2); color: var(--muted);" : ""}>{game.comingSoon ? "Coming Soon" : "▶ Play"}</div>
+  <div class="v2-feature-body">
+    <h3 class="v2-feature-name">{game.name}</h3>
+    <p class="v2-feature-hook">{game.description}</p>
   </div>
 </CardWrapper>
+
+<style>
+  .fallback-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 5rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+</style>

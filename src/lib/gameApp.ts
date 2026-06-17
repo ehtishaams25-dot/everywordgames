@@ -665,9 +665,9 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
     root.innerHTML = `
       ${renderGameHeader(game, [`${answerLength} letters`], done ? "Play again" : isCountryGame || isFlagGame ? "New game" : "New clue")}
       ${mainContent}
-      <form class="guess-form" style="position: relative; margin-top: 1rem;">
-        <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? "Country, territory..." : "Enter guess"}" inputmode="${isCountryGame || isFlagGame ? "text" : "none"}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="text-align: center; font-weight: bold; padding: 0.75rem;" />
-        <button class="button" type="submit">${isCountryGame || isFlagGame ? "🌍 GUESS" : "Submit"}</button>
+      <form class="guess-form" style="position: relative; margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; width: 100%; max-width: 400px; margin-inline: auto;">
+        <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? "Country, territory..." : "Enter guess"}" inputmode="${isCountryGame || isFlagGame ? "text" : "none"}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="flex: 1; min-width: 0; text-align: center; font-weight: bold; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text);" />
+        <button class="button" type="submit" style="padding: 0 1.5rem; white-space: nowrap; border-radius: 8px;">${isCountryGame || isFlagGame ? "🌍 GUESS" : "Submit"}</button>
         ${
           isCountryGame || isFlagGame
             ? `
@@ -1012,40 +1012,6 @@ function renderGameHeader(
   buttonLabel: string,
 ) {
   let selectHtml = "";
-  if (
-    (game.engine === "word-guess" || game.engine === "multi-word-guess") &&
-    game.mode !== "daily" &&
-    game.mode !== "endless" &&
-    game.mode !== "survival" &&
-    game.mode !== "hardcore"
-  ) {
-    const wordGuessOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-      .map(
-        (n) =>
-          `<option value="${n}-letter-word-guess" ${game.slug === `${n}-letter-word-guess` ? "selected" : ""}>${n} Letter</option>`,
-      )
-      .join("");
-    const multiOptions = [
-      ["double-word-guess", "Double"],
-      ["triple-word-guess", "Triple"],
-      ["quad-word-guess", "Quad"],
-      ["hex-word-guess", "Hex"],
-      ["octo-word-guess", "Octo"],
-      ["sedecordle", "Sedecordle"],
-    ]
-      .map(
-        ([slug, name]) =>
-          `<option value="${slug}" ${game.slug === slug ? "selected" : ""}>${name}</option>`,
-      )
-      .join("");
-
-    selectHtml = `
-      <select class="variant-select" onchange="window.location.href='/games/'+this.value" style="padding: 0.45rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; color: var(--text); font-weight: 500; font-family: inherit; font-size: 0.9rem; cursor: pointer; height: fit-content;">
-        <optgroup label="Word Guess">${wordGuessOptions}</optgroup>
-        <optgroup label="Multi">${multiOptions}</optgroup>
-      </select>
-    `;
-  }
 
   return `<div class="game-top" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; margin-bottom: 1rem;">
     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">

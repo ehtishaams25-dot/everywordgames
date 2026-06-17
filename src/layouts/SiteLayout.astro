@@ -84,9 +84,9 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
                ⭐ 0 XP
              </div>
           </div>
-          {siteNav.map((item) => (
-            <a href={item.href} aria-current={path === item.href ? "page" : undefined}>{item.label}</a>
-          ))}
+          <a href="/stats/" aria-current={path === "/stats/" ? "page" : undefined}>Profile</a>
+          <a href="/achievements/" aria-current={path === "/achievements/" ? "page" : undefined}>Awards</a>
+          <a href="/blog/" aria-current={path === "/blog/" ? "page" : undefined}>Blog</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
             <span class="icon-moon">🌙</span>
             <span class="icon-sun">☀️</span>
@@ -97,17 +97,48 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <main>
       <slot />
     </main>
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div>
-          <strong style="font-size: 1.5rem; color: var(--text);">EveryWordGames</strong>
-          <p style="margin-top: 0.5rem; max-width: 300px;">Play the best daily word games and puzzles. Free, fast, and fun.</p>
+    <footer class="mega-footer">
+      <div class="mega-container">
+        <div class="mega-top-row">
+          <div class="mega-brand-info">
+            <div class="brand" style="margin-bottom: 1rem;">
+              <img src="/Favicon.png" alt="EveryWordGames Logo" style="width: 2.25rem; height: 2.25rem; border-radius: 8px;" />
+              <span style="font-size: 1.5rem; font-weight: 800; color: var(--text);">EveryWordGames</span>
+            </div>
+            <p style="color: var(--muted); max-width: 320px; font-size: 1rem; line-height: 1.6;">Play the best daily word games and puzzles. Free, fast, and fun. No downloads or accounts required.</p>
+          </div>
+          
+          <div class="mega-links-grid">
+            <div class="mega-col">
+              <h3 class="mega-heading">Top Games</h3>
+              <ul class="mega-list">
+                <li><a href="/games/5-letter-word-guess/">Word Guess</a></li>
+                <li><a href="/games/guess-country/">Guess Country</a></li>
+                <li><a href="/games/hangman/">Hangman</a></li>
+                <li><a href="/">Play All Games</a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h3 class="mega-heading">Explore</h3>
+              <ul class="mega-list">
+                {siteNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h3 class="mega-heading">Company</h3>
+              <ul class="mega-list">
+                {footerNav.map(item => <li><a href={item.href}>{item.label}</a></li>)}
+                <li><a href="https://www.instagram.com/everywordgames/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="footer-links" aria-label="Footer">
-          {footerNav.map((item) => <a class="pill" href={item.href}>{item.label}</a>)}
-          <a class="pill" href="https://www.instagram.com/everywordgames/" target="_blank" rel="noopener noreferrer">Instagram</a>
+
+        <div class="mega-branding">
+          EVERYWORDGAMES
         </div>
       </div>
+
       <div class="sr-only">
         <h2>All Games Sitemap</h2>
         <ul>
@@ -119,6 +150,118 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         </ul>
       </div>
     </footer>
+
+    <style is:global>
+      .mega-footer {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 4rem 0 0 0;
+        margin-top: 4rem;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      /* Subtle gradient background pattern to give it a premium feel */
+      .mega-footer::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at 50% 120%, rgba(99, 158, 66, 0.05), transparent 60%),
+                    radial-gradient(circle at 100% 0%, rgba(255, 122, 0, 0.03), transparent 40%);
+        pointer-events: none;
+      }
+
+      .mega-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mega-top-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4rem;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+      }
+
+      .mega-brand-info {
+        flex: 1 1 300px;
+      }
+
+      .mega-links-grid {
+        flex: 2 1 500px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        justify-content: space-between;
+      }
+
+      .mega-col {
+        min-width: 140px;
+      }
+
+      .mega-heading {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        color: var(--text);
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+      }
+
+      .mega-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .mega-list a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .mega-list a:hover {
+        color: var(--v2-green, var(--green));
+      }
+
+      .mega-branding {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3rem, 12vw, 15rem);
+        line-height: 0.8;
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: -2px;
+        color: var(--text);
+        opacity: 0.05;
+        white-space: nowrap;
+        user-select: none;
+        margin-top: 2rem;
+        padding-bottom: 0;
+        transform: translateY(15%);
+      }
+      
+      [data-theme="dark"] .mega-branding {
+        opacity: 0.08;
+      }
+
+      @media (max-width: 768px) {
+        .mega-top-row { gap: 2.5rem; flex-direction: column; }
+        .mega-links-grid { gap: 2rem; justify-content: flex-start; }
+        .mega-branding { letter-spacing: -1px; transform: translateY(10%); }
+      }
+    </style>
     <script>
       import { loadStats, achievements } from "@/engines/playerStore";
 

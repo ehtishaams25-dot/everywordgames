@@ -5,7 +5,6 @@ import StatsPanel from "@/components/StatsPanel.astro";
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import { games } from "@/data/games";
 
-const featured = games.filter((game) => game.featured).slice(0, 8);
 const guessingGames = games.filter((game) => ["geography", "entertainment", "brands"].includes(game.category) && !game.comingSoon);
 const puzzleGames = games.filter((game) => ["word-games"].includes(game.category) && !game.comingSoon);
 const comingSoonGames = games.filter((game) => game.comingSoon);
@@ -71,30 +70,6 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
 
   <!-- SEO Content moved to bottom -->
   <section class="section" style="padding-top: 2rem;">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Top Games</h2>
-          <p>The most popular puzzles right now.</p>
-        </div>
-      </div>
-      <GameGrid games={featured} />
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Jump Back In</h2>
-          <p>Continue your recent games.</p>
-        </div>
-      </div>
-      <div class="grid" id="recent-games"></div>
-    </div>
-  </section>
-
-  <section class="section">
     <div class="container">
       <div class="section-header">
         <div>
@@ -201,66 +176,3 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
     </div>
   </section>
 </SiteLayout>
-
-<script>
-  import { games } from "@/data/games";
-  const recent = JSON.parse(localStorage.getItem("ewg:recent") ?? "[]") as string[];
-  const root = document.querySelector("#recent-games");
-  if (root) {
-    const cards = recent
-      .map((slug) => games.find((game) => game.slug === slug))
-      .filter((game): game is NonNullable<typeof game> => Boolean(game))
-      .map((game) => {
-        let bannerUrl = "";
-        if (game.slug === "hangman") bannerUrl = "/thumbnails/Hangman new.png";
-        else if (game.slug === "guess-country") bannerUrl = "/thumbnails/guess country new.png";
-        else if (game.slug === "guess-flag") bannerUrl = "/thumbnails/guess flag.png";
-        else if (game.slug === "guess-capital") bannerUrl = "/thumbnails/guess capital.png";
-        else if (game.slug === "guess-movie") bannerUrl = "/thumbnails/guess movie new.png";
-        else if (game.slug === "guess-tv-show") bannerUrl = "/thumbnails/guess tv show.png";
-        else if (game.slug === "guess-anime") bannerUrl = "/thumbnails/anime new.png";
-        else if (game.slug === "antonym-challenge") bannerUrl = "/thumbnails/antonym.png";
-        else if (game.slug === "missing-letters") bannerUrl = "/thumbnails/missing letters.png";
-        else if (game.slug === "synonym-challenge") bannerUrl = "/thumbnails/synonym.png";
-        else if (game.slug === "word-scramble") bannerUrl = "/thumbnails/word scramble.png";
-        else if (game.category === "word-guess" || game.category === "multi-word-guess") bannerUrl = "/thumbnails/word guess new.png";
-        else if (game.category === "geography") bannerUrl = "/thumbnails/geography category.png";
-        else if (game.category === "entertainment") bannerUrl = "/thumbnails/movie category.png";
-        else if (game.category === "brands") bannerUrl = "";
-        else if (game.category === "word-games" || game.category === "daily") bannerUrl = "/thumbnails/word category.png";
-
-        const initials = game.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
-        
-        let bannerHtml = bannerUrl 
-          ? `<img src="${bannerUrl}" alt="${game.name}" />`
-          : `<span class="tile-icon" style="box-shadow: none;">${initials}</span>`;
-          
-        const tagHtml = game.daily ? `<span class="card-tag">DAILY</span>` : (game.comingSoon ? `
-          <div style="position: absolute; inset: 0; background: var(--header-bg); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
-            <span style="background: rgba(255,120,0,0.9); color: white; padding: 0.5rem 1.5rem; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; transform: rotate(-5deg); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid white; border-radius: 4px;">Coming Soon</span>
-          </div>
-        ` : "");
-
-        const wrapperTag = game.comingSoon ? 'div' : 'a';
-        const hrefAttr = game.comingSoon ? '' : `href="/games/${game.slug}/"`;
-        const styleAttr = game.comingSoon ? 'style="cursor: default;"' : '';
-        const playBtnStyle = game.comingSoon ? 'style="background: var(--surface2); color: var(--muted);"' : '';
-
-        return `
-          <${wrapperTag} class="game-card" ${hrefAttr} ${styleAttr}>
-            <div class="card-banner" style="${!bannerUrl ? 'background: var(--surface); display: grid; place-items: center;' : ''}">
-              ${bannerHtml}
-              ${tagHtml}
-            </div>
-            <div class="card-body">
-              <span class="game-name">${game.name}</span>
-              <span class="game-desc">${game.description}</span>
-              <div class="play-btn" ${playBtnStyle}>${game.comingSoon ? "Coming Soon" : "▶ Play"}</div>
-            </div>
-          </${wrapperTag}>
-        `;
-      })
-      .join("");
-    root.innerHTML = cards || `<article class="stat"><strong>No recent games yet</strong><p class="muted">Play any mode and it will appear here.</p></article>`;
-  }
-</script>
