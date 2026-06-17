@@ -3,17 +3,6 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import GameCard from "@/components/GameCard.astro";
 import { games, playableGames } from "@/data/games";
 
-const featured = [
-  games.find((g) => g.slug === "5-letter-word-guess")!,
-  games.find((g) => g.slug === "guess-country")!,
-  games.find((g) => g.slug === "hangman")!,
-];
-
-const featuredMeta = [
-  { img: "/thumbnails/featured-word-guess.png", hook: "The classic. Crack the 5-letter code in 6 tries.", accent: "var(--v2-green)" },
-  { img: "/thumbnails/featured-guess-country.png", hook: "Name the nation from clues. How well do you know the world?", accent: "var(--v2-orange)" },
-  { img: "/thumbnails/featured-hangman.png", hook: "Reveal the word before your guesses run out.", accent: "var(--v2-green)" },
-];
 
 const categories = [
   { id: "word-guess", label: "WORD GUESS", games: games.filter((g) => g.category === "word-guess" && !g.comingSoon) },
@@ -42,20 +31,6 @@ const categories = [
       <!-- Center Game Container -->
       <div class="v2-game-core">
         
-        <!-- SPA Game Selector -->
-        <div class="v2-game-selector" id="main-game-selector">
-          <label for="spa-game-select" class="sr-only">Select a Game</label>
-          <div class="v2-select-wrapper" style="max-width: 250px;">
-            <select id="spa-game-select" class="v2-select">
-              {playableGames.filter(g => g.category === "word-guess" || g.category === "multi-word-guess").map(g => (
-                <option value={g.slug} data-engine={g.engine} selected={g.slug === "5-letter-word-guess"}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-            <span class="v2-select-icon">▼</span>
-          </div>
-        </div>
 
         <!-- The Game Mount Point -->
         <div id="game-root" data-slug="5-letter-word-guess">
@@ -105,30 +80,6 @@ const categories = [
             {cat.games.map(g => <GameCard game={g} />)}
             {cat.games.length === 0 && <p class="muted">More games coming soon!</p>}
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════════════════
-       SECTION 3 — FEATURED GAMES
-       ═══════════════════════════════════════════════════════ -->
-  <section class="v2-featured-section">
-    <div class="container">
-      <div class="v2-featured-grid">
-        {featured.map((game, idx) => (
-          <a href="#" class="v2-feature-card" data-spa-trigger={game.slug}>
-            <div class="v2-feature-img">
-              <img src={featuredMeta[idx].img} alt={game.name} loading="lazy" />
-              <div class="v2-feature-overlay"></div>
-              <span class="v2-feature-diff" data-diff={game.difficulty}>{game.difficulty}</span>
-            </div>
-            <div class="v2-feature-body">
-              <h3 class="v2-feature-name">{game.name}</h3>
-              <p class="v2-feature-hook">{featuredMeta[idx].hook}</p>
-            </div>
-          </a>
         ))}
       </div>
     </div>
@@ -386,10 +337,17 @@ const categories = [
 
   /* ── SECTION 1: TOP LAYOUT ── */
   .v2-top-section {
-    padding: 2rem 0;
+    padding: 0.5rem 0.75rem;
     min-height: calc(100vh - 80px);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .v2-top-section {
+      padding: 2rem 0;
+      align-items: center;
+    }
   }
 
   .v2-top-layout {
@@ -539,21 +497,6 @@ const categories = [
   }
 
 
-  /* ── SECTION 3: FEATURED ── */
-  .v2-featured-section {
-    padding: 3rem 0 4rem;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .v2-featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
-
 
 
   /* ── SECTION 4: HOW TO PLAY ANIMATIONS ── */
@@ -654,12 +597,15 @@ const categories = [
 
   /* Flip Reveal Animation */
   @keyframes v2-flip-reveal {
-    0% { transform: rotateX(0deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
-    50% { transform: rotateX(90deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
-    51% { background: inherit; border-color: inherit; color: #fff; }
-    100% { transform: rotateX(0deg); background: inherit; border-color: inherit; color: #fff; }
+    0%, 5% { transform: rotateX(0deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    15% { transform: rotateX(90deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    16% { transform: rotateX(90deg); background: var(--v2-green); border-color: var(--v2-green); color: #fff; }
+    25%, 80% { transform: rotateX(0deg); background: var(--v2-green); border-color: var(--v2-green); color: #fff; }
+    90% { transform: rotateX(90deg); background: var(--v2-green); border-color: var(--v2-green); color: #fff; }
+    91% { transform: rotateX(90deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    100% { transform: rotateX(0deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
   }
-  .v2-anim-reveal .v2-tile { animation: v2-flip-reveal 3s infinite; }
+  .v2-anim-reveal .v2-tile { animation: v2-flip-reveal 5s infinite; }
   .v2-anim-reveal .v2-tile:nth-child(1) { animation-delay: 0s; }
   .v2-anim-reveal .v2-tile:nth-child(2) { animation-delay: 0.2s; }
   .v2-anim-reveal .v2-tile:nth-child(3) { animation-delay: 0.4s; }
@@ -778,9 +724,9 @@ const categories = [
 <script>
   import { mountGame } from "@/lib/gameApp";
   import { loadStats, achievements } from "@/engines/playerStore";
+  import { games } from "@/data/games";
 
   const root = document.querySelector<HTMLElement>("#game-root");
-  const gameSelect = document.getElementById("spa-game-select") as HTMLSelectElement | null;
   const htpTemplates = document.querySelectorAll(".v2-htp-template");
 
   // Helper to switch game and HTP logic
@@ -799,18 +745,7 @@ const categories = [
       }, 50);
     }
 
-    if (gameSelect) {
-      if (engine === 'word-guess' || engine === 'multi-word-guess') {
-        const selContainer = document.getElementById("main-game-selector");
-        if (selContainer) selContainer.style.display = 'flex';
-        // Only update value if the option exists
-        const opt = Array.from(gameSelect.options).find(o => o.value === slug);
-        if (opt) gameSelect.value = slug;
-      } else {
-        const selContainer = document.getElementById("main-game-selector");
-        if (selContainer) selContainer.style.display = 'none';
-      }
-    }
+    // Select is now handled inside gameApp.ts header
 
     // Toggle HTP visibility
     htpTemplates.forEach(t => {
@@ -841,14 +776,15 @@ const categories = [
   }
 
   // 2. SPA Dropdown Change Listener
-  if (gameSelect) {
-    gameSelect.addEventListener("change", (e) => {
-      const selectedOption = gameSelect.options[gameSelect.selectedIndex];
+  document.addEventListener("change", (e) => {
+    const target = e.target as HTMLSelectElement;
+    if (target && target.id === "spa-game-select") {
+      const selectedOption = target.options[target.selectedIndex];
       const newSlug = selectedOption.value;
       const engine = selectedOption.getAttribute('data-engine') || 'word-guess';
       switchGame(newSlug, engine);
-    });
-  }
+    }
+  });
 
   // 3. Featured Card SPA Overrides
   // We want clicks on the feature cards to ALSO just swap the game instead of reloading
@@ -860,10 +796,8 @@ const categories = [
       if (newSlug) {
         // Find engine
         let engine = 'word-guess';
-        if (gameSelect) {
-          const opt = Array.from(gameSelect.options).find(o => o.value === newSlug);
-          if (opt) engine = opt.getAttribute('data-engine') || 'word-guess';
-        }
+        const gameObj = games.find(g => g.slug === newSlug);
+        if (gameObj) engine = gameObj.engine;
         switchGame(newSlug, engine);
         // Scroll to game
         document.querySelector('.v2-top-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -908,10 +842,8 @@ const categories = [
         const newSlug = parts[parts.length - 2] || parts[parts.length - 1]; // handle trailing slash
         
         let engine = 'word-guess';
-        if (gameSelect) {
-          const opt = Array.from(gameSelect.options).find(o => o.value === newSlug);
-          if (opt) engine = opt.getAttribute('data-engine') || 'word-guess';
-        }
+        const gameObj = games.find(g => g.slug === newSlug);
+        if (gameObj) engine = gameObj.engine;
         switchGame(newSlug, engine);
         // Scroll to game
         document.querySelector('.v2-top-section')?.scrollIntoView({ behavior: 'smooth' });

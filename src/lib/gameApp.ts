@@ -1,4 +1,4 @@
-import { games, type GameConfig } from "@/data/games";
+import { games, playableGames, type GameConfig } from "@/data/games";
 import {
   createGuessChallenge,
   normalizeAnswer,
@@ -665,18 +665,16 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
     root.innerHTML = `
       ${renderGameHeader(game, [`${answerLength} letters`], done ? "Play again" : isCountryGame || isFlagGame ? "New game" : "New clue")}
       ${mainContent}
-      <form class="guess-form" style="position: relative; margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; width: 100%; max-width: 400px; margin-inline: auto;">
-        <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? "Country, territory..." : "Enter guess"}" inputmode="${isCountryGame || isFlagGame ? "text" : "none"}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="flex: 1; min-width: 0; text-align: center; font-weight: bold; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text);" />
-        <button class="button" type="submit" style="padding: 0 1.5rem; white-space: nowrap; border-radius: 8px;">${isCountryGame || isFlagGame ? "🌍 GUESS" : "Submit"}</button>
-        ${
-          isCountryGame || isFlagGame
-            ? `
-        <div id="suggestion-container" style="display: none; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; text-align: center; color: var(--text-muted); font-size: 0.875rem;">
-          Did you mean <a href="#" id="suggestion-link" style="text-decoration: underline; font-weight: 500;"></a>?
+      <form class="guess-form" style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; width: 100%; max-width: 400px; margin-inline: auto;">
+        <div style="position: relative; flex: 1; min-width: 0;">
+          <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? "Country, territory..." : "Enter guess"}" inputmode="${isCountryGame || isFlagGame ? "text" : "none"}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="width: 100%; box-sizing: border-box; text-align: center; font-weight: bold; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text);" />
+          ${
+            isCountryGame || isFlagGame
+              ? `<div id="suggestion-container" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; z-index: 50; padding: 0; overflow-x: hidden;"></div>`
+              : ""
+          }
         </div>
-        `
-            : ""
-        }
+        <button class="button" type="submit" style="padding: 0 1.5rem; white-space: nowrap; border-radius: 8px;">${isCountryGame || isFlagGame ? "🌍 GUESS" : "Submit"}</button>
       </form>
       ${
         isCountryGame || isFlagGame
@@ -751,51 +749,67 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       const suggestionContainer = root.querySelector<HTMLDivElement>(
         "#suggestion-container",
       );
-      const suggestionLink =
-        root.querySelector<HTMLAnchorElement>("#suggestion-link");
 
-      if (input && suggestionContainer && suggestionLink) {
+      if (input && suggestionContainer) {
         input.addEventListener("input", () => {
           const val = input.value.trim().toLowerCase();
-          if (val.length < 3) {
-            suggestionContainer.style.display = "none";
-            return;
-          }
-          if (dataset.countries.some((c: string) => c.toLowerCase() === val)) {
+          if (val.length < 1) {
             suggestionContainer.style.display = "none";
             return;
           }
 
-          let bestMatch = "";
-          let minDistance = Infinity;
+          const matches = dataset.countries
+            .filter((c: string) => c.toLowerCase().includes(val))
+            .sort((a: string, b: string) => {
+              const aStarts = a.toLowerCase().startsWith(val);
+              const bStarts = b.toLowerCase().startsWith(val);
+              if (aStarts && !bStarts) return -1;
+              if (!aStarts && bStarts) return 1;
+              return a.localeCompare(b);
+            })
+            .slice(0, 5);
 
-          for (const country of dataset.countries) {
-            const d = levenshteinDistance(val, country.toLowerCase());
-            if (d < minDistance) {
-              minDistance = d;
-              bestMatch = country;
-            }
-          }
+          if (matches.length > 0 && !(matches.length === 1 && matches[0].toLowerCase() === val)) {
+            suggestionContainer.innerHTML = matches.map((m: string) => 
+              `<div class="suggestion-item" style="padding: 0.75rem 1rem; cursor: pointer; text-align: left; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--text);" data-value="${escapeHtml(m)}">${escapeHtml(m)}</div>`
+            ).join("");
+            
+            const lastItem = suggestionContainer.lastElementChild as HTMLElement;
+            if (lastItem) lastItem.style.borderBottom = "none";
 
-          const threshold = bestMatch.length > 6 ? 3 : 2;
-          if (minDistance > 0 && minDistance <= threshold) {
-            suggestionLink.textContent = bestMatch;
             suggestionContainer.style.display = "block";
+
+            const items = suggestionContainer.querySelectorAll(".suggestion-item");
+            items.forEach(item => {
+              item.addEventListener("click", () => {
+                input.value = item.getAttribute("data-value") ?? "";
+                suggestionContainer.style.display = "none";
+                input.focus();
+              });
+              item.addEventListener("mouseenter", () => {
+                (item as HTMLElement).style.background = "var(--surface2)";
+              });
+              item.addEventListener("mouseleave", () => {
+                (item as HTMLElement).style.background = "transparent";
+              });
+            });
           } else {
             suggestionContainer.style.display = "none";
           }
         });
 
-        suggestionLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          input.value = suggestionLink.textContent ?? "";
-          suggestionContainer.style.display = "none";
+        document.addEventListener("click", (e) => {
+          if (!input.contains(e.target as Node) && !suggestionContainer.contains(e.target as Node)) {
+            suggestionContainer.style.display = "none";
+          }
         });
       }
     }
 
     root.querySelector("form")?.addEventListener("submit", (event) => {
       event.preventDefault();
+      const suggestionContainer = root.querySelector<HTMLDivElement>("#suggestion-container");
+      if (suggestionContainer) suggestionContainer.style.display = "none";
       if (done) return;
       const input = root.querySelector<HTMLInputElement>("input");
       const value = input?.value.trim() ?? "";
@@ -1012,11 +1026,22 @@ function renderGameHeader(
   buttonLabel: string,
 ) {
   let selectHtml = "";
+  if (game.engine === "word-guess" || game.engine === "multi-word-guess") {
+    const letterGames = playableGames.filter(g => g.slug.match(/^\d+-letter-word-guess$/));
+    selectHtml = `
+      <div class="v2-select-wrapper" style="width: auto; position: relative;">
+        <select id="spa-game-select" class="v2-select" style="font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 1px; padding: 6px 30px 6px 12px; height: 100%; min-height: 36px; border-radius: 8px; border: 2px solid var(--border); background: var(--surface); color: var(--text); appearance: none; cursor: pointer;">
+          ${letterGames.map(g => `<option value="${g.slug}" data-engine="${g.engine}" ${g.slug === game.slug ? "selected" : ""}>${g.name}</option>`).join("")}
+        </select>
+        <span class="v2-select-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--v2-green); font-size: 0.8rem;">▼</span>
+      </div>
+    `;
+  }
 
-  return `<div class="game-top" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; margin-bottom: 1rem;">
+  return `<div class="game-top" style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; margin-bottom: 1rem;">
     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-      ${pills.length > 0 ? `<div class="toolbar" style="margin: 0;">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>` : ""}
       ${selectHtml}
+      ${pills.length > 0 ? `<div class="toolbar" style="margin: 0;">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>` : ""}
     </div>
     <button class="button secondary small" type="button" data-restart style="margin: 0; white-space: nowrap; flex-shrink: 0;">${buttonLabel}</button>
   </div>`;
@@ -1064,7 +1089,7 @@ function renderKeyboard(states: Record<string, LetterState> = {}) {
     ${keyboardRows
       .map((row, index) => {
         const keys =
-          index === 2 ? ["BACK", ...row.split(""), "ENTER"] : row.split("");
+          index === 2 ? ["ENTER", ...row.split(""), "BACK"] : row.split("");
         return `<div class="keyboard-row">${keys
           .map((letter) => {
             const label = letter === "BACK" ? "⌫" : letter === "ENTER" ? "Enter" : letter;
