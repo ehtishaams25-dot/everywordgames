@@ -6,13 +6,23 @@ interface Props {
   title?: string;
   description?: string;
   path?: string;
+  /** Override the default Open Graph / Twitter share image */
+  ogImage?: string;
+  /** Robots directive – defaults to "index, follow" */
+  robots?: string;
 }
 
 const {
   title = "EveryWordGames - The Word Game Website for Every Game on the Market",
   description = "Play every word game available on the market at everywordgames.com. Find daily word games, Word Guess variants, multi-board puzzles, country guessing, and fast word puzzles in one place.",
-  path = Astro.url.pathname
+  path = Astro.url.pathname,
+  ogImage = "/assets/hero-platform.png",
+  robots = "index, follow",
 } = Astro.props;
+
+const fullOgImage = ogImage.startsWith("http")
+  ? ogImage
+  : new URL(ogImage, Astro.site ?? "https://everywordgames.com").toString();
 
 const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toString();
 ---
@@ -34,11 +44,14 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="/assets/hero-platform.png" />
+    <meta property="og:image" content={fullOgImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImage} />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content="#FDFBF7" />
+    <slot name="head" />
 
     <style is:global>
       .sr-only {

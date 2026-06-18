@@ -1,0 +1,99 @@
+---
+/**
+ * GameSchema.astro
+ * Reusable component that generates VideoGame + SoftwareApplication
+ * JSON-LD structured data for Google Rich Snippets.
+ *
+ * Usage:
+ *   <GameSchema
+ *     title="5 Letter Word Guess"
+ *     description="Guess the hidden 5-letter word in six tries."
+ *     category="Word Game"
+ *     image="/assets/word-guess-hero.png"
+ *     url="/games/5-letter-word-guess/"
+ *   />
+ */
+
+interface Props {
+  /** The display name of the game */
+  title: string;
+  /** A short description of the game */
+  description: string;
+  /** Game category – defaults to "Word Game" */
+  category?: string;
+  /** Absolute or relative URL to a representative image */
+  image?: string;
+  /** Page URL path (used to build the full canonical URL) */
+  url?: string;
+}
+
+const {
+  title,
+  description,
+  category = "Word Game",
+  image = "/assets/hero-platform.png",
+  url = Astro.url.pathname,
+} = Astro.props;
+
+const siteUrl = (Astro.site ?? new URL("https://everywordgames.com")).origin;
+const fullUrl = new URL(url, siteUrl).toString();
+const fullImage = image.startsWith("http") ? image : new URL(image, siteUrl).toString();
+
+// VideoGame schema – the primary type for browser-based games
+const videoGameSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  name: title,
+  description,
+  url: fullUrl,
+  image: fullImage,
+  genre: category,
+  gamePlatform: "Web Browser",
+  applicationCategory: "Game",
+  operatingSystem: "Any",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
+  author: {
+    "@type": "Organization",
+    name: "EveryWordGames",
+    url: siteUrl,
+  },
+};
+
+// SoftwareApplication schema – helps with Play-style rich snippets
+const softwareAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: title,
+  description,
+  url: fullUrl,
+  image: fullImage,
+  applicationCategory: "GameApplication",
+  applicationSubCategory: category,
+  operatingSystem: "Any",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
+  author: {
+    "@type": "Organization",
+    name: "EveryWordGames",
+    url: siteUrl,
+  },
+};
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(videoGameSchema, null, 2)}
+/>
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(softwareAppSchema, null, 2)}
+/>
