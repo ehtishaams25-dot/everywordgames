@@ -12,6 +12,13 @@ import {
   evaluateGuess,
   getWords,
 } from "@/engines/wordGuessEngine";
+import {
+  createMergeLettersState,
+  moveMergeLetters,
+  getLetterForValue,
+  type MergeLettersState,
+  type Tile,
+} from "@/engines/mergeLettersEngine";
 import confetti from "canvas-confetti";
 import dataset from "@/data/categories";
 import { useGameFocus } from "./useGameFocus";
@@ -199,6 +206,7 @@ export function mountGame(root: HTMLElement) {
   if (game.engine === "multi-word-guess") mountMultiWordGuess(root, game);
   if (game.engine === "guessing") mountGuessing(root, game);
   if (game.engine === "word-puzzle") mountPuzzle(root, game);
+  if (game.engine === "grid-puzzle") mountMergeLetters(root, game);
 }
 
 function mountComingSoon(root: HTMLElement, game: GameConfig) {
@@ -1323,4 +1331,214 @@ function showCompletionPopup(
   overlay.appendChild(popup);
 
   root.appendChild(overlay);
+}
+
+function mountMergeLetters(root: HTMLElement, game: GameConfig) {
+  let state = createMergeLettersState();
+  let bestScore = parseInt(localStorage.getItem(`everywordgames-best-${game.slug}`) || "0", 10);
+  let started = Date.now();
+  let startX = 0;
+  let startY = 0;
+  let isInitialized = false;
+
+  const updateBestScore = () => {
+    if (state.score > bestScore) {
+      bestScore = state.score;
+      localStorage.setItem(`everywordgames-best-${game.slug}`, bestScore.toString());
+    }
+  };
+
+  const reset = () => {
+    state = createMergeLettersState();
+    started = Date.now();
+    render();
+  };
+
+  const handleKey = (e: KeyboardEvent) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || document.activeElement?.tagName === "INPUT") return;
+    let direction: "up" | "down" | "left" | "right" | null = null;
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") direction = "up";
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") direction = "down";
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") direction = "left";
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") direction = "right";
+
+    if (direction) {
+      e.preventDefault();
+      const oldGridStr = JSON.stringify(state.grid);
+      state = moveMergeLetters(state, direction);
+      if (JSON.stringify(state.grid) !== oldGridStr) {
+        updateBestScore();
+        render();
+        if (state.gameOver) {
+          recordGame(game.slug, false, elapsed(started));
+        }
+      }
+    }
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (!startX || !startY) return;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const diffX = endX - startX;
+    const diffY = endY - startY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (Math.abs(diffX) > 30) {
+        const direction = diffX > 0 ? "right" : "left";
+        const oldGridStr = JSON.stringify(state.grid);
+        state = moveMergeLetters(state, direction);
+        if (JSON.stringify(state.grid) !== oldGridStr) {
+          updateBestScore();
+          render();
+        }
+      }
+    } else {
+      if (Math.abs(diffY) > 30) {
+        const direction = diffY > 0 ? "down" : "up";
+        const oldGridStr = JSON.stringify(state.grid);
+        state = moveMergeLetters(state, direction);
+        if (JSON.stringify(state.grid) !== oldGridStr) {
+          updateBestScore();
+          render();
+        }
+      }
+    }
+    startX = 0;
+    startY = 0;
+  };
+
+  const render = () => {
+    if (!isInitialized) {
+      root.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 400px; margin: 0 auto 1.5rem auto;">
+          <div>
+            <h2 style="margin: 0; font-size: 1.5rem; color: var(--text);">${game.name}</h2>
+            <p style="margin: 0; font-size: 0.875rem; color: var(--muted);">Join the letters!</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <div style="background: var(--surface2); padding: 0.5rem 1rem; border-radius: 6px; text-align: center;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold; color: var(--muted);">Score</div>
+              <div id="merge-score" style="font-weight: bold; color: var(--text); font-size: 1.125rem;">0</div>
+            </div>
+            <div style="background: var(--surface2); padding: 0.5rem 1rem; border-radius: 6px; text-align: center;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold; color: var(--muted);">Best</div>
+              <div id="merge-best-score" style="font-weight: bold; color: var(--text); font-size: 1.125rem;">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-board-container" style="max-width: 400px; margin: 0 auto; position: relative; touch-action: none;">
+          <div class="merge-board-grid">
+            ${Array(16).fill('<div class="merge-grid-cell"></div>').join("")}
+          </div>
+          <div id="merge-tile-container" class="merge-tile-container"></div>
+          <div id="merge-game-over-container"></div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 2rem;">
+          <button class="button restart-btn" style="background: var(--surface2); color: var(--text);">New Game</button>
+        </div>
+      `;
+
+      root.querySelectorAll('.restart-btn').forEach(btn => {
+        btn.addEventListener('click', reset);
+      });
+
+      const boardContainer = root.querySelector('.merge-board-container') as HTMLElement;
+      if (boardContainer) {
+        boardContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+        boardContainer.addEventListener('touchend', handleTouchEnd);
+      }
+
+      if (activeKeydownHandler) {
+        window.removeEventListener("keydown", activeKeydownHandler);
+      }
+      activeKeydownHandler = handleKey;
+      window.addEventListener("keydown", activeKeydownHandler);
+
+      isInitialized = true;
+    }
+
+    // Update scores
+    const scoreEl = root.querySelector('#merge-score');
+    if (scoreEl) scoreEl.textContent = state.score.toString();
+    const bestScoreEl = root.querySelector('#merge-best-score');
+    if (bestScoreEl) bestScoreEl.textContent = bestScore.toString();
+
+    // Game Over
+    const gameOverContainer = root.querySelector('#merge-game-over-container');
+    if (gameOverContainer) {
+      if (state.gameOver) {
+        if (!gameOverContainer.innerHTML) {
+          gameOverContainer.innerHTML = `
+            <div class="merge-game-over">
+              <h2 style="font-size: 2rem; margin-bottom: 1rem; color: var(--text);">Game Over!</h2>
+              <button class="button restart-btn-go" style="padding: 0.75rem 2rem; font-size: 1.125rem;">Try Again</button>
+            </div>
+          `;
+          gameOverContainer.querySelector('.restart-btn-go')?.addEventListener('click', reset);
+        }
+      } else {
+        gameOverContainer.innerHTML = '';
+      }
+    }
+
+    const container = root.querySelector('#merge-tile-container');
+    if (!container) return;
+
+    const tilesToRender: Tile[] = [];
+    for (let r = 0; r < 4; r++) {
+      for (let c = 0; c < 4; c++) {
+        const tile = state.grid[r][c];
+        if (tile) {
+          if (tile.mergedFrom) {
+            tilesToRender.push(tile.mergedFrom[0]);
+            tilesToRender.push(tile.mergedFrom[1]);
+          }
+          tilesToRender.push(tile);
+        }
+      }
+    }
+
+    const renderedIds = new Set<string>();
+
+    tilesToRender.forEach(tile => {
+      const isMerged = !!tile.mergedFrom;
+      const idStr = `tile-${tile.id}`;
+      renderedIds.add(idStr);
+
+      const classes = [
+        "merge-tile",
+        `merge-tile-${tile.value}`,
+        `merge-position-${tile.col + 1}-${tile.row + 1}`
+      ];
+      if (tile.isNew) classes.push("merge-tile-new");
+      if (isMerged) classes.push("merge-tile-merged");
+
+      let el = container.querySelector(`#${idStr}`) as HTMLElement;
+      if (!el) {
+        el = document.createElement("div");
+        el.id = idStr;
+        const inner = document.createElement("div");
+        inner.className = "merge-tile-inner";
+        inner.textContent = getLetterForValue(tile.value);
+        el.appendChild(inner);
+        container.appendChild(el);
+      }
+      
+      el.className = classes.join(" ");
+    });
+
+    Array.from(container.children).forEach(node => {
+      if (!renderedIds.has(node.id)) {
+        node.remove();
+      }
+    });
+  };
+
+  render();
 }
