@@ -3,6 +3,7 @@ export type GameEngine =
   | "multi-word-guess"
   | "guessing"
   | "word-puzzle"
+  | "grid-puzzle"
   | "coming-soon";
 export type GameCategory =
   | "word-guess"
@@ -11,6 +12,7 @@ export type GameCategory =
   | "entertainment"
   | "brands"
   | "word-games"
+  | "grid-games"
   | "daily"
   | "future";
 export type Difficulty = "Easy" | "Medium" | "Hard" | "Expert";
@@ -219,6 +221,16 @@ export const games: GameConfig[] = [
     trending: false,
     mode: mode as string,
   })),
+  {
+    slug: "merge-letters",
+    name: "Merge Letters",
+    description: "Slide and merge identical letters to reach higher letters of the alphabet.",
+    category: "grid-games",
+    engine: "grid-puzzle",
+    difficulty: "Medium",
+    featured: true,
+    trending: true,
+  },
   ...[
     [
       "daily-word",
@@ -299,6 +311,7 @@ export const categoryLabels: Record<GameCategory, string> = {
   entertainment: "Entertainment",
   brands: "Brands",
   "word-games": "Word Games",
+  "grid-games": "Grid Games",
   daily: "Daily Challenges",
   future: "Coming Soon",
 };

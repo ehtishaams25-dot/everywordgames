@@ -1657,3 +1657,129 @@ h3 {
     line-height: 1.5;
     margin: 0;
   }
+
+/* Merge Letters Grid */
+.merge-board-container {
+  background: #bbada0;
+  border-radius: 6px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.merge-board-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  aspect-ratio: 1;
+}
+.merge-grid-cell {
+  background: rgba(238, 228, 218, 0.35);
+  border-radius: 3px;
+}
+.merge-tile-container {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  pointer-events: none;
+}
+.merge-tile {
+  position: absolute;
+  width: calc((100% - 24px) / 4);
+  height: calc((100% - 24px) / 4);
+  border-radius: 3px;
+  transition: transform 100ms ease-in-out;
+}
+.merge-tile-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  border-radius: 3px;
+  color: #776e65;
+  background: #eee4da;
+}
+
+/* Animations */
+@keyframes appear {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes pop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.merge-tile-new .merge-tile-inner {
+  animation: appear 200ms ease 100ms;
+  animation-fill-mode: backwards;
+}
+.merge-tile-merged .merge-tile-inner {
+  animation: pop 200ms ease 100ms;
+  animation-fill-mode: backwards;
+}
+
+/* Positions */
+.merge-position-1-1 { transform: translate(0, 0); }
+.merge-position-2-1 { transform: translate(calc(100% + 8px), 0); }
+.merge-position-3-1 { transform: translate(calc(200% + 16px), 0); }
+.merge-position-4-1 { transform: translate(calc(300% + 24px), 0); }
+
+.merge-position-1-2 { transform: translate(0, calc(100% + 8px)); }
+.merge-position-2-2 { transform: translate(calc(100% + 8px), calc(100% + 8px)); }
+.merge-position-3-2 { transform: translate(calc(200% + 16px), calc(100% + 8px)); }
+.merge-position-4-2 { transform: translate(calc(300% + 24px), calc(100% + 8px)); }
+
+.merge-position-1-3 { transform: translate(0, calc(200% + 16px)); }
+.merge-position-2-3 { transform: translate(calc(100% + 8px), calc(200% + 16px)); }
+.merge-position-3-3 { transform: translate(calc(200% + 16px), calc(200% + 16px)); }
+.merge-position-4-3 { transform: translate(calc(300% + 24px), calc(200% + 16px)); }
+
+.merge-position-1-4 { transform: translate(0, calc(300% + 24px)); }
+.merge-position-2-4 { transform: translate(calc(100% + 8px), calc(300% + 24px)); }
+.merge-position-3-4 { transform: translate(calc(200% + 16px), calc(300% + 24px)); }
+.merge-position-4-4 { transform: translate(calc(300% + 24px), calc(300% + 24px)); }
+
+/* Colors for letters */
+.merge-tile-1 .merge-tile-inner { background: #eee4da; color: #776e65; } /* A */
+.merge-tile-2 .merge-tile-inner { background: #ede0c8; color: #776e65; } /* B */
+.merge-tile-3 .merge-tile-inner { background: #f2b179; color: #f9f6f2; } /* C */
+.merge-tile-4 .merge-tile-inner { background: #f59563; color: #f9f6f2; } /* D */
+.merge-tile-5 .merge-tile-inner { background: #f67c5f; color: #f9f6f2; } /* E */
+.merge-tile-6 .merge-tile-inner { background: #f65e3b; color: #f9f6f2; } /* F */
+.merge-tile-7 .merge-tile-inner { background: #edcf72; color: #f9f6f2; font-size: 2rem; } /* G */
+.merge-tile-8 .merge-tile-inner { background: #edcc61; color: #f9f6f2; font-size: 2rem; } /* H */
+.merge-tile-9 .merge-tile-inner { background: #edc850; color: #f9f6f2; font-size: 2rem; } /* I */
+.merge-tile-10 .merge-tile-inner { background: #edc53f; color: #f9f6f2; font-size: 2rem; } /* J */
+.merge-tile-11 .merge-tile-inner { background: #edc22e; color: #f9f6f2; font-size: 1.5rem; } /* K */
+/* Beyond K, use fallback styling */
+.merge-tile-12 .merge-tile-inner, .merge-tile-13 .merge-tile-inner, .merge-tile-14 .merge-tile-inner,
+.merge-tile-15 .merge-tile-inner, .merge-tile-16 .merge-tile-inner, .merge-tile-17 .merge-tile-inner,
+.merge-tile-18 .merge-tile-inner, .merge-tile-19 .merge-tile-inner, .merge-tile-20 .merge-tile-inner,
+.merge-tile-21 .merge-tile-inner, .merge-tile-22 .merge-tile-inner, .merge-tile-23 .merge-tile-inner,
+.merge-tile-24 .merge-tile-inner, .merge-tile-25 .merge-tile-inner, .merge-tile-26 .merge-tile-inner {
+  background: #3c3a32; color: #f9f6f2; font-size: 1.5rem;
+}
+
+.merge-game-over {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(238, 228, 218, 0.73);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  animation: fade-in 800ms ease 1200ms;
+  animation-fill-mode: both;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}

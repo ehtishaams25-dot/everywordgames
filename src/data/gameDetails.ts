@@ -54,6 +54,13 @@ export function getGameDetails(game: GameConfig): GameDetails {
         `Submit your answer to see if you are correct.`
       );
     }
+  } else if (game.engine === "grid-puzzle") {
+    howToPlay.push(
+      `Use your arrow keys or swipe on the screen to move the tiles.`,
+      `When two tiles with the same letter touch, they merge into the next letter in the alphabet!`,
+      `For example, merging two 'A' tiles creates a 'B' tile.`,
+      `Keep merging letters to see how far down the alphabet you can go before the board fills up.`
+    );
   } else {
     // Default fallback
     howToPlay.push(

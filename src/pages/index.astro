@@ -6,7 +6,7 @@ import { games, playableGames } from "@/data/games";
 
 const categories = [
   { id: "geography", label: "GEOGRAPHY", games: games.filter((g) => g.category === "geography" && !g.comingSoon) },
-  { id: "puzzles", label: "PUZZLES", games: games.filter((g) => g.category === "word-games" && !g.comingSoon) },
+  { id: "puzzles", label: "PUZZLES", games: games.filter((g) => (g.category === "word-games" || g.category === "grid-games") && !g.comingSoon) },
   { id: "multi-word", label: "MULTI-WORD", games: games.filter((g) => g.category === "multi-word-guess" && !g.comingSoon) },
 ];
 ---
@@ -509,6 +509,48 @@ const categories = [
               <div class="v2-demo-guess-bar success v2-anim-win-simple">
                 <span>FRANCE</span>
                 <span>🎉</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTP: Merge Letters -->
+      <div id="htp-merge-letters" class="v2-htp-template" style="display: none;">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Slide the tiles</h3>
+            <p class="v2-htp-desc">Use arrow keys or swipe to move all letters across the board at once.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-float">
+                <span class="v2-tile" style="background: #eee4da; color: #776e65;">A</span>
+                <span style="font-size: 1.5rem; color: var(--muted);">➡️</span>
+                <span class="v2-tile" style="background: #eee4da; color: #776e65;">A</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Merge letters</h3>
+            <p class="v2-htp-desc">When two identical letters touch, they merge into the next letter of the alphabet!</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-win-simple">
+                <span class="v2-tile" style="background: #eee4da; color: #776e65;">A</span>
+                <span style="font-weight: bold; margin: 0 5px;">+</span>
+                <span class="v2-tile" style="background: #eee4da; color: #776e65;">A</span>
+                <span style="font-weight: bold; margin: 0 5px;">=</span>
+                <span class="v2-tile" style="background: #ede0c8; color: #776e65;">B</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Reach the end</h3>
+            <p class="v2-htp-desc">Keep merging letters to progress through the alphabet without filling the board.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-scramble-shuffle">
+                <span class="v2-tile" style="background: #edc22e; color: #f9f6f2; border: 2px solid rgba(255, 255, 255, 0.5);">K</span>
               </div>
             </div>
           </div>
@@ -1138,6 +1180,8 @@ const categories = [
       targetHtpId = 'htp-missing-letters';
     } else if (slug === 'word-scramble') {
       targetHtpId = 'htp-word-scramble';
+    } else if (slug === 'merge-letters') {
+      targetHtpId = 'htp-merge-letters';
     } else if (engine === 'guessing' || engine === 'countries' || engine === 'flags') {
       targetHtpId = 'htp-guessing';
     } else if (engine === 'word-puzzle' || engine === 'hangman' || engine === 'scramble') {
