@@ -4,6 +4,7 @@ export type GameEngine =
   | "guessing"
   | "word-puzzle"
   | "grid-puzzle"
+  | "word-search"
   | "coming-soon";
 export type GameCategory =
   | "word-guess"
@@ -230,6 +231,16 @@ export const games: GameConfig[] = [
     difficulty: "Medium",
     featured: true,
     trending: true,
+  },
+  {
+    slug: "word-search",
+    name: "Word Search",
+    description: "Find and circle hidden words in a grid of letters by dragging across them.",
+    category: "word-games",
+    engine: "word-search",
+    difficulty: "Easy",
+    featured: false,
+    trending: false,
   },
   ...[
     [

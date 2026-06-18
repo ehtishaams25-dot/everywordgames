@@ -61,6 +61,14 @@ export function getGameDetails(game: GameConfig): GameDetails {
       `For example, merging two 'A' tiles creates a 'B' tile.`,
       `Keep merging letters to see how far down the alphabet you can go before the board fills up.`
     );
+  } else if (game.engine === "word-search") {
+    howToPlay.push(
+      `Scan the grid of letters to find the hidden words listed on the right.`,
+      `Click and drag (or tap and swipe on mobile) across the letters to select a word.`,
+      `Words can be hidden horizontally, vertically, or diagonally, in any direction.`,
+      `When you find a word, it will be highlighted with a colorful line and crossed off the list.`,
+      `Find all the hidden words to complete the puzzle!`
+    );
   } else {
     // Default fallback
     howToPlay.push(

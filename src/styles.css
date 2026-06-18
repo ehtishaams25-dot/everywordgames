@@ -720,6 +720,13 @@ h3 {
   padding: clamp(1.5rem, 4vw, 2.5rem);
 }
 
+/* Word Search needs full-width breathing room */
+.game-stage[data-slug="word-search"] {
+  padding: 1rem 0.5rem;
+  background: transparent;
+  box-shadow: none;
+}
+
 .side-panel {
   display: none;
 }
@@ -1782,4 +1789,127 @@ h3 {
 @keyframes fade-in {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────
+   WORD SEARCH GAME STYLES
+   ───────────────────────────────────────────── */
+.ws-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ws-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Always stack: word list on top, grid below */
+.ws-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Word list — always horizontal wrapping pills on top */
+.ws-word-list {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.ws-word-list-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-transform: uppercase;
+  width: 100%;
+  margin-bottom: 0.1rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ws-word-item {
+  font-size: 0.75rem;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  transition: color 0.3s, background 0.3s, border-color 0.3s;
+  background: var(--surface2);
+}
+
+/* Grid fills width, square, with padding on mobile */
+.ws-grid-wrap {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  touch-action: none;
+}
+
+.ws-grid {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  cursor: crosshair;
+}
+
+.ws-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--border);
+  font-family: "DM Sans", monospace;
+  font-size: clamp(0.65rem, 3.5vw, 1rem);
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface);
+  transition: background 0.1s, color 0.1s, transform 0.1s;
+  cursor: crosshair;
+  aspect-ratio: 1 / 1;
+}
+
+.ws-cell:hover {
+  background: var(--surface2);
+}
+
+.ws-cell.ws-drag {
+  transition: none;
+}
+
+.ws-cell.ws-found {
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Desktop: cap width so the grid stays compact and readable */
+@media (min-width: 560px) {
+  .ws-container {
+    max-width: 520px;
+  }
+
+  .ws-cell {
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+  }
 }
