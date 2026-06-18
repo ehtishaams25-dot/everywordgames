@@ -305,9 +305,9 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
-  { href: "/games/5-letter-word-guess/", label: "Word Guess" },
-  { href: "/guess/", label: "Guess" },
-  { href: "/word-games/", label: "Puzzles" },
+  { href: "/?game=5-letter-word-guess", label: "Word Guess" },
+  { href: "/?game=guess-country", label: "Guess" },
+  { href: "/?game=hangman", label: "Puzzles" },
   { href: "/stats/", label: "Stats" },
   { href: "/achievements/", label: "Awards" },
   { href: "/blog/", label: "Blog" },

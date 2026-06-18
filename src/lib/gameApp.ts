@@ -260,6 +260,7 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
     if (!inAnswerList && !inDictionary) {
       setMessage(root, "Word not in dictionary.");
       invalidGuess = true;
+      isSubmitting = false;
       render();
       setTimeout(() => {
         invalidGuess = false;
@@ -275,6 +276,7 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
     ) {
       setMessage(root, "Word already guessed.");
       invalidGuess = true;
+      isSubmitting = false;
       render();
       setTimeout(() => {
         invalidGuess = false;

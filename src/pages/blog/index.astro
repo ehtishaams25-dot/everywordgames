@@ -16,7 +16,7 @@ allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
         </div>
       </div>
 
-      <div class="grid" style="margin-top: 2rem;">
+      <div class="blog-grid" style="margin-top: 2rem;">
         {allPosts.map((post) => (
           <a class="game-card" href={`/blog/${post.slug}/`}>
             <div class="card-body">
@@ -33,3 +33,22 @@ allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
     </div>
   </section>
 </SiteLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+  }
+</style>
