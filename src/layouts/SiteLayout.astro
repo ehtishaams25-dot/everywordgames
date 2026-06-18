@@ -201,6 +201,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         gap: 4rem;
         justify-content: space-between;
         margin-bottom: 3rem;
+        padding-left: 1.5rem;
       }
 
       .mega-brand-info {
@@ -251,7 +252,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
 
       .mega-branding {
         font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(3rem, 12vw, 15rem);
+        font-size: clamp(3rem, 13vw, 11.5rem);
         line-height: 0.8;
         font-weight: 900;
         text-align: center;
@@ -260,9 +261,8 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
         opacity: 0.05;
         white-space: nowrap;
         user-select: none;
-        margin-top: 2rem;
-        padding-bottom: 0;
-        transform: translateY(15%);
+        margin-top: 3rem;
+        padding-bottom: 1rem;
       }
       
       [data-theme="dark"] .mega-branding {
@@ -272,7 +272,12 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
       @media (max-width: 768px) {
         .mega-top-row { gap: 2.5rem; flex-direction: column; }
         .mega-links-grid { gap: 2rem; justify-content: flex-start; }
-        .mega-branding { letter-spacing: -1px; transform: translateY(10%); }
+        .mega-branding { 
+          letter-spacing: -1px; 
+          font-size: 14vw;
+          margin-top: 2rem;
+          padding-bottom: 1.5rem;
+        }
       }
     </style>
     <script>
