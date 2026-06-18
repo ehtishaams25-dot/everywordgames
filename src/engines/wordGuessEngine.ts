@@ -14,7 +14,7 @@ export function getWords(length: number): string[] {
   return (lists[String(length)] ?? lists["5"]).map((word) => word.toLowerCase());
 }
 
-function getHistory(): string[] {
+export function getHistory(): string[] {
   if (typeof window === "undefined") return [];
   try {
     const data = localStorage.getItem("ewg_played_words");
@@ -24,7 +24,7 @@ function getHistory(): string[] {
   }
 }
 
-function addHistory(word: string) {
+export function addHistory(word: string) {
   if (typeof window === "undefined") return;
   const history = getHistory();
   if (!history.includes(word)) {

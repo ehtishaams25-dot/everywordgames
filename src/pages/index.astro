@@ -1,16 +1,22 @@
 ---
-import GameGrid from "@/components/GameGrid.astro";
-import GameSlider from "@/components/GameSlider.astro";
-import StatsPanel from "@/components/StatsPanel.astro";
 import SiteLayout from "@/layouts/SiteLayout.astro";
-import { games } from "@/data/games";
+import GameCard from "@/components/GameCard.astro";
+import { games, playableGames } from "@/data/games";
 
-const guessingGames = games.filter((game) => ["geography", "entertainment", "brands"].includes(game.category) && !game.comingSoon);
-const puzzleGames = games.filter((game) => ["word-games"].includes(game.category) && !game.comingSoon);
-const comingSoonGames = games.filter((game) => game.comingSoon);
+
+const categories = [
+  { id: "geography", label: "GEOGRAPHY", games: games.filter((g) => g.category === "geography" && !g.comingSoon) },
+  { id: "puzzles", label: "PUZZLES", games: games.filter((g) => g.category === "word-games" && !g.comingSoon) },
+  { id: "multi-word", label: "MULTI-WORD", games: games.filter((g) => g.category === "multi-word-guess" && !g.comingSoon) },
+];
 ---
 
-<SiteLayout title="Play Free Online Word Games | Daily Puzzles & Geography Hub" description="Challenge your mind with the best free online word games! Play daily 5-letter word guesses, word scrambles, hangman, and guess the country geography trivia." path="/">
+<SiteLayout
+  title="Play Free Online Word Games | Daily Puzzles & Geography Hub"
+  description="Challenge your mind with the best free online word games! Play daily 5-letter word guesses, word scrambles, hangman, and guess the country geography trivia."
+  path="/"
+>
+
   <script type="application/ld+json" is:inline>
   {
     "@context": "https://schema.org",
@@ -68,62 +74,343 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
   }
   </script>
 
-  <!-- SEO Content moved to bottom -->
-  <section class="section" style="padding-top: 2rem;">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Guessing Games</h2>
-          <p>Country, flag, capital, movie, TV, anime guessing modes.</p>
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 1 — THE GAME & SPA DROPDOWN
+       ═══════════════════════════════════════════════════════ -->
+  <section class="v2-top-section">
+    <div class="v2-top-layout container">
+      <!-- Left Ad Placeholder -->
+      <div class="v2-ad-placeholder left">
+        <div class="v2-ad-inner"></div>
+      </div>
+
+      <!-- Center Game Container -->
+      <div class="v2-game-core">
+        
+
+        <!-- The Game Mount Point -->
+        <div id="game-root" data-slug="5-letter-word-guess">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; gap: 1rem;">
+            <div class="v2-spinner"></div>
+            <p class="muted" style="text-align: center; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;">Loading Game...</p>
+          </div>
         </div>
       </div>
-      {guessingGames.length > 4 ? <GameSlider games={guessingGames} /> : <GameGrid games={guessingGames} />}
+
+      <!-- Right Ad Placeholder -->
+      <div class="v2-ad-placeholder right">
+        <div class="v2-ad-inner"></div>
+      </div>
     </div>
   </section>
 
-  <section class="section">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 2 — CATEGORIES TABS
+       ═══════════════════════════════════════════════════════ -->
+  <section class="v2-tabs-section">
     <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Word Puzzles</h2>
-          <p>Hangman, scrambles, missing letters, synonym challenges.</p>
-        </div>
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; gap: 1rem;">
+        <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin: 0; color: var(--text);">OTHER GAMES</h2>
+        <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
       </div>
-      {puzzleGames.length > 4 ? <GameSlider games={puzzleGames} /> : <GameGrid games={puzzleGames} />}
+      <div class="v2-tabs" role="tablist">
+        {categories.map((cat, i) => (
+          <button 
+            class={`v2-tab-btn ${i === 0 ? 'active' : ''}`} 
+            role="tab" 
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${cat.id}`}
+            id={`tab-${cat.id}`}
+            data-target={`panel-${cat.id}`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+      
+      <div class="v2-tab-content-wrap">
+        {categories.map((cat, i) => (
+          <div 
+            class={`v2-tab-panel grid ${i === 0 ? 'active' : ''}`} 
+            id={`panel-${cat.id}`} 
+            role="tabpanel" 
+            aria-labelledby={`tab-${cat.id}`}
+          >
+            {cat.games.map(g => <GameCard game={g} />)}
+            {cat.games.length === 0 && <p class="muted">More games coming soon!</p>}
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="section">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 4 — DYNAMIC HOW TO PLAY
+       ═══════════════════════════════════════════════════════ -->
+  <section class="v2-how-to-section">
     <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Coming Soon</h2>
-          <p>Exciting new modes currently in development.</p>
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 3rem; gap: 1rem;">
+        <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin: 0; color: var(--text);">HOW TO PLAY</h2>
+        <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
+      </div>
+      
+      <!-- HTP: Word Guess Engine (Word Guess, Multi Word Guess) -->
+      <div id="htp-word-guess" class="v2-htp-template active">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Enter a word</h3>
+            <p class="v2-htp-desc">Type in a word and press enter to start. You have a limited number of tries to guess the hidden word.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-typing">
+                <span class="v2-tile">F</span>
+                <span class="v2-tile">L</span>
+                <span class="v2-tile">A</span>
+                <span class="v2-tile">R</span>
+                <span class="v2-tile">E</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Use color clues</h3>
+            <p class="v2-htp-desc">Green means correct. Yellow means right letter, wrong spot. Gray means it's not in the word.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-reveal">
+                <span class="v2-tile v2-t-absent">F</span>
+                <span class="v2-tile v2-t-absent">L</span>
+                <span class="v2-tile v2-t-absent">A</span>
+                <span class="v2-tile v2-t-present">R</span>
+                <span class="v2-tile v2-t-correct">E</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Solve the puzzle</h3>
+            <p class="v2-htp-desc">Narrow down your guesses using the clues to solve the puzzle and keep your streak alive.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-reveal">
+                <span class="v2-tile v2-t-correct">P</span>
+                <span class="v2-tile v2-t-correct">R</span>
+                <span class="v2-tile v2-t-correct">I</span>
+                <span class="v2-tile v2-t-correct">D</span>
+                <span class="v2-tile v2-t-correct">E</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {comingSoonGames.length > 4 ? <GameSlider games={comingSoonGames} /> : <GameGrid games={comingSoonGames} />}
+
+      <!-- HTP: Guessing Engine (Country, Movie, Flag) -->
+      <div id="htp-guessing" class="v2-htp-template" style="display: none;">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Read the clues</h3>
+            <p class="v2-htp-desc">A new hint is revealed with each wrong guess. Use your knowledge to narrow down the answer.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-list">
+                <div class="v2-demo-hint">Starts with "A"</div>
+                <div class="v2-demo-hint locked">🔒 Locked</div>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Make a guess</h3>
+            <p class="v2-htp-desc">Type your answer. If you're playing a geography game, you'll see distance and direction hints.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-guess-bar">
+                <span>FRANCE</span>
+                <span style="color: var(--v2-orange);">1200km ↗️</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Find the answer</h3>
+            <p class="v2-htp-desc">Solve it in as few guesses as possible. The fewer hints you need, the better!</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-guess-bar success">
+                <span>GERMANY</span>
+                <span>🎉</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTP: Word Puzzle Engine (Hangman, Scramble) -->
+      <div id="htp-word-puzzle" class="v2-htp-template" style="display: none;">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Look at the blanks</h3>
+            <p class="v2-htp-desc">You are given empty spaces representing the letters of a hidden word.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row">
+                <span class="v2-line">_</span>
+                <span class="v2-line">_</span>
+                <span class="v2-line">_</span>
+                <span class="v2-line">_</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Guess letters</h3>
+            <p class="v2-htp-desc">Pick letters you think are in the word. Careful, too many wrong guesses will cost you the game.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row">
+                <span class="v2-line v2-filled">W</span>
+                <span class="v2-line">_</span>
+                <span class="v2-line v2-filled">R</span>
+                <span class="v2-line">_</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Complete the word</h3>
+            <p class="v2-htp-desc">Fill in all the blanks to solve the puzzle and win!</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-win-simple">
+                <span class="v2-tile v2-t-correct">W</span>
+                <span class="v2-tile v2-t-correct">O</span>
+                <span class="v2-tile v2-t-correct">R</span>
+                <span class="v2-tile v2-t-correct">D</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTP: Word Scramble -->
+      <div id="htp-word-scramble" class="v2-htp-template" style="display: none;">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Look at the scramble</h3>
+            <p class="v2-htp-desc">You are given a set of scrambled letters that form a hidden word.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-scramble-shuffle">
+                <span class="v2-tile">O</span>
+                <span class="v2-tile">D</span>
+                <span class="v2-tile">W</span>
+                <span class="v2-tile">R</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Rearrange letters</h3>
+            <p class="v2-htp-desc">Click or type the letters in the correct order to build the word.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row">
+                <span class="v2-line v2-filled">W</span>
+                <span class="v2-line v2-filled">O</span>
+                <span class="v2-line">_</span>
+                <span class="v2-line">_</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Complete the word</h3>
+            <p class="v2-htp-desc">Solve the scramble to win the puzzle and keep your streak alive.</p>
+            <div class="v2-htp-visual">
+              <div class="v2-demo-row v2-anim-win-simple">
+                <span class="v2-tile v2-t-correct">W</span>
+                <span class="v2-tile v2-t-correct">O</span>
+                <span class="v2-tile v2-t-correct">R</span>
+                <span class="v2-tile v2-t-correct">D</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <section class="section">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 5 — PLAYER PROGRESS
+       ═══════════════════════════════════════════════════════ -->
+  <section class="v2-progress-section">
     <div class="container">
-      <div class="section-header">
-        <div>
-          <h2 style="font-weight: 800;">Player Profile</h2>
-          <p>Your stats, streaks, and unlocked badges.</p>
+      <div class="v2-progress-card" id="v2-progress">
+        <div class="v2-progress-left">
+          <div class="v2-xp-ring-wrap">
+            <svg class="v2-xp-ring" viewBox="0 0 120 120">
+              <circle class="v2-xp-track" cx="60" cy="60" r="52" />
+              <circle class="v2-xp-fill" cx="60" cy="60" r="52" id="v2-xp-circle" />
+              <text x="60" y="54" class="v2-xp-level" id="v2-xp-level-text">1</text>
+              <text x="60" y="72" class="v2-xp-label">LEVEL</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="v2-progress-center">
+          <h3 class="v2-progress-title">Your Journey</h3>
+          <div class="v2-stat-row">
+            <div class="v2-mini-stat">
+              <span class="v2-mini-val" id="v2-stat-played">0</span>
+              <span class="v2-mini-label">Played</span>
+            </div>
+            <div class="v2-mini-stat">
+              <span class="v2-mini-val" id="v2-stat-wins">0</span>
+              <span class="v2-mini-label">Wins</span>
+            </div>
+            <div class="v2-mini-stat">
+              <span class="v2-mini-val v2-streak-val" id="v2-stat-streak">0</span>
+              <span class="v2-mini-label">🔥 Streak</span>
+            </div>
+            <div class="v2-mini-stat">
+              <span class="v2-mini-val" id="v2-stat-rate">0%</span>
+              <span class="v2-mini-label">Win Rate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="v2-progress-right">
+          <div class="v2-next-ach" id="v2-next-ach">
+            <span class="v2-ach-icon">🏆</span>
+            <div class="v2-ach-info">
+              <span class="v2-ach-tag">Next Achievement</span>
+              <span class="v2-ach-name" id="v2-ach-name">First Win</span>
+              <span class="v2-ach-desc" id="v2-ach-desc">Win your first game to unlock</span>
+            </div>
+          </div>
+          <a href="/stats/" class="v2-link-subtle">View Full Stats →</a>
         </div>
       </div>
-      <StatsPanel />
     </div>
   </section>
 
-  <section class="seo-content container" style="margin-top: 4rem; margin-bottom: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); font-size: 1rem; color: var(--muted); opacity: 0.9;">
-    <h1 style="font-size: 1.1em; margin-bottom: 0.5rem;">The Ultimate Hub for Free Online Word Games</h1>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 6 — SEO CONTENT
+       ═══════════════════════════════════════════════════════ -->
+  <section class="seo-content container" style="margin-top: 4rem; margin-bottom: 4rem; font-size: 1rem; color: var(--muted); opacity: 0.9;">
     
-    <h2 style="font-size: 1em; margin-top: 1rem; margin-bottom: 0.5rem;">Welcome to EveryWordGames: Your Daily Puzzle Destination</h2>
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; gap: 1rem;">
+      <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
+      <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin: 0; color: var(--text);">WHO ARE WE</h2>
+      <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
+    </div>
+
+    <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: var(--text); margin-bottom: 1rem;">THE ULTIMATE HUB FOR FREE ONLINE WORD GAMES</h1>
+    
+    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem; letter-spacing: 1px; color: var(--text); margin-top: 1.5rem; margin-bottom: 0.5rem;">WELCOME TO EVERYWORDGAMES: YOUR DAILY PUZZLE DESTINATION</h2>
     <p style="margin-bottom: 1rem;">If you are searching for the best <strong>free online word games</strong>, you have found your new daily destination. At EveryWordGames, we believe that challenging your mind should be fun, accessible, and completely free. Whether you have a five-minute break during your workday or you are settling in for a relaxing weekend puzzle session, our platform offers a massive variety of challenges designed for players of all skill levels. Jump right into our <strong>daily word puzzles online</strong> with absolutely no downloads required. Start building your daily win streak, earn XP, and unlock achievements today!</p>
 
-    <h2 style="font-size: 1em; margin-top: 1rem; margin-bottom: 0.5rem;">Explore Our Collection of Puzzles and Trivia</h2>
+    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem; letter-spacing: 1px; color: var(--text); margin-top: 1.5rem; margin-bottom: 0.5rem;">EXPLORE OUR COLLECTION OF PUZZLES AND TRIVIA</h2>
     <p style="margin-bottom: 1rem;">We are constantly expanding our library to bring you the most engaging browser games on the internet. Here is a taste of what you can play right now:</p>
 
     <h3 style="font-size: 1em; margin-top: 1rem;">The 5 Letter Word Guess Game</h3>
@@ -132,7 +419,7 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
     <h3 style="font-size: 1em; margin-top: 1rem;">Guess the Country Game</h3>
     <p style="margin-bottom: 1rem;">Put your global knowledge to the ultimate test! If you enjoy geography trivia, this will quickly become your favorite daily habit. We offer multiple exciting ways to play. You can challenge yourself to <strong>guess country by shape</strong>, relying purely on the map outlines and silhouettes of nations around the globe. If you consider yourself a vexillology expert, try to <strong>guess the country by flag</strong>. We even feature region-specific challenges, so if you want to focus your map skills, you can jump into the <strong>guess the country Europe</strong> edition.</p>
 
-    <h3 style="font-size: 1em; margin-top: 1rem;">Free Hangman Game Online & Word Scrambles</h3>
+    <h3 style="font-size: 1em; margin-top: 1rem;">Free Hangman Game Online &amp; Word Scrambles</h3>
     <p style="margin-bottom: 1rem;">Sometimes, the classics are exactly what you need. Dive into our <strong>free hangman game online</strong> to guess the hidden phrase letter by letter before your misses run out. If you prefer a different kind of letter puzzle, test your speed with our <strong>word scramble games free</strong> of charge, where you must quickly rearrange chaotic, shuffled letters into perfect words.</p>
 
     <h3 style="font-size: 1em; margin-top: 1rem;">Fun Vocabulary Games for All Ages</h3>
@@ -175,4 +462,618 @@ const comingSoonGames = games.filter((game) => game.comingSoon);
         </details>
     </div>
   </section>
+
 </SiteLayout>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCOPED STYLES
+     ═══════════════════════════════════════════════════════════════ -->
+<style is:global>
+  :root {
+    --v2-green: #639E42;
+    --v2-green-glow: rgba(99, 158, 66, 0.15);
+    --v2-orange: #FF7A00;
+    --v2-orange-glow: rgba(255, 122, 0, 0.12);
+    --v2-shadow-warm: 0 8px 32px rgba(44, 40, 37, 0.08);
+    --v2-shadow-lift: 0 12px 40px rgba(44, 40, 37, 0.12);
+    --v2-radius: 16px;
+    --v2-radius-sm: 10px;
+  }
+  [data-theme="dark"] {
+    --v2-green: #22C55E;
+    --v2-green-glow: rgba(34, 197, 94, 0.12);
+    --v2-orange: #FF9F45;
+    --v2-orange-glow: rgba(255, 159, 69, 0.12);
+    --v2-shadow-warm: 0 8px 32px rgba(0, 0, 0, 0.25);
+    --v2-shadow-lift: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* ── SECTION 1: TOP LAYOUT ── */
+  .v2-top-section {
+    padding: 0.5rem 0.75rem;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .v2-top-section {
+      padding: 2rem 0;
+      align-items: center;
+    }
+  }
+
+  .v2-top-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .v2-top-layout {
+      grid-template-columns: minmax(160px, 300px) minmax(400px, 600px) minmax(160px, 300px);
+      justify-content: center;
+      align-items: flex-start;
+    }
+  }
+
+  /* SPA Dropdown Styles */
+  .v2-game-selector {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .v2-select-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .v2-select {
+    appearance: none;
+    width: 100%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--v2-radius-sm);
+    padding: 12px 40px 12px 16px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+  }
+
+  .v2-select:hover, .v2-select:focus {
+    border-color: var(--v2-green);
+    outline: none;
+    box-shadow: 0 6px 12px var(--v2-green-glow);
+  }
+
+  .v2-select-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--v2-green);
+    font-size: 0.8rem;
+  }
+
+  /* Ad Placeholders */
+  .v2-ad-placeholder {
+    display: none; 
+    min-height: 600px;
+  }
+  @media (min-width: 1024px) {
+    .v2-ad-placeholder {
+      display: block;
+    }
+  }
+  .v2-ad-inner {
+    width: 100%;
+    height: 100%;
+  }
+
+  .v2-game-core {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .v2-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--v2-green);
+    border-radius: 50%;
+    animation: v2-spin 1s linear infinite;
+  }
+  @keyframes v2-spin { 100% { transform: rotate(360deg); } }
+
+
+  /* ── SECTION 2: TABS ── */
+  .v2-tabs-section {
+    padding: 3rem 0;
+    background: var(--bg);
+  }
+
+  .v2-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .v2-tab-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    padding: 10px 24px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .v2-tab-btn:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .v2-tab-btn.active {
+    background: var(--v2-green);
+    border-color: var(--v2-green);
+    color: #fff;
+  }
+  [data-theme="dark"] .v2-tab-btn.active {
+    background: #BEFF00;
+    border-color: #BEFF00;
+    color: #1A1C18;
+  }
+
+  .v2-tab-panel {
+    display: none;
+    animation: v2-fade-in 0.3s ease;
+  }
+  .v2-tab-panel.active {
+    display: grid;
+  }
+  @keyframes v2-fade-in {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+
+
+
+  /* ── SECTION 4: HOW TO PLAY ANIMATIONS ── */
+  .v2-how-to-section {
+    padding: 5rem 0;
+  }
+
+  .v2-htp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .v2-htp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--v2-radius);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: var(--v2-shadow-warm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .v2-htp-badge {
+    width: 32px;
+    height: 32px;
+    background: var(--v2-green);
+    color: #fff;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  [data-theme="dark"] .v2-htp-badge { background: #BEFF00; color: #1A1C18; }
+
+  .v2-htp-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+
+  .v2-htp-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0 0 2rem;
+  }
+
+  .v2-htp-visual {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    background: var(--bg);
+    border-radius: var(--v2-radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  /* Tile basics for animations */
+  .v2-tile {
+    width: clamp(36px, 8vw, 44px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    border: 2px solid transparent;
+    background: var(--surface2);
+    color: var(--text);
+  }
+  .v2-line {
+    font-family: monospace;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--border);
+  }
+  .v2-line.v2-filled {
+    color: var(--text);
+  }
+
+  .v2-demo-row { display: flex; gap: 4px; justify-content: center; align-items: center; }
+  
+  .v2-t-correct { background: var(--v2-green); border-color: var(--v2-green); color: #fff; --flip-bg: var(--v2-green); }
+  .v2-t-present { background: var(--v2-orange); border-color: var(--v2-orange); color: #fff; --flip-bg: var(--v2-orange); }
+  .v2-t-absent  { background: #94A3B8; border-color: #94A3B8; color: #fff; --flip-bg: #94A3B8; }
+  [data-theme="dark"] .v2-t-absent { background: #475569; border-color: #475569; color: #fff; --flip-bg: #475569; }
+
+  /* Flip Reveal Animation */
+  @keyframes v2-flip-reveal {
+    0%, 5% { transform: rotateX(0deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    15% { transform: rotateX(90deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    16% { transform: rotateX(90deg); background: var(--flip-bg, var(--v2-green)); border-color: var(--flip-bg, var(--v2-green)); color: #fff; }
+    25%, 80% { transform: rotateX(0deg); background: var(--flip-bg, var(--v2-green)); border-color: var(--flip-bg, var(--v2-green)); color: #fff; }
+    90% { transform: rotateX(90deg); background: var(--flip-bg, var(--v2-green)); border-color: var(--flip-bg, var(--v2-green)); color: #fff; }
+    91% { transform: rotateX(90deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+    100% { transform: rotateX(0deg); background: var(--surface2); border-color: var(--border); color: var(--text); }
+  }
+  .v2-anim-reveal .v2-tile { animation: v2-flip-reveal 5s infinite; }
+  .v2-anim-reveal .v2-tile:nth-child(1) { animation-delay: 0s; }
+  .v2-anim-reveal .v2-tile:nth-child(2) { animation-delay: 0.2s; }
+  .v2-anim-reveal .v2-tile:nth-child(3) { animation-delay: 0.4s; }
+  .v2-anim-reveal .v2-tile:nth-child(4) { animation-delay: 0.6s; }
+  .v2-anim-reveal .v2-tile:nth-child(5) { animation-delay: 0.8s; }
+
+  /* Typing pop Animation */
+  @keyframes v2-pop {
+    0%, 5% { transform: scale(1); border-color: transparent; color: transparent; }
+    15% { transform: scale(1.15); border-color: var(--muted); color: var(--text); }
+    25%, 85% { transform: scale(1); border-color: var(--border); color: var(--text); }
+    95%, 100% { transform: scale(1); border-color: transparent; color: transparent; }
+  }
+  .v2-anim-typing .v2-tile { animation: v2-pop 4s infinite backwards; }
+  .v2-anim-typing .v2-tile:nth-child(1) { animation-delay: 0s; }
+  .v2-anim-typing .v2-tile:nth-child(2) { animation-delay: 0.2s; }
+  .v2-anim-typing .v2-tile:nth-child(3) { animation-delay: 0.4s; }
+  .v2-anim-typing .v2-tile:nth-child(4) { animation-delay: 0.6s; }
+  .v2-anim-typing .v2-tile:nth-child(5) { animation-delay: 0.8s; }
+
+  /* Scramble Jiggle Animation */
+  @keyframes v2-scramble-jiggle {
+    0% { transform: translateY(0) rotate(0deg); }
+    10% { transform: translateY(-4px) rotate(-4deg); }
+    20% { transform: translateY(0) rotate(4deg); }
+    30% { transform: translateY(-2px) rotate(-2deg); }
+    40%, 100% { transform: translateY(0) rotate(0deg); }
+  }
+  .v2-anim-scramble-shuffle .v2-tile { animation: v2-scramble-jiggle 3s infinite; }
+  .v2-anim-scramble-shuffle .v2-tile:nth-child(1) { animation-delay: 0s; }
+  .v2-anim-scramble-shuffle .v2-tile:nth-child(2) { animation-delay: 0.2s; }
+  .v2-anim-scramble-shuffle .v2-tile:nth-child(3) { animation-delay: 0.4s; }
+  .v2-anim-scramble-shuffle .v2-tile:nth-child(4) { animation-delay: 0.6s; }
+
+  /* Win Simple Bounce */
+  @keyframes v2-win-bounce {
+    0%, 20% { transform: translateY(0); }
+    10% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+  }
+  .v2-anim-win-simple .v2-tile { animation: v2-win-bounce 3s infinite; }
+  .v2-anim-win-simple .v2-tile:nth-child(1) { animation-delay: 0s; }
+  .v2-anim-win-simple .v2-tile:nth-child(2) { animation-delay: 0.1s; }
+  .v2-anim-win-simple .v2-tile:nth-child(3) { animation-delay: 0.2s; }
+  .v2-anim-win-simple .v2-tile:nth-child(4) { animation-delay: 0.3s; }
+
+  /* Guessing lists */
+  .v2-demo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .v2-demo-hint {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .v2-demo-hint.locked {
+    color: var(--muted);
+    background: var(--bg);
+  }
+  .v2-demo-guess-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: monospace;
+    font-weight: bold;
+  }
+  .v2-demo-guess-bar.success {
+    border-color: var(--v2-green);
+    background: var(--v2-green-glow);
+    color: var(--v2-green);
+  }
+
+
+  /* ── SECTION 5: PROGRESS (Reused from previous) ── */
+  .v2-progress-section {
+    padding: 0 0 4rem;
+  }
+  .v2-progress-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(20px, 4vw, 40px);
+    align-items: center;
+    padding: clamp(20px, 4vw, 32px);
+    border-radius: var(--v2-radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--v2-shadow-warm);
+  }
+  @media (max-width: 820px) {
+    .v2-progress-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+      justify-items: center;
+    }
+  }
+
+  .v2-xp-ring-wrap { width: 110px; height: 110px; }
+  .v2-xp-ring { width: 100%; height: 100%; }
+  .v2-xp-track { fill: none; stroke: var(--surface2); stroke-width: 8; }
+  .v2-xp-fill {
+    fill: none; stroke: var(--v2-green); stroke-width: 8; stroke-linecap: round;
+    stroke-dasharray: 327; stroke-dashoffset: 327; transform: rotate(-90deg); transform-origin: center;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  [data-theme="dark"] .v2-xp-fill { stroke: #BEFF00; }
+  .v2-xp-level { fill: var(--text); font-family: "Bebas Neue", sans-serif; font-size: 32px; text-anchor: middle; dominant-baseline: auto; }
+  .v2-xp-label { fill: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-anchor: middle; dominant-baseline: auto; }
+
+  .v2-progress-title { font-family: "Bebas Neue", sans-serif; font-size: 28px; margin: 0 0 16px; letter-spacing: 1px; }
+  .v2-stat-row { display: flex; gap: clamp(16px, 3vw, 36px); flex-wrap: wrap; }
+  @media (max-width: 820px) { .v2-stat-row { justify-content: center; } }
+  .v2-mini-stat { display: flex; flex-direction: column; gap: 2px; }
+  .v2-mini-val { font-family: "Bebas Neue", sans-serif; font-size: 28px; color: var(--text); line-height: 1; }
+  .v2-streak-val { color: var(--v2-orange) !important; }
+  .v2-mini-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; font-weight: 600; }
+
+  .v2-progress-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+  @media (max-width: 820px) { .v2-progress-right { align-items: center; } }
+  .v2-next-ach { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--v2-radius-sm); background: var(--v2-orange-glow); border: 1px solid rgba(255,122,0,0.15); }
+  .v2-ach-icon { font-size: 24px; }
+  .v2-ach-info { display: flex; flex-direction: column; gap: 2px; }
+  .v2-ach-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--v2-orange); }
+  .v2-ach-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .v2-ach-desc { font-size: 11px; color: var(--muted); }
+  .v2-link-subtle { font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .v2-link-subtle:hover { color: var(--v2-green); }
+  [data-theme="dark"] .v2-link-subtle:hover { color: #BEFF00; }
+
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CLIENT-SIDE SCRIPTS
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  import { mountGame } from "@/lib/gameApp";
+  import { loadStats, achievements } from "@/engines/playerStore";
+  import { games } from "@/data/games";
+
+  const root = document.querySelector<HTMLElement>("#game-root");
+  const htpTemplates = document.querySelectorAll(".v2-htp-template");
+
+  // Helper to switch game and HTP logic
+  function switchGame(slug: string, engine: string) {
+    if (root) {
+      root.dataset.slug = slug;
+      // Remount game (simulate loading state briefly for UX)
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; gap: 1rem;">
+          <div class="v2-spinner"></div>
+          <p class="muted" style="text-align: center; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;">Loading Game...</p>
+        </div>
+      `;
+      setTimeout(() => {
+        mountGame(root);
+      }, 50);
+    }
+
+    // Select is now handled inside gameApp.ts header
+
+    // Toggle HTP visibility
+    htpTemplates.forEach(t => {
+      (t as HTMLElement).style.display = 'none';
+      t.classList.remove('active');
+    });
+
+    // Map engines to HTP template IDs
+    let targetHtpId = 'htp-word-guess';
+    if (engine === 'guessing' || engine === 'countries' || engine === 'flags') {
+      targetHtpId = 'htp-guessing';
+    } else if (slug === 'word-scramble') {
+      targetHtpId = 'htp-word-scramble';
+    } else if (engine === 'word-puzzle' || engine === 'hangman' || engine === 'scramble') {
+      targetHtpId = 'htp-word-puzzle';
+    }
+
+    const targetHtp = document.getElementById(targetHtpId);
+    if (targetHtp) {
+      targetHtp.style.display = 'block';
+      targetHtp.classList.add('active');
+    }
+  }
+
+  // 1. Initial Mount
+  if (root) {
+    setTimeout(() => {
+      mountGame(root);
+    }, 100);
+  }
+
+  // 2. SPA Dropdown Change Listener
+  document.addEventListener("change", (e) => {
+    const target = e.target as HTMLSelectElement;
+    if (target && target.id === "spa-game-select") {
+      const selectedOption = target.options[target.selectedIndex];
+      const newSlug = selectedOption.value;
+      const engine = selectedOption.getAttribute('data-engine') || 'word-guess';
+      switchGame(newSlug, engine);
+    }
+  });
+
+  // 3. Featured Card SPA Overrides
+  // We want clicks on the feature cards to ALSO just swap the game instead of reloading
+  const spaTriggers = document.querySelectorAll("[data-spa-trigger]");
+  spaTriggers.forEach(trigger => {
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      const newSlug = trigger.getAttribute("data-spa-trigger");
+      if (newSlug) {
+        // Find engine
+        let engine = 'word-guess';
+        const gameObj = games.find(g => g.slug === newSlug);
+        if (gameObj) engine = gameObj.engine;
+        switchGame(newSlug, engine);
+        // Scroll to game
+        document.querySelector('.v2-top-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // 4. Tab switching logic
+  const tabs = document.querySelectorAll('.v2-tab-btn');
+  const panels = document.querySelectorAll('.v2-tab-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Remove active from all
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => p.classList.remove('active'));
+
+      // Add active to clicked
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      
+      const targetId = tab.getAttribute('data-target');
+      const targetPanel = document.getElementById(targetId!);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+    });
+  });
+
+  // Also hijack game cards in the tabs so they swap instead of navigate
+  const tabCards = document.querySelectorAll('.v2-tab-panel .game-card');
+  tabCards.forEach(card => {
+    card.addEventListener("click", (e) => {
+      const href = card.getAttribute('href');
+      // e.g. /games/guess-country/
+      if (href && href.startsWith('/games/')) {
+        e.preventDefault();
+        const parts = href.split('/');
+        const newSlug = parts[parts.length - 2] || parts[parts.length - 1]; // handle trailing slash
+        
+        let engine = 'word-guess';
+        const gameObj = games.find(g => g.slug === newSlug);
+        if (gameObj) engine = gameObj.engine;
+        switchGame(newSlug, engine);
+        // Scroll to game
+        document.querySelector('.v2-top-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // 5. Player progress card
+  function populateProgress() {
+    if (typeof localStorage === "undefined") return;
+    const stats = loadStats();
+    const xp = stats.wins * 50 + stats.played * 10;
+    const level = Math.floor(xp / 500) + 1;
+    const progress = (xp % 500) / 500;
+    const winRate = stats.played ? Math.round((stats.wins / stats.played) * 100) : 0;
+
+    const ids: Record<string, string | number> = {
+      "v2-stat-played": stats.played,
+      "v2-stat-wins": stats.wins,
+      "v2-stat-streak": stats.currentStreak,
+      "v2-stat-rate": `${winRate}%`,
+    };
+    Object.entries(ids).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(val);
+    });
+
+    const circle = document.getElementById("v2-xp-circle") as SVGCircleElement | null;
+    if (circle) {
+      const circumference = 2 * Math.PI * 52;
+      const offset = circumference * (1 - progress);
+      circle.style.strokeDashoffset = String(offset);
+    }
+
+    const levelText = document.getElementById("v2-xp-level-text");
+    if (levelText) levelText.textContent = String(level);
+
+    const next = achievements.find((a) => !a.test(stats));
+    if (next) {
+      const nameEl = document.getElementById("v2-ach-name");
+      const descEl = document.getElementById("v2-ach-desc");
+      if (nameEl) nameEl.textContent = next.name;
+      if (descEl) descEl.textContent = next.description;
+    }
+  }
+  
+  populateProgress();
+  window.addEventListener("gamecompleted", populateProgress);
+</script>

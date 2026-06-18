@@ -1,5 +1,5 @@
 import type { GameConfig } from "@/data/games";
-import { getWords, pickUniqueWord } from "./wordGuessEngine";
+import { getWords, pickUniqueWord, getHistory, addHistory } from "./wordGuessEngine";
 import { pickSeeded, shuffleSeeded, todayKey } from "./random";
 
 export interface PuzzleChallenge {
@@ -10,39 +10,606 @@ export interface PuzzleChallenge {
 }
 
 const synonymPairs = [
-  { answer: "bright", display: "Luminous" },
-  { answer: "fast", display: "Quick" },
-  { answer: "smart", display: "Intelligent" },
-  { answer: "happy", display: "Joyful" },
-  { answer: "sad", display: "Sorrowful" },
-  { answer: "big", display: "Large" },
-  { answer: "small", display: "Tiny" },
-  { answer: "rich", display: "Wealthy" },
-  { answer: "poor", display: "Destitute" },
-  { answer: "brave", display: "Courageous" },
-  { answer: "calm", display: "Peaceful" },
-  { answer: "cold", display: "Chilly" },
-  { answer: "hot", display: "Boiling" },
-  { answer: "easy", display: "Simple" },
-  { answer: "hard", display: "Difficult" }
-];
-
-const antonymPairs = [
-  { answer: "quiet", display: "Loud" },
-  { answer: "hot", display: "Cold" },
-  { answer: "fast", display: "Slow" },
-  { answer: "happy", display: "Sad" },
-  { answer: "good", display: "Bad" },
-  { answer: "light", display: "Dark" },
-  { answer: "hard", display: "Soft" },
-  { answer: "rich", display: "Poor" },
-  { answer: "wet", display: "Dry" },
-  { answer: "tall", display: "Short" },
-  { answer: "old", display: "New" },
-  { answer: "open", display: "Closed" },
-  { answer: "full", display: "Empty" },
-  { answer: "brave", display: "Cowardly" },
-  { answer: "clean", display: "Dirty" }
+  {
+    "answer": "halcyon",
+    "display": "Happy"
+  },
+  {
+    "answer": "content",
+    "display": "Happy"
+  },
+  {
+    "answer": "bright",
+    "display": "Happy"
+  },
+  {
+    "answer": "wistful",
+    "display": "Sad"
+  },
+  {
+    "answer": "melancholy",
+    "display": "Sad"
+  },
+  {
+    "answer": "pensive",
+    "display": "Sad"
+  },
+  {
+    "answer": "profligate",
+    "display": "Fast"
+  },
+  {
+    "answer": "prompt",
+    "display": "Fast"
+  },
+  {
+    "answer": "libertine",
+    "display": "Fast"
+  },
+  {
+    "answer": "dull",
+    "display": "Slow"
+  },
+  {
+    "answer": "obtuse",
+    "display": "Slow"
+  },
+  {
+    "answer": "slack",
+    "display": "Slow"
+  },
+  {
+    "answer": "conspicuous",
+    "display": "Big"
+  },
+  {
+    "answer": "prodigious",
+    "display": "Big"
+  },
+  {
+    "answer": "intense",
+    "display": "Big"
+  },
+  {
+    "answer": "mean",
+    "display": "Small"
+  },
+  {
+    "answer": "diminutive",
+    "display": "Small"
+  },
+  {
+    "answer": "modest",
+    "display": "Small"
+  },
+  {
+    "answer": "robust",
+    "display": "Rich"
+  },
+  {
+    "answer": "ample",
+    "display": "Rich"
+  },
+  {
+    "answer": "lush",
+    "display": "Rich"
+  },
+  {
+    "answer": "mean",
+    "display": "Poor"
+  },
+  {
+    "answer": "hapless",
+    "display": "Poor"
+  },
+  {
+    "answer": "wretched",
+    "display": "Poor"
+  },
+  {
+    "answer": "torrid",
+    "display": "Hot"
+  },
+  {
+    "answer": "fervid",
+    "display": "Hot"
+  },
+  {
+    "answer": "fervent",
+    "display": "Hot"
+  },
+  {
+    "answer": "gelid",
+    "display": "Cold"
+  },
+  {
+    "answer": "bleak",
+    "display": "Cold"
+  },
+  {
+    "answer": "frigid",
+    "display": "Cold"
+  },
+  {
+    "answer": "wanton",
+    "display": "Easy"
+  },
+  {
+    "answer": "facile",
+    "display": "Easy"
+  },
+  {
+    "answer": "light",
+    "display": "Easy"
+  },
+  {
+    "answer": "arduous",
+    "display": "Hard"
+  },
+  {
+    "answer": "shrewd",
+    "display": "Hard"
+  },
+  {
+    "answer": "delicate",
+    "display": "Hard"
+  },
+  {
+    "answer": "frivolous",
+    "display": "Light"
+  },
+  {
+    "answer": "clear",
+    "display": "Light"
+  },
+  {
+    "answer": "bright",
+    "display": "Light"
+  },
+  {
+    "answer": "obscure",
+    "display": "Dark"
+  },
+  {
+    "answer": "sullen",
+    "display": "Dark"
+  },
+  {
+    "answer": "dour",
+    "display": "Dark"
+  },
+  {
+    "answer": "benevolent",
+    "display": "Good"
+  },
+  {
+    "answer": "keen",
+    "display": "Good"
+  },
+  {
+    "answer": "adept",
+    "display": "Good"
+  },
+  {
+    "answer": "intense",
+    "display": "Bad"
+  },
+  {
+    "answer": "atrocious",
+    "display": "Bad"
+  },
+  {
+    "answer": "deplorable",
+    "display": "Bad"
+  },
+  {
+    "answer": "radical",
+    "display": "New"
+  },
+  {
+    "answer": "novel",
+    "display": "New"
+  },
+  {
+    "answer": "hot",
+    "display": "New"
+  },
+  {
+    "answer": "cold",
+    "display": "Old"
+  },
+  {
+    "answer": "archaic",
+    "display": "Old"
+  },
+  {
+    "answer": "hoary",
+    "display": "Old"
+  },
+  {
+    "answer": "light",
+    "display": "Clean"
+  },
+  {
+    "answer": "adroit",
+    "display": "Clean"
+  },
+  {
+    "answer": "clear",
+    "display": "Clean"
+  },
+  {
+    "answer": "salacious",
+    "display": "Dirty"
+  },
+  {
+    "answer": "obscene",
+    "display": "Dirty"
+  },
+  {
+    "answer": "sordid",
+    "display": "Dirty"
+  },
+  {
+    "answer": "audacious",
+    "display": "Brave"
+  },
+  {
+    "answer": "intrepid",
+    "display": "Brave"
+  },
+  {
+    "answer": "spirited",
+    "display": "Brave"
+  },
+  {
+    "answer": "shrewd",
+    "display": "Smart"
+  },
+  {
+    "answer": "impudent",
+    "display": "Smart"
+  },
+  {
+    "answer": "sharp",
+    "display": "Smart"
+  },
+  {
+    "answer": "robust",
+    "display": "Strong"
+  },
+  {
+    "answer": "vehement",
+    "display": "Strong"
+  },
+  {
+    "answer": "substantial",
+    "display": "Strong"
+  },
+  {
+    "answer": "pallid",
+    "display": "Weak"
+  },
+  {
+    "answer": "light",
+    "display": "Weak"
+  },
+  {
+    "answer": "soft",
+    "display": "Weak"
+  },
+  {
+    "answer": "pulchritudinous",
+    "display": "Beautiful"
+  },
+  {
+    "answer": "exquisite",
+    "display": "Beautiful"
+  },
+  {
+    "answer": "comely",
+    "display": "Beautiful"
+  },
+  {
+    "answer": "baleful",
+    "display": "Ugly"
+  },
+  {
+    "answer": "atrocious",
+    "display": "Ugly"
+  },
+  {
+    "answer": "grotesque",
+    "display": "Ugly"
+  },
+  {
+    "answer": "garish",
+    "display": "Loud"
+  },
+  {
+    "answer": "tawdry",
+    "display": "Loud"
+  },
+  {
+    "answer": "brassy",
+    "display": "Loud"
+  },
+  {
+    "answer": "repose",
+    "display": "Quiet"
+  },
+  {
+    "answer": "subdued",
+    "display": "Quiet"
+  },
+  {
+    "answer": "tranquil",
+    "display": "Quiet"
+  },
+  {
+    "answer": "modest",
+    "display": "Simple"
+  },
+  {
+    "answer": "naive",
+    "display": "Simple"
+  },
+  {
+    "answer": "naif",
+    "display": "Simple"
+  },
+  {
+    "answer": "byzantine",
+    "display": "Complex"
+  },
+  {
+    "answer": "intricate",
+    "display": "Complex"
+  },
+  {
+    "answer": "convoluted",
+    "display": "Complex"
+  },
+  {
+    "answer": "crude",
+    "display": "Early"
+  },
+  {
+    "answer": "archaic",
+    "display": "Early"
+  },
+  {
+    "answer": "inchoate",
+    "display": "Early"
+  },
+  {
+    "answer": "deep",
+    "display": "Late"
+  },
+  {
+    "answer": "tardily",
+    "display": "Late"
+  },
+  {
+    "answer": "new",
+    "display": "Late"
+  },
+  {
+    "answer": "ample",
+    "display": "Full"
+  },
+  {
+    "answer": "good",
+    "display": "Full"
+  },
+  {
+    "answer": "sonorous",
+    "display": "Full"
+  },
+  {
+    "answer": "vacuous",
+    "display": "Empty"
+  },
+  {
+    "answer": "hollow",
+    "display": "Empty"
+  },
+  {
+    "answer": "void",
+    "display": "Empty"
+  },
+  {
+    "answer": "good",
+    "display": "Safe"
+  },
+  {
+    "answer": "innocuous",
+    "display": "Safe"
+  },
+  {
+    "answer": "secure",
+    "display": "Safe"
+  },
+  {
+    "answer": "insidious",
+    "display": "Dangerous"
+  },
+  {
+    "answer": "grievous",
+    "display": "Dangerous"
+  },
+  {
+    "answer": "critical",
+    "display": "Dangerous"
+  },
+  {
+    "answer": "crude",
+    "display": "Rough"
+  },
+  {
+    "answer": "boisterous",
+    "display": "Rough"
+  },
+  {
+    "answer": "abrasive",
+    "display": "Rough"
+  },
+  {
+    "answer": "sleek",
+    "display": "Smooth"
+  },
+  {
+    "answer": "suave",
+    "display": "Smooth"
+  },
+  {
+    "answer": "undulate",
+    "display": "Smooth"
+  },
+  {
+    "answer": "tender",
+    "display": "Soft"
+  },
+  {
+    "answer": "delicate",
+    "display": "Soft"
+  },
+  {
+    "answer": "mellow",
+    "display": "Soft"
+  },
+  {
+    "answer": "arduous",
+    "display": "Hard"
+  },
+  {
+    "answer": "shrewd",
+    "display": "Hard"
+  },
+  {
+    "answer": "delicate",
+    "display": "Hard"
+  },
+  {
+    "answer": "eminent",
+    "display": "High"
+  },
+  {
+    "answer": "mellow",
+    "display": "High"
+  },
+  {
+    "answer": "sharp",
+    "display": "High"
+  },
+  {
+    "answer": "dejected",
+    "display": "Low"
+  },
+  {
+    "answer": "modest",
+    "display": "Low"
+  },
+  {
+    "answer": "soft",
+    "display": "Low"
+  },
+  {
+    "answer": "good",
+    "display": "Near"
+  },
+  {
+    "answer": "close",
+    "display": "Near"
+  },
+  {
+    "answer": "warm",
+    "display": "Near"
+  },
+  {
+    "answer": "cold",
+    "display": "Far"
+  },
+  {
+    "answer": "right",
+    "display": "Far"
+  },
+  {
+    "answer": "distant",
+    "display": "Far"
+  },
+  {
+    "answer": "good",
+    "display": "Right"
+  },
+  {
+    "answer": "powerful",
+    "display": "Right"
+  },
+  {
+    "answer": "proper",
+    "display": "Right"
+  },
+  {
+    "answer": "base",
+    "display": "Wrong"
+  },
+  {
+    "answer": "erroneous",
+    "display": "Wrong"
+  },
+  {
+    "answer": "deplorable",
+    "display": "Wrong"
+  },
+  {
+    "answer": "veracious",
+    "display": "True"
+  },
+  {
+    "answer": "reliable",
+    "display": "True"
+  },
+  {
+    "answer": "harmonious",
+    "display": "True"
+  },
+  {
+    "answer": "hollow",
+    "display": "False"
+  },
+  {
+    "answer": "mendacious",
+    "display": "False"
+  },
+  {
+    "answer": "specious",
+    "display": "False"
+  },
+  {
+    "answer": "comprehensive",
+    "display": "Wide"
+  },
+  {
+    "answer": "ample",
+    "display": "Wide"
+  },
+  {
+    "answer": "heavy",
+    "display": "Wide"
+  },
+  {
+    "answer": "slender",
+    "display": "Narrow"
+  },
+  {
+    "answer": "dogmatic",
+    "display": "Narrow"
+  },
+  {
+    "answer": "petty",
+    "display": "Narrow"
+  }
 ];
 
 export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChallenge {
@@ -76,12 +643,24 @@ export function createPuzzleChallenge(game: GameConfig, run = 0): PuzzleChalleng
   }
 
   if (game.mode === "synonym") {
-    const pair = pickSeeded(synonymPairs, seed);
+    let pair = pickSeeded(synonymPairs, seed);
+    const history = getHistory();
+    const available = synonymPairs.filter(p => !history.includes(p.answer));
+    if (available.length > 0) {
+      pair = pickSeeded(available, seed);
+    }
+    addHistory(pair.answer);
     return { answer: pair.answer, display: pair.display, hint: "Enter a synonym." };
   }
 
   if (game.mode === "antonym") {
-    const pair = pickSeeded(antonymPairs, seed);
+    let pair = pickSeeded(antonymPairs, seed);
+    const history = getHistory();
+    const available = antonymPairs.filter(p => !history.includes(p.answer));
+    if (available.length > 0) {
+      pair = pickSeeded(available, seed);
+    }
+    addHistory(pair.answer);
     return { answer: pair.answer, display: pair.display, hint: "Enter an antonym." };
   }
 

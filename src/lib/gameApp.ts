@@ -49,7 +49,7 @@ function levenshteinDistance(a: string, b: string): number {
 let activeKeydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
 const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
-const stateRank: Record<LetterState, number> = {
+const stateRank: Record<string, number> = {
   absent: 1,
   present: 2,
   correct: 3,
@@ -221,6 +221,7 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
   let currentGuess = "";
   let invalidGuess = false;
   let justSubmitted = false;
+  let isSubmitting = false;
 
   const reset = () => {
     run += 1;
@@ -230,11 +231,12 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
     started = Date.now();
     done = false;
     justSubmitted = false;
+    isSubmitting = false;
     render();
   };
 
   const submitGuess = async () => {
-    if (done) return;
+    if (done || isSubmitting) return;
     if (currentGuess.length !== (game.wordLength ?? 5)) {
       setMessage(root, `Enter exactly ${game.wordLength} letters.`);
       invalidGuess = true;
@@ -246,6 +248,7 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
       return;
     }
 
+    isSubmitting = true;
     await loadDictionary();
     const answerList = getWords(game.wordLength ?? 5);
     const inAnswerList = answerList.includes(currentGuess.toLowerCase());
@@ -290,6 +293,7 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
       recordGame(game.slug, won, elapsed(started));
       window.dispatchEvent(new Event("gamecompleted"));
     }
+    isSubmitting = false;
     render();
     if (done) {
       setMessage(
@@ -365,9 +369,9 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
         document.activeElement?.tagName === "INPUT"
       )
         return;
-      if (e.key === "Enter") handleKey("ENTER");
-      else if (e.key === "Backspace") handleKey("BACK");
-      else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key);
+      if (e.key === "Enter") { e.preventDefault(); handleKey("ENTER"); }
+      else if (e.key === "Backspace") { e.preventDefault(); handleKey("BACK"); }
+      else if (/^[a-zA-Z]$/.test(e.key)) { e.preventDefault(); handleKey(e.key); }
     };
     window.addEventListener("keydown", activeKeydownHandler);
   };
@@ -385,6 +389,7 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
   let currentGuess = "";
   let invalidGuess = false;
   let justSubmitted = false;
+  let isSubmitting = false;
 
   const reset = () => {
     run += 1;
@@ -394,11 +399,12 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
     started = Date.now();
     done = false;
     justSubmitted = false;
+    isSubmitting = false;
     render();
   };
 
   const submitGuess = async () => {
-    if (done) return;
+    if (done || isSubmitting) return;
     if (currentGuess.length !== (game.wordLength ?? 5)) {
       setMessage(root, `Enter exactly ${game.wordLength} letters.`);
       invalidGuess = true;
@@ -410,6 +416,7 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
       return;
     }
 
+    isSubmitting = true;
     await loadDictionary();
     const answerList = getWords(game.wordLength ?? 5);
     const inAnswerList = answerList.includes(currentGuess.toLowerCase());
@@ -421,6 +428,7 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
     if (!inAnswerList && !inDictionary) {
       setMessage(root, "Word not in dictionary.");
       invalidGuess = true;
+      isSubmitting = false;
       render();
       setTimeout(() => {
         invalidGuess = false;
@@ -432,6 +440,7 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
     if (guesses.includes(currentGuess.toLowerCase())) {
       setMessage(root, "Word already guessed.");
       invalidGuess = true;
+      isSubmitting = false;
       render();
       setTimeout(() => {
         invalidGuess = false;
@@ -449,6 +458,7 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
       recordGame(game.slug, solved, elapsed(started));
       window.dispatchEvent(new Event("gamecompleted"));
     }
+    isSubmitting = false;
     render();
     if (done) {
       setMessage(
@@ -485,10 +495,11 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
   };
 
   const render = () => {
+    const gridColsClass = targets.length === 3 || targets.length === 6 ? 'cols-3' : targets.length >= 8 ? 'cols-4' : 'cols-2';
     root.innerHTML = `
       ${renderGameHeader(game, [], done ? "Play again" : "New boards")}
-      <div class="multi-grid" style="margin-bottom: 1.5rem;">
-        ${targets.map((target, index) => renderMiniBoard(index + 1, target, guesses, game.attempts ?? 8, currentGuess, done, invalidGuess, justSubmitted)).join("")}
+      <div class="multi-grid ${gridColsClass}" style="margin-bottom: 1.5rem; max-width: ${targets.length === 4 ? '500px' : targets.length === 6 ? '650px' : '800px'};">
+        ${targets.map((target, index) => renderMiniBoard(index + 1, target, guesses, game.attempts ?? 8, currentGuess, done, invalidGuess, justSubmitted, (game.boardCount ?? 2) > 2)).join("")}
       </div>
       <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
         <button class="button" id="guess-btn" type="button" style="width: min(100%, 22rem);">Submit Guess</button>
@@ -513,9 +524,9 @@ function mountMultiWordGuess(root: HTMLElement, game: GameConfig) {
         document.activeElement?.tagName === "INPUT"
       )
         return;
-      if (e.key === "Enter") handleKey("ENTER");
-      else if (e.key === "Backspace") handleKey("BACK");
-      else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key);
+      if (e.key === "Enter") { e.preventDefault(); handleKey("ENTER"); }
+      else if (e.key === "Backspace") { e.preventDefault(); handleKey("BACK"); }
+      else if (/^[a-zA-Z]$/.test(e.key)) { e.preventDefault(); handleKey(e.key); }
     };
     window.addEventListener("keydown", activeKeydownHandler);
   };
@@ -532,14 +543,16 @@ function renderMiniBoard(
   done: boolean = false,
   invalidGuess: boolean = false,
   justSubmitted: boolean = false,
+  isCompactMode: boolean = true
 ) {
   const rows = Array.from({ length: attempts }, (_, row) => {
     const isCurrentRow = row === guesses.length && !done;
     const isJustSubmittedRow = row === guesses.length - 1 && justSubmitted;
+    const compactClass = !isCurrentRow && isCompactMode ? "compact" : "";
     const result = guesses[row]
       ? evaluateGuess(guesses[row], target)
       : undefined;
-    return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? "shake" : ""}" style="grid-template-columns: repeat(${target.length}, auto)">
+    return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? "shake" : ""} ${compactClass}" style="grid-template-columns: repeat(${target.length}, auto)">
       ${Array.from({ length: target.length }, (_, col) => {
         if (isCurrentRow) {
           const letter = currentGuess[col] ?? "";
@@ -819,7 +832,7 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       }
       if (isCountryGame || isFlagGame) {
         const isValidCountry = dataset.countries.some(
-          (c: string) => c.toLowerCase() === value.toLowerCase(),
+          (c: string) => normalizeAnswer(c) === normalizeAnswer(value),
         );
         if (!isValidCountry) {
           setMessage(root, "Not a valid country.");
@@ -923,7 +936,7 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
         <div>
           <p class="eyebrow">${escapeHtml(challenge.hint)}</p>
           ${hangmanSvg}
-          <div class="clue-title" style="margin-top: 1rem; font-family: monospace; letter-spacing: 0.25em;">${escapeHtml(display)}</div>
+          <div class="clue-title" style="margin-top: 1rem; font-family: monospace; white-space: nowrap; font-size: clamp(1.2rem, 5vw, 3rem); letter-spacing: ${game.mode === 'synonym' || game.mode === 'antonym' ? '0.05em' : '0.25em'};">${escapeHtml(display)}</div>
           ${challenge.grid ? `<div class="word-search">${challenge.grid.map((row) => `<div class="word-search-row">${row.map((letter) => `<span class="cell">${letter}</span>`).join("")}</div>`).join("")}</div>` : ""}
         </div>
       </div>
@@ -1026,12 +1039,22 @@ function renderGameHeader(
   buttonLabel: string,
 ) {
   let selectHtml = "";
-  if (game.engine === "word-guess" || game.engine === "multi-word-guess") {
-    const letterGames = playableGames.filter(g => g.slug.match(/^\d+-letter-word-guess$/));
+  if (game.engine === "word-guess") {
+    const letterGames = playableGames.filter(g => g.category === "word-guess");
     selectHtml = `
       <div class="v2-select-wrapper" style="width: auto; position: relative;">
         <select id="spa-game-select" class="v2-select" style="font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 1px; padding: 6px 30px 6px 12px; height: 100%; min-height: 36px; border-radius: 8px; border: 2px solid var(--border); background: var(--surface); color: var(--text); appearance: none; cursor: pointer;">
           ${letterGames.map(g => `<option value="${g.slug}" data-engine="${g.engine}" ${g.slug === game.slug ? "selected" : ""}>${g.name}</option>`).join("")}
+        </select>
+        <span class="v2-select-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--v2-green); font-size: 0.8rem;">▼</span>
+      </div>
+    `;
+  } else if (game.engine === "multi-word-guess") {
+    const multiGames = playableGames.filter(g => g.category === "multi-word-guess");
+    selectHtml = `
+      <div class="v2-select-wrapper" style="width: auto; position: relative;">
+        <select id="spa-game-select" class="v2-select" style="font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 1px; padding: 6px 30px 6px 12px; height: 100%; min-height: 36px; border-radius: 8px; border: 2px solid var(--border); background: var(--surface); color: var(--text); appearance: none; cursor: pointer;">
+          ${multiGames.map(g => `<option value="${g.slug}" data-engine="${g.engine}" ${g.slug === game.slug ? "selected" : ""}>${g.name}</option>`).join("")}
         </select>
         <span class="v2-select-icon" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--v2-green); font-size: 0.8rem;">▼</span>
       </div>
@@ -1084,7 +1107,7 @@ function getAnswerLetters(challenge: GuessItem) {
   return normalizeAnswer(challenge.answer).toUpperCase().split("");
 }
 
-function renderKeyboard(states: Record<string, LetterState> = {}) {
+function renderKeyboard(states: Record<string, LetterState | LetterState[]> = {}) {
   return `<div class="keyboard" aria-label="On-screen keyboard">
     ${keyboardRows
       .map((row, index) => {
@@ -1093,8 +1116,18 @@ function renderKeyboard(states: Record<string, LetterState> = {}) {
         return `<div class="keyboard-row">${keys
           .map((letter) => {
             const label = letter === "BACK" ? "⌫" : letter === "ENTER" ? "Enter" : letter;
-            const state = states[letter] ?? "";
-            return `<button class="key ${state} ${letter.length > 1 ? "wide" : ""}" type="button" data-key="${letter}" aria-label="${letter === "BACK" ? "Backspace" : letter}">${label}</button>`;
+            const stateInfo = states[letter];
+            let stateClass = "";
+            let bgHtml = "";
+            if (Array.isArray(stateInfo)) {
+              bgHtml = `<div class="key-bg-grid" style="grid-template-columns: repeat(${Math.ceil(stateInfo.length / 2)}, 1fr);">${stateInfo.map(s => `<div class="key-bg-cell ${s || ''}"></div>`).join("")}</div>`;
+            } else if (stateInfo) {
+              stateClass = stateInfo;
+            }
+            return `<button class="key ${stateClass} ${letter.length > 1 ? "wide" : ""}" type="button" data-key="${letter}" aria-label="${letter === "BACK" ? "Backspace" : letter}">
+              ${bgHtml}
+              <span class="key-label">${label}</span>
+            </button>`;
           })
           .join("")}</div>`;
       })
@@ -1152,21 +1185,21 @@ function getWordGuessKeyboardState(
 }
 
 function getMultiKeyboardState(guesses: string[], targets: string[]) {
-  const states: Record<string, LetterState> = {};
+  const states: Record<string, LetterState[]> = {};
   guesses.forEach((guess) => {
-    const mergedForGuess: Record<string, LetterState> = {};
-    targets.forEach((target) => {
-      evaluateGuess(guess, target).forEach((cell) =>
-        mergeKeyboardState(
-          mergedForGuess,
-          cell.letter,
-          cell.state as LetterState,
-        ),
-      );
+    targets.forEach((target, targetIdx) => {
+      evaluateGuess(guess, target).forEach((cell) => {
+        const letter = cell.letter.toUpperCase();
+        if (!states[letter]) {
+          states[letter] = Array(targets.length).fill("");
+        }
+        const current = states[letter][targetIdx];
+        const state = cell.state as LetterState;
+        if (!current || stateRank[state] > (stateRank[current] || 0)) {
+          states[letter][targetIdx] = state;
+        }
+      });
     });
-    Object.entries(mergedForGuess).forEach(([letter, state]) =>
-      mergeKeyboardState(states, letter, state),
-    );
   });
   return states;
 }

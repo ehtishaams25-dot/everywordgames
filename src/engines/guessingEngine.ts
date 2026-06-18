@@ -1,6 +1,7 @@
 import dataset from "@/data/categories";
 import type { GameConfig } from "@/data/games";
 import { pickSeeded, todayKey } from "./random";
+import { getHistory, addHistory } from "./wordGuessEngine";
 
 export interface GuessItem {
   answer: string;
@@ -70,7 +71,11 @@ export function getGuessPool(game: GameConfig): GuessItem[] {
 export function createGuessChallenge(game: GameConfig, run = 0): GuessItem {
   const pool = getGuessPool(game);
   const seed = game.daily ? `${game.slug}:${todayKey()}` : `${game.slug}:${run}:${Date.now()}`;
-  return pickSeeded(pool, seed);
+  const history = getHistory();
+  const available = pool.filter(p => !history.includes(p.answer));
+  const item = available.length > 0 ? pickSeeded(available, seed) : pickSeeded(pool, seed);
+  addHistory(item.answer);
+  return item;
 }
 
 export function normalizeAnswer(value: string) {

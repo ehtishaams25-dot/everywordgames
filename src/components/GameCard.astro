@@ -9,11 +9,11 @@ const { game } = Astro.props;
 
 let bannerUrl = "";
 if (game.slug === "hangman") {
-  bannerUrl = "/thumbnails/Hangman new.png";
+  bannerUrl = "/thumbnails/hangman_clay.png";
 } else if (game.slug === "guess-country") {
-  bannerUrl = "/thumbnails/guess country new.png";
+  bannerUrl = "/thumbnails/guess_country_minimal_clay.png";
 } else if (game.slug === "guess-flag") {
-  bannerUrl = "/thumbnails/guess flag.png";
+  bannerUrl = "/thumbnails/guess_flag_clay.png";
 } else if (game.slug === "guess-capital") {
   bannerUrl = "/thumbnails/guess capital.png";
 } else if (game.slug === "guess-movie") {
@@ -23,17 +23,19 @@ if (game.slug === "hangman") {
 } else if (game.slug === "guess-anime") {
   bannerUrl = "/thumbnails/anime new.png";
 } else if (game.slug === "antonym-challenge") {
-  bannerUrl = "/thumbnails/antonym.png";
+  bannerUrl = "/thumbnails/antonym_clay.png";
 } else if (game.slug === "missing-letters") {
-  bannerUrl = "/thumbnails/missing letters.png";
+  bannerUrl = "/thumbnails/missing_letters_clay.png";
 } else if (game.slug === "synonym-challenge") {
-  bannerUrl = "/thumbnails/synonym.png";
+  bannerUrl = "/thumbnails/synonym_clay.png";
 } else if (game.slug === "word-scramble") {
-  bannerUrl = "/thumbnails/word scramble.png";
-} else if (game.category === "word-guess" || game.category === "multi-word-guess") {
-  bannerUrl = "/thumbnails/word guess new.png";
+  bannerUrl = "/thumbnails/word_scramble_clay.png";
+} else if (game.category === "word-guess") {
+  bannerUrl = "/thumbnails/word_guess_clay.png";
+} else if (game.category === "multi-word-guess") {
+  bannerUrl = "";
 } else if (game.slug === "daily-word-guess") {
-  bannerUrl = "/thumbnails/word guess new.png";
+  bannerUrl = "/thumbnails/word_guess_clay.png";
 } else if (game.category === "geography") {
   bannerUrl = "/thumbnails/geography category.png";
 } else if (game.category === "entertainment") {
@@ -51,6 +53,8 @@ const initials = game.name
   .slice(0, 2)
   .toUpperCase();
 
+const fallbackText = game.category === "multi-word-guess" && game.boardCount ? game.boardCount.toString() : initials;
+
 const linkHref = game.comingSoon ? undefined : `/games/${game.slug}/`;
 const CardWrapper = game.comingSoon ? 'div' : 'a';
 ---
@@ -60,7 +64,9 @@ const CardWrapper = game.comingSoon ? 'div' : 'a';
     {bannerUrl ? (
       <img src={bannerUrl} alt={game.name} loading="lazy" />
     ) : (
-      <div class="fallback-img">{initials}</div>
+      <div class="fallback-img">
+        <span class="clay-tile">{fallbackText}</span>
+      </div>
     )}
     <div class="v2-feature-overlay"></div>
     {game.daily && <span class="v2-feature-diff" style="top:auto; bottom:12px; left:12px; right:auto; background:var(--v2-orange); color:#fff;">DAILY</span>}
@@ -86,9 +92,23 @@ const CardWrapper = game.comingSoon ? 'div' : 'a';
     align-items: center;
     justify-content: center;
     background: var(--surface2);
+  }
+  .clay-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 80px;
+    padding: 0 16px;
+    background: var(--v2-green);
+    border-radius: 16px;
     font-family: "Bebas Neue", sans-serif;
-    font-size: 5rem;
-    color: var(--muted);
-    letter-spacing: 2px;
+    font-size: 4.5rem;
+    color: #fff;
+    box-shadow: 
+      inset -4px -4px 8px rgba(0,0,0,0.25),
+      inset 4px 4px 8px rgba(255,255,255,0.4),
+      4px 8px 16px rgba(0,0,0,0.15);
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.2);
   }
 </style>
