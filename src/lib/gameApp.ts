@@ -87,9 +87,9 @@ function calculateDistance(
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in km
 }
@@ -221,6 +221,7 @@ export function mountGame(root: HTMLElement) {
   if (game.engine === "guessing") mountGuessing(root, game);
   if (game.engine === "word-puzzle") mountPuzzle(root, game);
   if (game.engine === "grid-puzzle") mountMergeLetters(root, game);
+  if (game.engine === "word-search") mountWordSearch(root, game);
   if (game.engine === "falling-words") mountFallingWords(root, game, () => globalDictionary);
 }
 
@@ -356,15 +357,15 @@ function mountWordGuess(root: HTMLElement, game: GameConfig) {
       const guess = guesses[row];
       return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? "shake" : ""}" style="grid-template-columns: repeat(${game.wordLength}, auto)">
         ${Array.from({ length: game.wordLength ?? 5 }, (_, col) => {
-          if (isCurrentRow) {
-            const letter = currentGuess[col] ?? "";
-            const isLast = letter !== "" && col === currentGuess.length - 1;
-            return `<span class="cell ${isLast ? "pop" : ""}">${letter}</span>`;
-          }
-          const cell = guess?.[col];
-          const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
-          return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? "flip" : ""}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
-        }).join("")}
+        if (isCurrentRow) {
+          const letter = currentGuess[col] ?? "";
+          const isLast = letter !== "" && col === currentGuess.length - 1;
+          return `<span class="cell ${isLast ? "pop" : ""}">${letter}</span>`;
+        }
+        const cell = guess?.[col];
+        const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
+        return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? "flip" : ""}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
+      }).join("")}
       </div>`;
     }).join("");
 
@@ -579,15 +580,15 @@ function renderMiniBoard(
       : undefined;
     return `<div class="word-guess-row ${isCurrentRow && invalidGuess ? "shake" : ""} ${compactClass}" style="grid-template-columns: repeat(${target.length}, auto)">
       ${Array.from({ length: target.length }, (_, col) => {
-        if (isCurrentRow) {
-          const letter = currentGuess[col] ?? "";
-          const isLast = letter !== "" && col === currentGuess.length - 1;
-          return `<span class="cell ${isLast ? "pop" : ""}">${letter}</span>`;
-        }
-        const cell = result?.[col];
-        const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
-        return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? "flip" : ""}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
-      }).join("")}
+      if (isCurrentRow) {
+        const letter = currentGuess[col] ?? "";
+        const isLast = letter !== "" && col === currentGuess.length - 1;
+        return `<span class="cell ${isLast ? "pop" : ""}">${letter}</span>`;
+      }
+      const cell = result?.[col];
+      const style = cell ? `style="animation-delay: ${col * 100}ms;"` : "";
+      return `<span class="cell ${cell?.state ?? ""} ${cell && isJustSubmittedRow ? "flip" : ""}" ${style}>${cell?.letter.toUpperCase() ?? ""}</span>`;
+    }).join("")}
     </div>`;
   }).join("");
   return `<section class="mini-board">${rows}</section>`;
@@ -632,21 +633,20 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       const revealOrder = [2, 4, 0, 5, 1, 3];
       mainContent = `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-bottom: 2rem;">
-          ${
-            flagSvg
-              ? `
+          ${flagSvg
+          ? `
           <div class="flag-container" style="position: relative; display: inline-block; width: 100%; max-width: 300px; aspect-ratio: 3/2; background: #eee; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1); user-select: none; -webkit-user-select: none;">
             <img src="${flagSvg}" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none;" draggable="false" />
             <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0px; pointer-events: none;">
               ${Array.from({ length: 6 }, (_, i) => {
-                const isRevealed = revealOrder.indexOf(i) < attempts.length + 1;
-                return `<div style="background: var(--surface2); opacity: ${isRevealed ? 0 : 1}; transition: opacity 0.5s;"></div>`;
-              }).join("")}
+            const isRevealed = revealOrder.indexOf(i) < attempts.length + 1;
+            return `<div style="background: var(--surface2); opacity: ${isRevealed ? 0 : 1}; transition: opacity 0.5s;"></div>`;
+          }).join("")}
             </div>
           </div>
           `
-              : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading flag...</div>`
-          }
+          : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading flag...</div>`
+        }
         </div>
       `;
     } else if (isCountryGame) {
@@ -656,15 +656,14 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
         : "";
       mainContent = `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-bottom: 2rem;">
-          ${
-            mapSvgUrl
-              ? `
+          ${mapSvgUrl
+          ? `
           <div class="map-container" style="position: relative; display: inline-block; width: 100%; max-width: 300px; aspect-ratio: 1; padding: 1rem; user-select: none; -webkit-user-select: none; pointer-events: none;">
             <img src="${mapSvgUrl}" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; filter: var(--map-filter) drop-shadow(0 4px 12px rgba(0,0,0,0.15));" draggable="false" />
           </div>
           `
-              : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading map...</div>`
-          }
+          : `<div style="padding: 2rem; border: 1px dashed var(--border);">Loading map...</div>`
+        }
         </div>
       `;
     } else {
@@ -684,16 +683,16 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
           </div>
           <div class="hint-list">
             ${challenge.hints
-              .map((hint, index) => {
-                const isUnlocked = index <= attempts.length;
-                const justUnlocked =
-                  index === attempts.length && attempts.length > 0;
-                if (isUnlocked) {
-                  return `<div class="hint ${justUnlocked ? "hint-new" : ""}"><span class="hint-text">${escapeHtml(hint)}</span></div>`;
-                }
-                return `<div class="hint locked"><span class="lock-icon">🔒</span> Locked</div>`;
-              })
-              .join("")}
+          .map((hint, index) => {
+            const isUnlocked = index <= attempts.length;
+            const justUnlocked =
+              index === attempts.length && attempts.length > 0;
+            if (isUnlocked) {
+              return `<div class="hint ${justUnlocked ? "hint-new" : ""}"><span class="hint-text">${escapeHtml(hint)}</span></div>`;
+            }
+            return `<div class="hint locked"><span class="lock-icon">🔒</span> Locked</div>`;
+          })
+          .join("")}
           </div>
         </aside>
       </div>
@@ -706,17 +705,15 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
       <form class="guess-form" style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; width: 100%; max-width: 400px; margin-inline: auto;">
         <div style="position: relative; flex: 1; min-width: 0;">
           <input class="answer-input" name="answer" placeholder="${isCountryGame || isFlagGame ? "Country, territory..." : "Enter guess"}" inputmode="${isCountryGame || isFlagGame ? "text" : "none"}" maxlength="${Math.max(answerLength + 8, 24)}" autocomplete="off" autocapitalize="characters" aria-label="Enter answer" style="width: 100%; box-sizing: border-box; text-align: center; font-weight: bold; padding: 0.75rem; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text);" />
-          ${
-            isCountryGame || isFlagGame
-              ? `<div id="suggestion-container" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; z-index: 50; padding: 0; overflow-x: hidden;"></div>`
-              : ""
-          }
+          ${isCountryGame || isFlagGame
+        ? `<div id="suggestion-container" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-height: 200px; overflow-y: auto; z-index: 50; padding: 0; overflow-x: hidden;"></div>`
+        : ""
+      }
         </div>
         <button class="button" type="submit" style="padding: 0 1.5rem; white-space: nowrap; border-radius: 8px;">${isCountryGame || isFlagGame ? "🌍 GUESS" : "Submit"}</button>
       </form>
-      ${
-        isCountryGame || isFlagGame
-          ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.25rem;">
+      ${isCountryGame || isFlagGame
+        ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.25rem;">
         ${Array.from({ length: maxAttempts }, (_, i) => {
           const attempt = attempts[i];
           if (!attempt) {
@@ -766,15 +763,15 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
           </div>`;
         }).join("")}
       </div>`
-          : attempts.length > 0
-            ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem;">
+        : attempts.length > 0
+          ? `<div class="past-guesses" style="margin-top: 1rem; margin-bottom: 1rem;">
         ${attempts
-          .map((attempt) => {
-            return `<div class="past-guess" style="padding: 0.5rem; background: var(--bg-surface-hover); border-radius: var(--radius); text-align: center; font-weight: 500; font-family: monospace; letter-spacing: 1px; color: var(--fg-muted); margin-bottom: 0.5rem; ${normalizeAnswer(attempt) === normalizeAnswer(challenge.answer) ? "color: var(--green);" : "text-decoration: line-through;"}">${escapeHtml(attempt.toUpperCase())}</div>`;
-          })
-          .join("")}
+            .map((attempt) => {
+              return `<div class="past-guess" style="padding: 0.5rem; background: var(--bg-surface-hover); border-radius: var(--radius); text-align: center; font-weight: 500; font-family: monospace; letter-spacing: 1px; color: var(--fg-muted); margin-bottom: 0.5rem; ${normalizeAnswer(attempt) === normalizeAnswer(challenge.answer) ? "color: var(--green);" : "text-decoration: line-through;"}">${escapeHtml(attempt.toUpperCase())}</div>`;
+            })
+            .join("")}
       </div>`
-            : ""
+          : ""
       }
       ${isCountryGame || isFlagGame ? "" : renderKeyboard(getGuessKeyboardState(attempts, challenge))}
     `;
@@ -808,10 +805,10 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
             .slice(0, 5);
 
           if (matches.length > 0 && !(matches.length === 1 && matches[0].toLowerCase() === val)) {
-            suggestionContainer.innerHTML = matches.map((m: string) => 
+            suggestionContainer.innerHTML = matches.map((m: string) =>
               `<div class="suggestion-item" style="padding: 0.75rem 1rem; cursor: pointer; text-align: left; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--text);" data-value="${escapeHtml(m)}">${escapeHtml(m)}</div>`
             ).join("");
-            
+
             const lastItem = suggestionContainer.lastElementChild as HTMLElement;
             if (lastItem) lastItem.style.borderBottom = "none";
 
@@ -1546,7 +1543,7 @@ function mountMergeLetters(root: HTMLElement, game: GameConfig) {
         el.appendChild(inner);
         container.appendChild(el);
       }
-      
+
       el.className = classes.join(" ");
     });
 
@@ -1558,4 +1555,371 @@ function mountMergeLetters(root: HTMLElement, game: GameConfig) {
   };
 
   render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WORD SEARCH ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+function mountWordSearch(root: HTMLElement, game: GameConfig) {
+  // Word banks per topic (cycling through them for new games)
+  const wordBanks = [
+    { topic: "Animals", words: ["CAT", "DOG", "FISH", "BIRD", "LION", "WOLF", "BEAR", "FROG", "DEER", "GOAT", "CROW", "DUCK", "HAWK", "MOLE", "WREN"] },
+    { topic: "Fruits", words: ["APPLE", "GRAPE", "MANGO", "PEACH", "PLUM", "KIWI", "LIME", "PEAR", "DATE", "FIG", "LEMON", "MELON", "GUAVA", "LYCHEE", "BERRY"] },
+    { topic: "Colors", words: ["RED", "BLUE", "PINK", "GOLD", "GREY", "CYAN", "LIME", "JADE", "AQUA", "ROSE", "TEAL", "NAVY", "CORAL", "AMBER", "IVORY"] },
+    { topic: "Countries", words: ["FRANCE", "JAPAN", "INDIA", "CHINA", "ITALY", "SPAIN", "EGYPT", "BRAZIL", "PERU", "GHANA", "CUBA", "IRAN", "IRAQ", "OMAN", "CHAD"] },
+    { topic: "Sports", words: ["GOLF", "POLO", "SWIM", "SURF", "JUMP", "DIVE", "RIDE", "RACE", "KICK", "BOWL", "JUDO", "YOGA", "TREK", "SKATE", "RUGBY"] },
+    { topic: "Space", words: ["STAR", "MOON", "MARS", "NOVA", "COMET", "ORBIT", "SOLAR", "VENUS", "EARTH", "PLUTO", "NEBULA", "QUASAR", "PULSAR", "GALAXY", "SATURN"] },
+    { topic: "Food", words: ["PIZZA", "PASTA", "TACO", "RICE", "SOUP", "CAKE", "MEAT", "TOFU", "CORN", "BEAN", "SUSHI", "CURRY", "SALAD", "BREAD", "GRAVY"] },
+    { topic: "Jobs", words: ["CHEF", "NURSE", "PILOT", "JUDGE", "CLERK", "COACH", "GUARD", "MINER", "ACTOR", "BAKER", "DIVER", "MASON", "VALET", "BOXER", "TUTOR"] },
+  ];
+
+  const GRID_SIZE = 12;
+  const highlightColors = [
+    "#22C55E", // green
+    "#A855F7", // purple
+    "#3B82F6", // blue
+    "#F59E0B", // amber
+    "#EF4444", // red
+    "#06B6D4", // cyan
+    "#EC4899", // pink
+    "#84CC16", // lime
+    "#F97316", // orange
+  ];
+
+  let run = 0;
+  let bankIndex = 0;
+  let grid: string[][] = [];
+  let wordList: string[] = [];
+  let topic = "";
+  let placedWords: { word: string; cells: [number, number][] }[] = [];
+  let foundWords: Set<string> = new Set();
+  let wordColors: Map<string, string> = new Map();
+
+  // Drag state
+  let isDragging = false;
+  let dragStart: [number, number] | null = null;
+  let dragCurrent: [number, number] | null = null;
+  let started = Date.now();
+
+  function seededRandom(seed: number) {
+    let s = seed;
+    return () => {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      return (s >>> 0) / 0xffffffff;
+    };
+  }
+
+  function buildGrid(rng: () => number, words: string[]): boolean {
+    const g: string[][] = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(""));
+    const placed: { word: string; cells: [number, number][] }[] = [];
+
+    const directions: [number, number][] = [
+      [0, 1], [0, -1], [1, 0], [-1, 0],
+      [1, 1], [1, -1], [-1, 1], [-1, -1],
+    ];
+
+    for (const word of words) {
+      let success = false;
+      for (let attempt = 0; attempt < 200 && !success; attempt++) {
+        const [dr, dc] = directions[Math.floor(rng() * directions.length)];
+        const row = Math.floor(rng() * GRID_SIZE);
+        const col = Math.floor(rng() * GRID_SIZE);
+        const cells: [number, number][] = [];
+        let canPlace = true;
+
+        for (let i = 0; i < word.length; i++) {
+          const r = row + dr * i;
+          const c = col + dc * i;
+          if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) { canPlace = false; break; }
+          if (g[r][c] !== "" && g[r][c] !== word[i]) { canPlace = false; break; }
+          cells.push([r, c]);
+        }
+
+        if (canPlace) {
+          cells.forEach(([r, c], i) => { g[r][c] = word[i]; });
+          placed.push({ word, cells });
+          success = true;
+        }
+      }
+    }
+
+    // Fill blanks
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let r = 0; r < GRID_SIZE; r++) {
+      for (let c = 0; c < GRID_SIZE; c++) {
+        if (g[r][c] === "") g[r][c] = alphabet[Math.floor(rng() * 26)];
+      }
+    }
+
+    grid = g;
+    placedWords = placed;
+    return placed.length > 0;
+  }
+
+  function initGame() {
+    const bank = wordBanks[bankIndex % wordBanks.length];
+    topic = bank.topic;
+    // Pick 10 words
+    const rng = seededRandom(run * 137 + bankIndex * 31 + 1);
+    const shuffled = [...bank.words].sort(() => rng() - 0.5);
+    wordList = shuffled.slice(0, 10);
+    buildGrid(rng, wordList);
+    foundWords = new Set();
+    wordColors = new Map();
+    isDragging = false;
+    dragStart = null;
+    dragCurrent = null;
+    started = Date.now();
+  }
+
+  function reset() {
+    run++;
+    bankIndex = (bankIndex + 1) % wordBanks.length;
+    initGame();
+    renderGame();
+  }
+
+  // Get grid cells currently selected by drag
+  function getDragCells(): [number, number][] {
+    if (!dragStart || !dragCurrent) return [];
+    const [sr, sc] = dragStart;
+    const [er, ec] = dragCurrent;
+    const dr = er - sr;
+    const dc = ec - sc;
+
+    const len = Math.max(Math.abs(dr), Math.abs(dc));
+    if (len === 0) return [[sr, sc]];
+
+    // Only allow 8-directional
+    const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+    const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+    // Check if diagonal or straight
+    const isDiag = Math.abs(dr) === Math.abs(dc);
+    const isStraight = dr === 0 || dc === 0;
+    if (!isDiag && !isStraight) {
+      // Snap to nearest axis or diagonal
+      const useRow = Math.abs(dr) < Math.abs(dc);
+      const finalR = useRow ? sr : er;
+      const finalC = useRow ? ec : sc;
+      return getDragCellsBetween(sr, sc, finalR, finalC);
+    }
+
+    return getDragCellsBetween(sr, sc, er, ec);
+  }
+
+  function getDragCellsBetween(sr: number, sc: number, er: number, ec: number): [number, number][] {
+    const cells: [number, number][] = [];
+    const dr = er - sr;
+    const dc = ec - sc;
+    const len = Math.max(Math.abs(dr), Math.abs(dc));
+    if (len === 0) return [[sr, sc]];
+    const stepR = dr / len;
+    const stepC = dc / len;
+    for (let i = 0; i <= len; i++) {
+      cells.push([Math.round(sr + stepR * i), Math.round(sc + stepC * i)]);
+    }
+    return cells;
+  }
+
+  function checkDragForWord(): string | null {
+    const cells = getDragCells();
+    const forward = cells.map(([r, c]) => grid[r]?.[c] ?? "").join("");
+    const backward = [...forward].reverse().join("");
+
+    for (const { word, cells: wCells } of placedWords) {
+      if (foundWords.has(word)) continue;
+      // Compare positions
+      const matches = (c: [number, number][], check: string) => {
+        if (c.length !== check.length) return false;
+        return c.every(([r, col], i) => grid[r]?.[col] === check[i]);
+      };
+      if (forward === word || backward === word) {
+        // Check the actual cells match
+        const isFwd = cells.length === wCells.length && cells.every(([r, c], i) => r === wCells[i][0] && c === wCells[i][1]);
+        const isBwd = cells.length === wCells.length && cells.every(([r, c], i) => r === wCells[wCells.length - 1 - i][0] && c === wCells[wCells.length - 1 - i][1]);
+        if (isFwd || isBwd) return word;
+      }
+    }
+    return null;
+  }
+
+  function renderGame() {
+    const colorIndex = foundWords.size % highlightColors.length;
+    const dragCells = getDragCells();
+    const dragSet = new Set(dragCells.map(([r, c]) => `${r},${c}`));
+
+    // Build found cell map
+    const foundCellMap = new Map<string, string>(); // "r,c" -> color
+    for (const [word, color] of wordColors) {
+      const pw = placedWords.find(p => p.word === word);
+      if (pw) {
+        pw.cells.forEach(([r, c]) => foundCellMap.set(`${r},${c}`, color));
+      }
+    }
+
+    // Render grid
+    const gridHtml = grid.map((row, r) =>
+      row.map((letter, c) => {
+        const key = `${r},${c}`;
+        const foundColor = foundCellMap.get(key);
+        const isDrag = dragSet.has(key);
+        let cellStyle = "";
+        let extraClass = "";
+
+        if (foundColor) {
+          cellStyle = `background:${foundColor}22; color:${foundColor}; border-color:${foundColor}44; font-weight:900;`;
+          extraClass = "ws-found";
+        } else if (isDrag) {
+          cellStyle = `background: var(--lime)22; color: var(--lime); border-color: var(--lime)88; font-weight:900; transform: scale(1.1);`;
+          extraClass = "ws-drag";
+        }
+
+        return `<div class="ws-cell ${extraClass}" data-r="${r}" data-c="${c}" style="${cellStyle}">${letter}</div>`;
+      }).join("")
+    ).join("");
+
+    // Word list
+    const wordListHtml = wordList.map(word => {
+      const found = foundWords.has(word);
+      const color = wordColors.get(word);
+      const style = found && color
+        ? `color:${color}; text-decoration: line-through; opacity: 0.6; font-weight: 700;`
+        : `color: var(--text); font-weight: 600;`;
+      return `<div class="ws-word-item" style="${style}">${found ? "✓ " : ""}${word}</div>`;
+    }).join("");
+
+    const allFound = foundWords.size === wordList.length;
+    const score = foundWords.size;
+
+    root.innerHTML = `
+      <div class="ws-container">
+        <div class="ws-header">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--text);letter-spacing:1px;">🔍 ${escapeHtml(topic)}</span>
+            <span class="pill" style="font-size:0.75rem;">${score} / ${wordList.length} found</span>
+          </div>
+          <button class="button secondary small" type="button" id="ws-new-game" style="white-space:nowrap;">New Puzzle</button>
+        </div>
+
+        ${allFound ? `
+          <div class="ws-win-banner" style="text-align:center;padding:1rem;background:var(--success)22;border:1px solid var(--success)44;border-radius:12px;margin-bottom:1rem;">
+            <span style="font-size:1.5rem;">🎉</span>
+            <strong style="color:var(--success);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;"> All words found!</strong>
+          </div>` : ""}
+
+        <div class="ws-layout">
+          <div class="ws-grid-wrap">
+            <div class="ws-grid" id="ws-grid" style="grid-template-columns:repeat(${GRID_SIZE},1fr);">
+              ${gridHtml}
+            </div>
+          </div>
+          <div class="ws-word-list">
+            <div class="ws-word-list-title">Words to find</div>
+            ${wordListHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    root.querySelector("#ws-new-game")?.addEventListener("click", () => {
+      reset();
+    });
+
+    wireWordSearchInteraction();
+  }
+
+  function wireWordSearchInteraction() {
+    const gridEl = root.querySelector<HTMLElement>("#ws-grid");
+    if (!gridEl) return;
+
+    function cellFromEvent(e: MouseEvent | Touch): [number, number] | null {
+      const target = e instanceof Touch
+        ? document.elementFromPoint(e.clientX, e.clientY)
+        : (e.target as HTMLElement);
+      const cell = (target as HTMLElement)?.closest?.("[data-r]") as HTMLElement | null;
+      if (!cell) return null;
+      return [parseInt(cell.dataset.r ?? "-1"), parseInt(cell.dataset.c ?? "-1")];
+    }
+
+    // Mouse events
+    gridEl.addEventListener("mousedown", (e) => {
+      const pos = cellFromEvent(e as MouseEvent);
+      if (!pos) return;
+      isDragging = true;
+      dragStart = pos;
+      dragCurrent = pos;
+      renderGame();
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const pos = cellFromEvent(e);
+      if (pos && (pos[0] !== dragCurrent?.[0] || pos[1] !== dragCurrent?.[1])) {
+        dragCurrent = pos;
+        renderGame();
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const found = checkDragForWord();
+      if (found) {
+        const color = highlightColors[foundWords.size % highlightColors.length];
+        foundWords.add(found);
+        wordColors.set(found, color);
+        if (foundWords.size === wordList.length) {
+          recordGame(game.slug, true, elapsed(started));
+          window.dispatchEvent(new Event("gamecompleted"));
+        }
+      }
+      dragStart = null;
+      dragCurrent = null;
+      renderGame();
+    });
+
+    // Touch events
+    gridEl.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      const pos = cellFromEvent(e.touches[0]);
+      if (!pos) return;
+      isDragging = true;
+      dragStart = pos;
+      dragCurrent = pos;
+      renderGame();
+    }, { passive: false });
+
+    gridEl.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (!isDragging) return;
+      const pos = cellFromEvent(e.touches[0]);
+      if (pos && (pos[0] !== dragCurrent?.[0] || pos[1] !== dragCurrent?.[1])) {
+        dragCurrent = pos;
+        renderGame();
+      }
+    }, { passive: false });
+
+    gridEl.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      if (!isDragging) return;
+      isDragging = false;
+      const found = checkDragForWord();
+      if (found) {
+        const color = highlightColors[foundWords.size % highlightColors.length];
+        foundWords.add(found);
+        wordColors.set(found, color);
+        if (foundWords.size === wordList.length) {
+          recordGame(game.slug, true, elapsed(started));
+          window.dispatchEvent(new Event("gamecompleted"));
+        }
+      }
+      dragStart = null;
+      dragCurrent = null;
+      renderGame();
+    }, { passive: false });
+  }
+
+  initGame();
+  renderGame();
 }
