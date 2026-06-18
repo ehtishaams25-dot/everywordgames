@@ -4,6 +4,7 @@ export type GameEngine =
   | "guessing"
   | "word-puzzle"
   | "grid-puzzle"
+  | "falling-words"
   | "coming-soon";
 export type GameCategory =
   | "word-guess"
@@ -13,6 +14,7 @@ export type GameCategory =
   | "brands"
   | "word-games"
   | "grid-games"
+  | "casual"
   | "daily"
   | "future";
 export type Difficulty = "Easy" | "Medium" | "Hard" | "Expert";
@@ -231,6 +233,16 @@ export const games: GameConfig[] = [
     featured: true,
     trending: true,
   },
+  {
+    slug: "type-destroy",
+    name: "Type & Destroy",
+    description: "Type the falling words before they hit the bottom to defend your base.",
+    category: "casual",
+    engine: "falling-words",
+    difficulty: "Medium",
+    featured: true,
+    trending: true,
+  },
   ...[
     [
       "daily-word",
@@ -312,6 +324,7 @@ export const categoryLabels: Record<GameCategory, string> = {
   brands: "Brands",
   "word-games": "Word Games",
   "grid-games": "Grid Games",
+  casual: "Casual Games",
   daily: "Daily Challenges",
   future: "Coming Soon",
 };

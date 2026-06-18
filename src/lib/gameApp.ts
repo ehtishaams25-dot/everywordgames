@@ -19,6 +19,7 @@ import {
   type MergeLettersState,
   type Tile,
 } from "@/engines/mergeLettersEngine";
+import { mountFallingWords } from "@/engines/fallingWordsEngine";
 import confetti from "canvas-confetti";
 import dataset from "@/data/categories";
 import { useGameFocus } from "./useGameFocus";
@@ -198,15 +199,29 @@ export function mountGame(root: HTMLElement) {
 
   rememberRecent(game.slug);
 
+  // Clean up any previous game's keydown handler to prevent keyboard focus conflicts
+  if (activeKeydownHandler) {
+    window.removeEventListener("keydown", activeKeydownHandler);
+    activeKeydownHandler = null;
+  }
+  // Clean up any previous falling-words game instance
+  if ((root as any)._cleanup) {
+    (root as any)._cleanup();
+    (root as any)._cleanup = null;
+  }
+
   if (game.engine === "word-guess" || game.engine === "multi-word-guess") {
     loadDictionary();
   }
+
+  if (game.engine === "falling-words") loadDictionary();
 
   if (game.engine === "word-guess") mountWordGuess(root, game);
   if (game.engine === "multi-word-guess") mountMultiWordGuess(root, game);
   if (game.engine === "guessing") mountGuessing(root, game);
   if (game.engine === "word-puzzle") mountPuzzle(root, game);
   if (game.engine === "grid-puzzle") mountMergeLetters(root, game);
+  if (game.engine === "falling-words") mountFallingWords(root, game, () => globalDictionary);
 }
 
 function mountComingSoon(root: HTMLElement, game: GameConfig) {
@@ -1043,7 +1058,7 @@ function mountPuzzle(root: HTMLElement, game: GameConfig) {
   render();
 }
 
-function renderGameHeader(
+export function renderGameHeader(
   game: GameConfig,
   pills: string[],
   buttonLabel: string,
@@ -1117,7 +1132,7 @@ function getAnswerLetters(challenge: GuessItem) {
   return normalizeAnswer(challenge.answer).toUpperCase().split("");
 }
 
-function renderKeyboard(states: Record<string, LetterState | LetterState[]> = {}) {
+export function renderKeyboard(states: Record<string, LetterState | LetterState[]> = {}) {
   return `<div class="keyboard" aria-label="On-screen keyboard">
     ${keyboardRows
       .map((row, index) => {
@@ -1145,7 +1160,7 @@ function renderKeyboard(states: Record<string, LetterState | LetterState[]> = {}
   </div>`;
 }
 
-function wireKeyboard(
+export function wireKeyboard(
   root: HTMLElement,
   handlerOrSelector: string | ((key: string) => void),
 ) {
@@ -1281,7 +1296,7 @@ function rememberRecent(slug: string) {
   );
 }
 
-function escapeHtml(value: string) {
+export function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")

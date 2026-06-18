@@ -61,6 +61,20 @@ export function getGameDetails(game: GameConfig): GameDetails {
       `For example, merging two 'A' tiles creates a 'B' tile.`,
       `Keep merging letters to see how far down the alphabet you can go before the board fills up.`
     );
+  } else if (game.engine === "falling-words") {
+    return {
+      howToPlay: [
+        "Words will fall from the top of the screen towards the bottom.",
+        "Type the first letter of any falling word to lock onto it.",
+        "Finish typing the word to destroy it and gain points.",
+        "Survive the waves and defeat massive boss words.",
+        "Don't let words hit the bottom, or you lose a life. You have 3 lives!",
+      ],
+      faqs: [
+        { q: "How many lives do I have?", a: "You start with 3 lives." },
+        { q: "What happens during a boss wave?", a: "A massive word drops very slowly. You must destroy it to proceed to the next wave." },
+      ],
+    };
   } else {
     // Default fallback
     howToPlay.push(

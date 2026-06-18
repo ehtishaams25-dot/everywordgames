@@ -8,6 +8,7 @@ const categories = [
   { id: "geography", label: "GEOGRAPHY", games: games.filter((g) => g.category === "geography" && !g.comingSoon) },
   { id: "puzzles", label: "PUZZLES", games: games.filter((g) => (g.category === "word-games" || g.category === "grid-games") && !g.comingSoon) },
   { id: "multi-word", label: "MULTI-WORD", games: games.filter((g) => g.category === "multi-word-guess" && !g.comingSoon) },
+  { id: "casual", label: "CASUAL", games: games.filter((g) => g.category === "casual" && !g.comingSoon) },
 ];
 ---
 
@@ -551,6 +552,48 @@ const categories = [
             <div class="v2-htp-visual">
               <div class="v2-demo-row v2-anim-scramble-shuffle">
                 <span class="v2-tile" style="background: #edc22e; color: #f9f6f2; border: 2px solid rgba(255, 255, 255, 0.5);">K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTP: Falling Words (Type & Destroy) -->
+      <div id="htp-falling-words" class="v2-htp-template" style="display: none;">
+        <div class="v2-htp-grid">
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">1</div>
+            <h3 class="v2-htp-title">Watch them fall</h3>
+            <p class="v2-htp-desc">Words drop from the top of the screen. Don't let them reach the bottom or you'll lose a life!</p>
+            <div class="v2-htp-visual">
+              <div class="v2-fw-scene">
+                <span class="v2-fw-word v2-fw-drop" style="animation-delay: 0s;">ALIEN</span>
+                <span class="v2-fw-word v2-fw-drop" style="animation-delay: 1.2s; left: 15%;">CAT</span>
+                <span class="v2-fw-word v2-fw-drop" style="animation-delay: 2.4s; left: 60%;">JUMP</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">2</div>
+            <h3 class="v2-htp-title">Type to destroy</h3>
+            <p class="v2-htp-desc">Type the first letter to lock on, then finish the word. Each typed letter greys out so you know your progress.</p>
+            <div class="v2-htp-visual">
+              <div style="display: flex; align-items: center; gap: 4px; font-family: monospace; font-size: 1.3rem; font-weight: bold;">
+                <span class="v2-fw-typed">A</span>
+                <span class="v2-fw-typed">L</span>
+                <span class="v2-fw-cursor">I</span>
+                <span class="v2-fw-untyped">E</span>
+                <span class="v2-fw-untyped">N</span>
+              </div>
+            </div>
+          </div>
+          <div class="v2-htp-card">
+            <div class="v2-htp-badge">3</div>
+            <h3 class="v2-htp-title">Survive boss waves</h3>
+            <p class="v2-htp-desc">Every few waves, a massive boss word appears. Type it fast before it reaches the bottom!</p>
+            <div class="v2-htp-visual">
+              <div class="v2-fw-boss-wrap v2-anim-float">
+                <span class="v2-fw-boss">INTERSTELLAR</span>
               </div>
             </div>
           </div>
@@ -1127,6 +1170,88 @@ const categories = [
   .v2-link-subtle:hover { color: var(--v2-green); }
   [data-theme="dark"] .v2-link-subtle:hover { color: #BEFF00; }
 
+  /* ── FALLING WORDS HTP ANIMATIONS ── */
+  .v2-fw-scene {
+    position: relative;
+    height: 90px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .v2-fw-word {
+    position: absolute;
+    left: 35%;
+    top: -30px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text);
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  @keyframes v2-fw-fall {
+    0% { top: -30px; opacity: 0; }
+    10% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { top: 85px; opacity: 0; }
+  }
+  .v2-fw-drop {
+    animation: v2-fw-fall 3.5s ease-in infinite;
+  }
+
+  .v2-fw-typed {
+    display: inline-block;
+    padding: 2px 6px;
+    color: var(--muted);
+    opacity: 0.35;
+    text-decoration: line-through;
+    border-radius: 4px;
+  }
+  .v2-fw-cursor {
+    display: inline-block;
+    padding: 2px 6px;
+    color: var(--v2-green);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    border-radius: 4px;
+    animation: v2-fw-blink 1s step-end infinite;
+  }
+  @keyframes v2-fw-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .v2-fw-untyped {
+    display: inline-block;
+    padding: 2px 6px;
+    color: var(--text);
+    border-radius: 4px;
+  }
+
+  .v2-fw-boss-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .v2-fw-boss {
+    font-family: monospace;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--red, #ef4444);
+    padding: 6px 16px;
+    border: 2px solid var(--red, #ef4444);
+    border-radius: 20px;
+    background: rgba(239, 68, 68, 0.08);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+    animation: v2-fw-pulse 2s ease-in-out infinite;
+  }
+  @keyframes v2-fw-pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.15); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+  }
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -1182,6 +1307,8 @@ const categories = [
       targetHtpId = 'htp-word-scramble';
     } else if (slug === 'merge-letters') {
       targetHtpId = 'htp-merge-letters';
+    } else if (slug === 'type-destroy' || engine === 'falling-words') {
+      targetHtpId = 'htp-falling-words';
     } else if (engine === 'guessing' || engine === 'countries' || engine === 'flags') {
       targetHtpId = 'htp-guessing';
     } else if (engine === 'word-puzzle' || engine === 'hangman' || engine === 'scramble') {
