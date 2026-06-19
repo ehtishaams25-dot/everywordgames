@@ -28,6 +28,7 @@ export function mountFallingWords(root: HTMLElement, game: GameConfig, getGlobal
   let isGameOver = false;
   let words: FallingWord[] = [];
   let activeWordId: string | null = null;
+  let started = Date.now();
   
   let animationFrameId: number;
   let lastTime = 0;
@@ -57,6 +58,7 @@ export function mountFallingWords(root: HTMLElement, game: GameConfig, getGlobal
     isBossWave = false;
     bossSpawned = false;
     cooldownTimer = 0;
+    started = Date.now();
     
     // Clear game area
     const gameArea = root.querySelector('#fw-game-area');
@@ -345,7 +347,8 @@ export function mountFallingWords(root: HTMLElement, game: GameConfig, getGlobal
     cancelAnimationFrame(animationFrameId);
     window.removeEventListener('keydown', onKeyDown);
     
-    recordGame(game.slug, false, score); 
+    const elapsedSeconds = Math.round((Date.now() - started) / 1000);
+    recordGame(game.slug, false, elapsedSeconds, score);  
     
     const gameArea = root.querySelector('#fw-game-area');
     if (gameArea) {

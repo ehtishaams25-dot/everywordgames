@@ -1384,7 +1384,7 @@ function mountMergeLetters(root: HTMLElement, game: GameConfig) {
         updateBestScore();
         render();
         if (state.gameOver) {
-          recordGame(game.slug, false, elapsed(started));
+          recordGame(game.slug, false, elapsed(started), state.score);
         }
       }
     }
@@ -1410,6 +1410,9 @@ function mountMergeLetters(root: HTMLElement, game: GameConfig) {
         if (JSON.stringify(state.grid) !== oldGridStr) {
           updateBestScore();
           render();
+          if (state.gameOver) {
+            recordGame(game.slug, false, elapsed(started), state.score);
+          }
         }
       }
     } else {
@@ -1420,6 +1423,9 @@ function mountMergeLetters(root: HTMLElement, game: GameConfig) {
         if (JSON.stringify(state.grid) !== oldGridStr) {
           updateBestScore();
           render();
+          if (state.gameOver) {
+            recordGame(game.slug, false, elapsed(started), state.score);
+          }
         }
       }
     }
