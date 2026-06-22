@@ -6,10 +6,68 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 <SiteLayout title="Player Statistics - EveryWordGames" description="View local EveryWordGames stats including wins, streaks, solve speed, and favorite games." path="/stats/">
   <section class="section">
     <div class="container">
-      <p class="eyebrow">Local Progress</p>
-      <h1>Player Statistics</h1>
-      <p class="lede">Your stats stay in local storage on this device.</p>
+      <div class="stats-header-group">
+        <p class="eyebrow"><span class="pulsing-dot-stats"></span>Local Progress</p>
+        <h1 class="stats-page-title">Player Statistics</h1>
+        <p class="lede">Your stats stay in local storage on this device.</p>
+        <div class="stats-header-divider"></div>
+      </div>
       <StatsPanel />
     </div>
   </section>
 </SiteLayout>
+
+<style>
+  .stats-header-group {
+    margin-bottom: 2rem;
+  }
+  
+  .stats-page-title {
+    margin-bottom: 0.5rem;
+    font-size: clamp(3rem, 9vw, 6.4rem);
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .pulsing-dot-stats {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: var(--lime);
+    border-radius: 50%;
+    animation: dot-pulse-anim 2s infinite;
+  }
+
+  @keyframes dot-pulse-anim {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 var(--lime);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 6px rgba(181, 240, 0, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(181, 240, 0, 0);
+    }
+  }
+
+  .stats-header-divider {
+    height: 1px;
+    background: var(--border);
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+</style>
