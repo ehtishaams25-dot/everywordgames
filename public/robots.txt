@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: https://everywordgames.com/sitemap.xml
+Sitemap: https://everywordgames.com/sitemap-index.xml
