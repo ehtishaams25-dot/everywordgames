@@ -33,6 +33,13 @@ export function getGameDetails(game: GameConfig): GameDetails {
       `If your guess is incorrect, you may receive additional clues or feedback to help you narrow it down.`,
       `Keep guessing until you find the correct answer or run out of attempts.`
     );
+  } else if (game.engine === "entity-guessing") {
+    howToPlay.push(
+      `Look at the silhouette of the mystery character displayed on the screen.`,
+      `Type your guess into the input box; autocomplete suggestions will appear as you type.`,
+      `If your guess is incorrect, a new progressive hint (such as publisher, team affiliations, powers, or debut year) will unlock to help you.`,
+      `You have ${game.attempts || 6} attempts to identify the character before the full artwork is revealed!`
+    );
   } else if (game.engine === "word-puzzle") {
     if (game.slug === "hangman") {
       howToPlay.push(
@@ -118,6 +125,17 @@ export function getGameDetails(game: GameConfig): GameDetails {
     faqs.push({
       q: `Can I play ${game.name} for free?`,
       a: `Yes, all games on EveryWordGames are 100% free to play with no downloads required.`
+    });
+  }
+
+  if (game.engine === "entity-guessing") {
+    faqs.push({
+      q: `What happens when I run out of attempts?`,
+      a: `If you don't guess the character within ${game.attempts || 6} attempts, the full artwork and details will be revealed so you can learn more about them.`
+    });
+    faqs.push({
+      q: `Can I share my results without spoiling the character?`,
+      a: `Yes! When the game ends, click the 'Share Result' button to copy a spoiler-free emoji grid (like 🟩🟩🟩🟩) that shows how many attempts you took.`
     });
   }
 

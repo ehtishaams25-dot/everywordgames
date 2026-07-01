@@ -1,0 +1,3452 @@
+[
+  {
+    "id": 30,
+    "name": "Ant-Man",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Guardians of the Galaxy"
+    ],
+    "powers": [
+      "Size Manipulation",
+      "Insect Communication",
+      "Super Strength in Shrunk Form"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1962,
+    "aliases": [
+      "Hank Pym",
+      "Doctor Pym",
+      "Goliath",
+      "Yellowjacket"
+    ],
+    "image": "/superheroes/artwork/30-ant-man.webp",
+    "silhouette": "/superheroes/silhouettes/30-ant-man.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 38,
+    "name": "Aquaman",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Atlanteans"
+    ],
+    "powers": [
+      "Underwater Breathing",
+      "Marine Telepathy",
+      "Super Strength",
+      "Hydrokinesis"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1941,
+    "aliases": [
+      "Dweller in the Depths",
+      "Swimmer",
+      "Waterbearer",
+      "Mental Man"
+    ],
+    "image": "/superheroes/artwork/38-aquaman.webp",
+    "silhouette": "/superheroes/silhouettes/38-aquaman.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 60,
+    "name": "Bane",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Suicide Squad",
+      "Secret Society of Super Villains"
+    ],
+    "powers": [
+      "Venom Enhancement",
+      "Super Strength",
+      "Genius Intellect",
+      "Master Tactician"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1993,
+    "aliases": [],
+    "image": "/superheroes/artwork/60-bane.webp",
+    "silhouette": "/superheroes/silhouettes/60-bane.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 63,
+    "name": "Batgirl",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Bat-Family",
+      "Birds of Prey"
+    ],
+    "powers": [
+      "Martial Arts",
+      "Genius Intellect",
+      "Computer Hacking",
+      "Detective"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1967,
+    "aliases": [
+      "Oracle",
+      "Bluebelle"
+    ],
+    "image": "/superheroes/artwork/63-batgirl.webp",
+    "silhouette": "/superheroes/silhouettes/63-batgirl.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 69,
+    "name": "Batman",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Bat-Family"
+    ],
+    "powers": [
+      "Peak Human",
+      "Martial Arts",
+      "Detective",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1939,
+    "aliases": [
+      "Batman II",
+      "The Tomorrow Knight",
+      "The second Dark Knight",
+      "The Dark Knight of Tomorrow"
+    ],
+    "image": "/superheroes/artwork/69-batman.webp",
+    "silhouette": "/superheroes/silhouettes/69-batman.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 70,
+    "name": "Batman",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Bat-Family"
+    ],
+    "powers": [
+      "Peak Human",
+      "Martial Arts",
+      "Detective",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1939,
+    "aliases": [
+      "Insider",
+      "Matches Malone"
+    ],
+    "image": "/superheroes/artwork/70-batman.webp",
+    "silhouette": "/superheroes/silhouettes/70-batman.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 106,
+    "name": "Black Panther",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Wakandan Royal Family"
+    ],
+    "powers": [
+      "Vibranium Suit",
+      "Enhanced Reflexes",
+      "Martial Arts",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1966,
+    "aliases": [
+      "Mr. Okonkwo",
+      "The Man Without Fear",
+      "Luke Charles",
+      "Black Leopard"
+    ],
+    "image": "/superheroes/artwork/106-black-panther.webp",
+    "silhouette": "/superheroes/silhouettes/106-black-panther.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 107,
+    "name": "Black Widow",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "S.H.I.E.L.D."
+    ],
+    "powers": [
+      "Master Spy",
+      "Martial Arts",
+      "Marksmanship",
+      "Acrobatics"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1964,
+    "aliases": [
+      "Yelena Belova",
+      "Natasha Romanoff",
+      "Natasha",
+      "Tasha"
+    ],
+    "image": "/superheroes/artwork/107-black-widow.webp",
+    "silhouette": "/superheroes/silhouettes/107-black-widow.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 149,
+    "name": "Captain America",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "S.H.I.E.L.D."
+    ],
+    "powers": [
+      "Super Soldier",
+      "Master Tactician",
+      "Vibranium Shield Mastery",
+      "Peak Human"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1941,
+    "aliases": [
+      "Nomad",
+      "The Captain"
+    ],
+    "image": "/superheroes/artwork/149-captain-america.webp",
+    "silhouette": "/superheroes/silhouettes/149-captain-america.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 156,
+    "name": "Captain Marvel",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Starjammers",
+      "S.H.I.E.L.D."
+    ],
+    "powers": [
+      "Photon Blasts",
+      "Super Strength",
+      "Flight",
+      "Energy Absorption"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1967,
+    "aliases": [
+      "The World's Mightiest Mortal",
+      "The Big Red Cheese",
+      "Captain Thunder",
+      "Shazam"
+    ],
+    "image": "/superheroes/artwork/156-captain-marvel.webp",
+    "silhouette": "/superheroes/silhouettes/156-captain-marvel.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 157,
+    "name": "Captain Marvel",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Starjammers",
+      "S.H.I.E.L.D."
+    ],
+    "powers": [
+      "Photon Blasts",
+      "Super Strength",
+      "Flight",
+      "Energy Absorption"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1967,
+    "aliases": [
+      "Ace",
+      "Binary",
+      "Lady Marvel",
+      "Warbird"
+    ],
+    "image": "/superheroes/artwork/157-captain-marvel.webp",
+    "silhouette": "/superheroes/silhouettes/157-captain-marvel.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 165,
+    "name": "Catwoman",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Batman Family",
+      "Gotham City Sirens",
+      "Birds of Prey"
+    ],
+    "powers": [
+      "Master Thief",
+      "Acrobatics",
+      "Martial Arts",
+      "Whip Mastery"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1940,
+    "aliases": [
+      "The Cat",
+      "Irena Dubrovna",
+      "Elva Barr",
+      "Sadie Kelowski"
+    ],
+    "image": "/superheroes/artwork/165-catwoman.webp",
+    "silhouette": "/superheroes/silhouettes/165-catwoman.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 194,
+    "name": "Cyborg",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Teen Titans"
+    ],
+    "powers": [
+      "Technopathy",
+      "Cybernetic Enhancement",
+      "Energy Cannon",
+      "Flight",
+      "Super Strength"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1980,
+    "aliases": [
+      "Cyberion Technis",
+      "Omegadrome",
+      "Planet Cyberion"
+    ],
+    "image": "/superheroes/artwork/194-cyborg.webp",
+    "silhouette": "/superheroes/silhouettes/194-cyborg.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 196,
+    "name": "Cyclops",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men",
+      "X-Factor"
+    ],
+    "powers": [
+      "Optic Blasts",
+      "Master Tactician",
+      "Spatial Awareness",
+      "Leadership"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Scotty",
+      "Cyke",
+      "Slim",
+      "Fearless Leader"
+    ],
+    "image": "/superheroes/artwork/196-cyclops.webp",
+    "silhouette": "/superheroes/silhouettes/196-cyclops.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 201,
+    "name": "Daredevil",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Defenders",
+      "Marvel Knights"
+    ],
+    "powers": [
+      "Radar Sense",
+      "Enhanced Senses",
+      "Master Martial Artist",
+      "Acrobatics"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [
+      "Matt",
+      "Jack Batlin",
+      "Kingpin of Crime",
+      "Laurent LeVasseur"
+    ],
+    "image": "/superheroes/artwork/201-daredevil.webp",
+    "silhouette": "/superheroes/silhouettes/201-daredevil.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 213,
+    "name": "Deadpool",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Force",
+      "Mercs for Money"
+    ],
+    "powers": [
+      "Accelerated Healing",
+      "Master Swordsman",
+      "Marksmanship",
+      "Fourth Wall Breaking"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1991,
+    "aliases": [
+      "Wade Wilson",
+      "Jack",
+      "Chiyonosake (\"the Wolf of the Rice Wine\")",
+      "Rhodes"
+    ],
+    "image": "/superheroes/artwork/213-deadpool.webp",
+    "silhouette": "/superheroes/silhouettes/213-deadpool.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 222,
+    "name": "Doctor Doom",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Cabal",
+      "Legion of the Unliving"
+    ],
+    "powers": [
+      "Supreme Sorcery",
+      "Titanium Armor",
+      "Genius Intellect",
+      "Force Fields",
+      "Energy Projection"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1962,
+    "aliases": [
+      "The Master",
+      "Invincible Man"
+    ],
+    "image": "/superheroes/artwork/222-doctor-doom.webp",
+    "silhouette": "/superheroes/silhouettes/222-doctor-doom.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 226,
+    "name": "Doctor Strange",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Defenders",
+      "Midnight Sons"
+    ],
+    "powers": [
+      "Sorcery",
+      "Astral Projection",
+      "Time Manipulation",
+      "Flight"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Sorcerer Supreme",
+      "Master of the Mystic Arts",
+      "Stephen Sanders",
+      "Captain Universe"
+    ],
+    "image": "/superheroes/artwork/226-doctor-strange.webp",
+    "silhouette": "/superheroes/silhouettes/226-doctor-strange.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 234,
+    "name": "Drax the Destroyer",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Guardians of the Galaxy",
+      "Infinity Watch"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Master Knife Fighter",
+      "Enhanced Senses"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1973,
+    "aliases": [],
+    "image": "/superheroes/artwork/234-drax-the-destroyer.webp",
+    "silhouette": "/superheroes/silhouettes/234-drax-the-destroyer.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 263,
+    "name": "Flash",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Flash Family"
+    ],
+    "powers": [
+      "Super Speed",
+      "Speed Force",
+      "Time Travel",
+      "Phasing",
+      "Accelerated Healing"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1940,
+    "aliases": [
+      "Jay Garrick",
+      "Siegfreid the Speedster"
+    ],
+    "image": "/superheroes/artwork/263-flash.webp",
+    "silhouette": "/superheroes/silhouettes/263-flash.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 275,
+    "name": "Gamora",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Guardians of the Galaxy",
+      "Infinity Watch"
+    ],
+    "powers": [
+      "Deadliest Woman in the Universe",
+      "Super Strength",
+      "Master Assassin",
+      "Regeneration"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1975,
+    "aliases": [
+      "The Deadliest Woman In The Universe",
+      "The Most Dangerous Woman in the Galaxy"
+    ],
+    "image": "/superheroes/artwork/275-gamora.webp",
+    "silhouette": "/superheroes/silhouettes/275-gamora.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 280,
+    "name": "Ghost Rider",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Midnight Sons",
+      "Avengers",
+      "Thunderbolts"
+    ],
+    "powers": [
+      "Hellfire Manipulation",
+      "Penance Stare",
+      "Superhuman Strength",
+      "Demonic Transformation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1972,
+    "aliases": [],
+    "image": "/superheroes/artwork/280-ghost-rider.webp",
+    "silhouette": "/superheroes/silhouettes/280-ghost-rider.webp",
+    "tier": "easy"
+  },
+  {
+    "id": 1,
+    "name": "A-Bomb",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers"
+    ],
+    "powers": [
+      "Super Strength"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2008,
+    "aliases": [
+      "Rick Jones"
+    ],
+    "image": "/superheroes/artwork/1-a-bomb.webp",
+    "silhouette": "/superheroes/silhouettes/1-a-bomb.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 2,
+    "name": "Abe Sapien",
+    "publisher": "Dark Horse",
+    "universe": "Dark Horse Universe",
+    "team": [
+      "Independent"
+    ],
+    "powers": [
+      "Genius Intellect",
+      "Energy Manipulation",
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1993,
+    "aliases": [
+      "Langdon Everett Caul",
+      "Abraham Sapien",
+      "Langdon Caul"
+    ],
+    "image": "/superheroes/artwork/2-abe-sapien.webp",
+    "silhouette": "/superheroes/silhouettes/2-abe-sapien.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 3,
+    "name": "Abin Sur",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Green Lantern Corps"
+    ],
+    "powers": [
+      "Super Strength",
+      "Energy Manipulation",
+      "Ungaran Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1959,
+    "aliases": [
+      "Lagzia"
+    ],
+    "image": "/superheroes/artwork/3-abin-sur.webp",
+    "silhouette": "/superheroes/silhouettes/3-abin-sur.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 4,
+    "name": "Abomination",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Independent"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Agent R-7",
+      "Ravager of Worlds"
+    ],
+    "image": "/superheroes/artwork/4-abomination.webp",
+    "silhouette": "/superheroes/silhouettes/4-abomination.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 5,
+    "name": "Abraxas",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Cosmic Beings"
+    ],
+    "powers": [
+      "Super Speed",
+      "Genius Intellect",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2001,
+    "aliases": [],
+    "image": "/superheroes/artwork/5-abraxas.webp",
+    "silhouette": "/superheroes/silhouettes/5-abraxas.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 6,
+    "name": "Absorbing Man",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Masters of Evil",
+      "Lethal Legion"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [
+      "Greithoth",
+      "\"Crusher\" Creel",
+      "Rocky Davis",
+      "Dynamite Davis"
+    ],
+    "image": "/superheroes/artwork/6-absorbing-man.webp",
+    "silhouette": "/superheroes/silhouettes/6-absorbing-man.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 11,
+    "name": "Agent Zero",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Weapon X",
+      "Weapon Plus"
+    ],
+    "powers": [
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Maverick"
+    ],
+    "image": "/superheroes/artwork/11-agent-zero.webp",
+    "silhouette": "/superheroes/silhouettes/11-agent-zero.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 12,
+    "name": "Air-Walker",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Former member of Nova Corps",
+      "Heralds of Galactus"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [],
+    "image": "/superheroes/artwork/12-air-walker.webp",
+    "silhouette": "/superheroes/silhouettes/12-air-walker.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 14,
+    "name": "Alan Scott",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice Society of America",
+      "Formerly Checkmate"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1940,
+    "aliases": [
+      "Green Lantern",
+      "White King",
+      "Sentinal"
+    ],
+    "image": "/superheroes/artwork/14-alan-scott.webp",
+    "silhouette": "/superheroes/silhouettes/14-alan-scott.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 15,
+    "name": "Alex Mercer",
+    "publisher": "Wildstorm",
+    "universe": "Wildstorm Universe",
+    "team": [
+      "Gentek",
+      "The Infected"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Prototype",
+      "Zues",
+      "Blacklight"
+    ],
+    "image": "/superheroes/artwork/15-alex-mercer.webp",
+    "silhouette": "/superheroes/silhouettes/15-alex-mercer.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 20,
+    "name": "Amazo",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Secret Society"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1960,
+    "aliases": [
+      "Professor Ivos Amazing Android",
+      "Timazo",
+      "Humazo",
+      "Hourmazo"
+    ],
+    "image": "/superheroes/artwork/20-amazo.webp",
+    "silhouette": "/superheroes/silhouettes/20-amazo.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 28,
+    "name": "Animal Man",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1965,
+    "aliases": [
+      "The Human Zoo; A-Man; The Man with Animal Powers"
+    ],
+    "image": "/superheroes/artwork/28-animal-man.webp",
+    "silhouette": "/superheroes/silhouettes/28-animal-man.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 29,
+    "name": "Annihilus",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Sometime ally of Blastaar"
+    ],
+    "powers": [
+      "Super Strength"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1968,
+    "aliases": [
+      "The Living Death That Walks",
+      "Lord of the Negative Zone"
+    ],
+    "image": "/superheroes/artwork/29-annihilus.webp",
+    "silhouette": "/superheroes/silhouettes/29-annihilus.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 32,
+    "name": "Anti-Monitor",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Sinestro Corps",
+      "Weaponers of Qward"
+    ],
+    "powers": [
+      "Super Strength",
+      "Genius Intellect",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Monitor",
+      "Mobius"
+    ],
+    "image": "/superheroes/artwork/32-anti-monitor.webp",
+    "silhouette": "/superheroes/silhouettes/32-anti-monitor.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 35,
+    "name": "Apocalypse",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Clan Akkaba",
+      "employer of Apocalypse's Horsemen"
+    ],
+    "powers": [
+      "Super Strength",
+      "Genius Intellect",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1986,
+    "aliases": [
+      "The Eternal One",
+      "the High Lord",
+      "Set",
+      "Huitxilopochti"
+    ],
+    "image": "/superheroes/artwork/35-apocalypse.webp",
+    "silhouette": "/superheroes/silhouettes/35-apocalypse.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 37,
+    "name": "Aqualad",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Teen Titans",
+      "Titans"
+    ],
+    "powers": [
+      "Energy Manipulation",
+      "Atlantean Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1960,
+    "aliases": [],
+    "image": "/superheroes/artwork/37-aqualad.webp",
+    "silhouette": "/superheroes/silhouettes/37-aqualad.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 39,
+    "name": "Arachne",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Defenders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Spider-Woman",
+      "Madame Web"
+    ],
+    "image": "/superheroes/artwork/39-arachne.webp",
+    "silhouette": "/superheroes/silhouettes/39-arachne.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 41,
+    "name": "Arclight",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Marauders formerly",
+      "198"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1986,
+    "aliases": [],
+    "image": "/superheroes/artwork/41-arclight.webp",
+    "silhouette": "/superheroes/silhouettes/41-arclight.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 43,
+    "name": "Ares",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers"
+    ],
+    "powers": [
+      "Super Strength",
+      "Energy Manipulation",
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "God of War",
+      "Mister Talon",
+      "Mars",
+      "Warhawk"
+    ],
+    "image": "/superheroes/artwork/43-ares.webp",
+    "silhouette": "/superheroes/silhouettes/43-ares.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 44,
+    "name": "Ariel",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1987,
+    "aliases": [],
+    "image": "/superheroes/artwork/44-ariel.webp",
+    "silhouette": "/superheroes/silhouettes/44-ariel.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 45,
+    "name": "Armor",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2004,
+    "aliases": [
+      "X-Girl",
+      "Kid"
+    ],
+    "image": "/superheroes/artwork/45-armor.webp",
+    "silhouette": "/superheroes/silhouettes/45-armor.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 48,
+    "name": "Atlas",
+    "publisher": "Goliath",
+    "universe": "Goliath Universe",
+    "team": [
+      "Defenders"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Power Man",
+      "Smuggler",
+      "Goliath",
+      "Shatterfist"
+    ],
+    "image": "/superheroes/artwork/48-atlas.webp",
+    "silhouette": "/superheroes/silhouettes/48-atlas.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 72,
+    "name": "Battlestar",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Wild Pack",
+      "Bold Urban Commandos"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1986,
+    "aliases": [
+      "Bucky"
+    ],
+    "image": "/superheroes/artwork/72-battlestar.webp",
+    "silhouette": "/superheroes/silhouettes/72-battlestar.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 75,
+    "name": "Beast",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men",
+      "Avengers"
+    ],
+    "powers": [
+      "Superhuman Agility",
+      "Enhanced Strength",
+      "Genius Intellect",
+      "Acrobatics"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Dr. McCoy",
+      "Hanko",
+      "Kreature",
+      "Mutate #666"
+    ],
+    "image": "/superheroes/artwork/75-beast.webp",
+    "silhouette": "/superheroes/silhouettes/75-beast.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 76,
+    "name": "Beast Boy",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Teen Titans",
+      "Doom Patrol"
+    ],
+    "powers": [
+      "Animal Shape-Shifting",
+      "Regenerative Healing",
+      "Enhanced Senses"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1965,
+    "aliases": [
+      "Changeling",
+      "Beast-Brat",
+      "Green Jeans",
+      "Salad-head"
+    ],
+    "image": "/superheroes/artwork/76-beast-boy.webp",
+    "silhouette": "/superheroes/silhouettes/76-beast-boy.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 79,
+    "name": "Beta Ray Bill",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "ally of the Asgardians",
+      "Thor Corps"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Beta Ray Thor",
+      "Simon Walters"
+    ],
+    "image": "/superheroes/artwork/79-beta-ray-bill.webp",
+    "silhouette": "/superheroes/silhouettes/79-beta-ray-bill.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 80,
+    "name": "Beyonder",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Independent"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Ataxi",
+      "The Beyond Realm",
+      "Frank",
+      "Goblin Force"
+    ],
+    "image": "/superheroes/artwork/80-beyonder.webp",
+    "silhouette": "/superheroes/silhouettes/80-beyonder.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 81,
+    "name": "Big Barda",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Birds of Prey"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Barda",
+      "the Strongest Woman in the World"
+    ],
+    "image": "/superheroes/artwork/81-big-barda.webp",
+    "silhouette": "/superheroes/silhouettes/81-big-barda.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 92,
+    "name": "Bishop",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Energy Manipulation",
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1991,
+    "aliases": [
+      "Archbishop"
+    ],
+    "image": "/superheroes/artwork/92-bishop.webp",
+    "silhouette": "/superheroes/silhouettes/92-bishop.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 93,
+    "name": "Bizarro",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Secret Society"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1958,
+    "aliases": [],
+    "image": "/superheroes/artwork/93-bizarro.webp",
+    "silhouette": "/superheroes/silhouettes/93-bizarro.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 95,
+    "name": "Black Adam",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1945,
+    "aliases": [
+      "Hassan Bari",
+      "Theo Adam",
+      "Mighty Adam",
+      "Khem-Adam"
+    ],
+    "image": "/superheroes/artwork/95-black-adam.webp",
+    "silhouette": "/superheroes/silhouettes/95-black-adam.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 96,
+    "name": "Black Bolt",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Inhumans"
+    ],
+    "powers": [
+      "Super Speed",
+      "Energy Manipulation",
+      "Inhuman Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1965,
+    "aliases": [],
+    "image": "/superheroes/artwork/96-black-bolt.webp",
+    "silhouette": "/superheroes/silhouettes/96-black-bolt.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 104,
+    "name": "Black Mamba",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Serpent Squad",
+      "Serpent Society"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Tanya Sweet"
+    ],
+    "image": "/superheroes/artwork/104-black-mamba.webp",
+    "silhouette": "/superheroes/silhouettes/104-black-mamba.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 112,
+    "name": "Blade",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Midnight Sons",
+      "Avengers",
+      "MI-13"
+    ],
+    "powers": [
+      "Dhampir Physiology",
+      "Master Swordsman",
+      "Vampire Immunity",
+      "Accelerated Healing"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1973,
+    "aliases": [
+      "Switchblade",
+      "Frank Blade",
+      "Daywalker"
+    ],
+    "image": "/superheroes/artwork/112-blade.webp",
+    "silhouette": "/superheroes/silhouettes/112-blade.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 126,
+    "name": "Blue Beetle III",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Teen Titans",
+      "Titans"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2006,
+    "aliases": [
+      "Scooter"
+    ],
+    "image": "/superheroes/artwork/126-blue-beetle-iii.webp",
+    "silhouette": "/superheroes/silhouettes/126-blue-beetle-iii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 136,
+    "name": "Brainiac",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Lex Luthor"
+    ],
+    "powers": [
+      "Super Strength",
+      "Genius Intellect",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1958,
+    "aliases": [
+      "Milton Fine"
+    ],
+    "image": "/superheroes/artwork/136-brainiac.webp",
+    "silhouette": "/superheroes/silhouettes/136-brainiac.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 137,
+    "name": "Brainiac 5",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Legion of Super-Heroes"
+    ],
+    "powers": [
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [],
+    "image": "/superheroes/artwork/137-brainiac-5.webp",
+    "silhouette": "/superheroes/silhouettes/137-brainiac-5.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 145,
+    "name": "Cable",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men",
+      "X-Force"
+    ],
+    "powers": [
+      "Genius Intellect",
+      "Energy Manipulation",
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Chosen One",
+      "Soldier X",
+      "Nathan Dayspring",
+      "Askani'son"
+    ],
+    "image": "/superheroes/artwork/145-cable.webp",
+    "silhouette": "/superheroes/silhouettes/145-cable.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 146,
+    "name": "Callisto",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Excalibur",
+      "Morlocks"
+    ],
+    "powers": [
+      "Master Martial Artist"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1975,
+    "aliases": [],
+    "image": "/superheroes/artwork/146-callisto.webp",
+    "silhouette": "/superheroes/silhouettes/146-callisto.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 148,
+    "name": "Cannonball",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men",
+      "X-Force"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1982,
+    "aliases": [
+      "Formerly Samson Guthry",
+      "Sam Guthrie",
+      "Jet-Ass"
+    ],
+    "image": "/superheroes/artwork/148-cannonball.webp",
+    "silhouette": "/superheroes/silhouettes/148-cannonball.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 150,
+    "name": "Captain Atom",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Monarch",
+      "Allen Adam",
+      "Cameron Scott"
+    ],
+    "image": "/superheroes/artwork/150-captain-atom.webp",
+    "silhouette": "/superheroes/silhouettes/150-captain-atom.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 151,
+    "name": "Captain Britain",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1976,
+    "aliases": [
+      "Britannic",
+      "Black Bishop",
+      "Jungle Man",
+      "King of Otherworld"
+    ],
+    "image": "/superheroes/artwork/151-captain-britain.webp",
+    "silhouette": "/superheroes/silhouettes/151-captain-britain.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 158,
+    "name": "Captain Marvel II",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Teen Titans",
+      "Titans",
+      "Outsiders"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1995,
+    "aliases": [
+      "Captain Marvel Jr.",
+      "CM3"
+    ],
+    "image": "/superheroes/artwork/158-captain-marvel-ii.webp",
+    "silhouette": "/superheroes/silhouettes/158-captain-marvel-ii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 160,
+    "name": "Captain Planet",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "The Planeteers"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "The Captain",
+      "CP",
+      "Planet"
+    ],
+    "image": "/superheroes/artwork/160-captain-planet.webp",
+    "silhouette": "/superheroes/silhouettes/160-captain-planet.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 162,
+    "name": "Carnage",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Maximum Carnage"
+    ],
+    "powers": [
+      "Symbiote Shape-Shifting",
+      "Super Strength",
+      "Web-Slinging",
+      "Regeneration"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1992,
+    "aliases": [
+      "Mass Carnage",
+      "999th"
+    ],
+    "image": "/superheroes/artwork/162-carnage.webp",
+    "silhouette": "/superheroes/silhouettes/162-carnage.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 167,
+    "name": "Century",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Force Works"
+    ],
+    "powers": [
+      "Super Strength",
+      "Genius Intellect",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1994,
+    "aliases": [],
+    "image": "/superheroes/artwork/167-century.webp",
+    "silhouette": "/superheroes/silhouettes/167-century.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 174,
+    "name": "Cheetah III",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Injustice League"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1987,
+    "aliases": [
+      "Barbara Minerva",
+      "Bride of Urzkartaga",
+      "Priscilla Rich",
+      "Deborah Domaine"
+    ],
+    "image": "/superheroes/artwork/174-cheetah-iii.webp",
+    "silhouette": "/superheroes/silhouettes/174-cheetah-iii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 177,
+    "name": "Citizen Steel",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice Society of America"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2007,
+    "aliases": [
+      "Buckeye",
+      "Uncle Nate",
+      "Uncle Nathan"
+    ],
+    "image": "/superheroes/artwork/177-citizen-steel.webp",
+    "silhouette": "/superheroes/silhouettes/177-citizen-steel.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 180,
+    "name": "Cloak",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Cloak and Dagger",
+      "New Warriors"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [],
+    "image": "/superheroes/artwork/180-cloak.webp",
+    "silhouette": "/superheroes/silhouettes/180-cloak.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 185,
+    "name": "Colossus",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Pete",
+      "Peter Nicholas",
+      "The Proletarian",
+      "Little Brother"
+    ],
+    "image": "/superheroes/artwork/185-colossus.webp",
+    "silhouette": "/superheroes/silhouettes/185-colossus.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 195,
+    "name": "Cyborg Superman",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Alpha Lantern Corps",
+      "Manhunters"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1990,
+    "aliases": [
+      "Grandmaster of the Manhunters",
+      "Herald of the Anti-Monitor",
+      "Alpha-Prime of the Alpha Lanterns"
+    ],
+    "image": "/superheroes/artwork/195-cyborg-superman.webp",
+    "silhouette": "/superheroes/silhouettes/195-cyborg-superman.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 204,
+    "name": "Darkseid",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Elite of Apokolips"
+    ],
+    "powers": [
+      "Omega Beams",
+      "Godlike Strength",
+      "Immortality",
+      "Telekinesis"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1970,
+    "aliases": [
+      "Dark God"
+    ],
+    "image": "/superheroes/artwork/204-darkseid.webp",
+    "silhouette": "/superheroes/silhouettes/204-darkseid.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 208,
+    "name": "Darth Vader",
+    "publisher": "George Lucas",
+    "universe": "George Lucas Universe",
+    "team": [
+      "Sith",
+      "Galactic Empire"
+    ],
+    "powers": [
+      "Energy Manipulation",
+      "Master Martial Artist",
+      "Cyborg Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1977,
+    "aliases": [
+      "Lord Vader"
+    ],
+    "image": "/superheroes/artwork/208-darth-vader.webp",
+    "silhouette": "/superheroes/silhouettes/208-darth-vader.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 211,
+    "name": "Dazzler",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Energy Manipulation",
+      "Mutant Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1980,
+    "aliases": [
+      "Ali",
+      "The Disco Dazzler",
+      "Songbird",
+      "Dazz"
+    ],
+    "image": "/superheroes/artwork/211-dazzler.webp",
+    "silhouette": "/superheroes/silhouettes/211-dazzler.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 214,
+    "name": "Deadshot",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Suicide Squad",
+      "Secret Six"
+    ],
+    "powers": [
+      "Uncanny Marksmanship",
+      "Wrist-Mounted Guns",
+      "Expert Assassin"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1950,
+    "aliases": [
+      "Man Who Never Misses",
+      "Worlds Finest Assassin",
+      "Orlando Furioso"
+    ],
+    "image": "/superheroes/artwork/214-deadshot.webp",
+    "silhouette": "/superheroes/silhouettes/214-deadshot.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 216,
+    "name": "Deathstroke",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Suicide Squad",
+      "Secret Society of Super Villains",
+      "Titans East"
+    ],
+    "powers": [
+      "Enhanced Brain Capacity",
+      "Super Soldier Reflexes",
+      "Master Swordsman",
+      "Regeneration"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1980,
+    "aliases": [
+      "Slade Wilson",
+      "Deathstroke the Terminator",
+      "Batman"
+    ],
+    "image": "/superheroes/artwork/216-deathstroke.webp",
+    "silhouette": "/superheroes/silhouettes/216-deathstroke.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 224,
+    "name": "Doctor Fate",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1940,
+    "aliases": [
+      "Nabu"
+    ],
+    "image": "/superheroes/artwork/224-doctor-fate.webp",
+    "silhouette": "/superheroes/silhouettes/224-doctor-fate.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 225,
+    "name": "Doctor Octopus",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Sinister Six"
+    ],
+    "powers": [
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Doc Ock",
+      "The Master Planner",
+      "The Master Programmer",
+      "Peter Benjamin Parker"
+    ],
+    "image": "/superheroes/artwork/225-doctor-octopus.webp",
+    "silhouette": "/superheroes/silhouettes/225-doctor-octopus.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 230,
+    "name": "Doomsday",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Suicide Squad",
+      "Secret Society"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1992,
+    "aliases": [
+      "The Ultimate Lifeform"
+    ],
+    "image": "/superheroes/artwork/230-doomsday.webp",
+    "silhouette": "/superheroes/silhouettes/230-doomsday.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 232,
+    "name": "Dormammu",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Lords of the Splinter Realms",
+      "Lords of the Netherworlds"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [
+      "The Dread One",
+      "Eater of Souls",
+      "Lord of Chaos",
+      "Lord of Darkness"
+    ],
+    "image": "/superheroes/artwork/232-dormammu.webp",
+    "silhouette": "/superheroes/silhouettes/232-dormammu.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 233,
+    "name": "Dr Manhattan",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Watchmen",
+      "Crimebusters"
+    ],
+    "powers": [
+      "Super Strength",
+      "Genius Intellect",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1986,
+    "aliases": [
+      "Jon Osterman",
+      "Doctor Manhattan"
+    ],
+    "image": "/superheroes/artwork/233-dr-manhattan.webp",
+    "silhouette": "/superheroes/silhouettes/233-dr-manhattan.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 237,
+    "name": "Electro",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Sinister Six"
+    ],
+    "powers": [
+      "Electrokinetic Manipulation",
+      "Lightning Generation",
+      "Flight"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [],
+    "image": "/superheroes/artwork/237-electro.webp",
+    "silhouette": "/superheroes/silhouettes/237-electro.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 241,
+    "name": "Emma Frost",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Storm",
+      "White Queen"
+    ],
+    "image": "/superheroes/artwork/241-emma-frost.webp",
+    "silhouette": "/superheroes/silhouettes/241-emma-frost.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 242,
+    "name": "Enchantress",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Suicide Squad"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Anita Soulfeeda",
+      "Soulsinger"
+    ],
+    "image": "/superheroes/artwork/242-enchantress.webp",
+    "silhouette": "/superheroes/silhouettes/242-enchantress.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 246,
+    "name": "Etrigan",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1972,
+    "aliases": [
+      "Demon"
+    ],
+    "image": "/superheroes/artwork/246-etrigan.webp",
+    "silhouette": "/superheroes/silhouettes/246-etrigan.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 247,
+    "name": "Evil Deadpool",
+    "publisher": "Deadpool",
+    "universe": "Deadpool Universe",
+    "team": [
+      "Evil Deadpool Corps"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation",
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2011,
+    "aliases": [
+      "Dreadpool"
+    ],
+    "image": "/superheroes/artwork/247-evil-deadpool.webp",
+    "silhouette": "/superheroes/silhouettes/247-evil-deadpool.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 249,
+    "name": "Exodus",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Acolytes",
+      "formerly Brotherhood and Marauders"
+    ],
+    "powers": [
+      "Super Strength",
+      "Energy Manipulation",
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1993,
+    "aliases": [
+      "Paris Bennet"
+    ],
+    "image": "/superheroes/artwork/249-exodus.webp",
+    "silhouette": "/superheroes/silhouettes/249-exodus.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 251,
+    "name": "Falcon",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "S.H.I.E.L.D."
+    ],
+    "powers": [
+      "Winged Flight Harness",
+      "Avian Telepathy",
+      "Master Combatant",
+      "Acrobatics"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1969,
+    "aliases": [
+      "Sam Wilson",
+      "(formerly) Captain America",
+      "Blackbird",
+      "Blackwing"
+    ],
+    "image": "/superheroes/artwork/251-falcon.webp",
+    "silhouette": "/superheroes/silhouettes/251-falcon.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 252,
+    "name": "Fallen One II",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Heralds of Galactus"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [],
+    "image": "/superheroes/artwork/252-fallen-one-ii.webp",
+    "silhouette": "/superheroes/silhouettes/252-fallen-one-ii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 253,
+    "name": "Faora",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Phantom Zone Criminals"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1977,
+    "aliases": [
+      "Katie"
+    ],
+    "image": "/superheroes/artwork/253-faora.webp",
+    "silhouette": "/superheroes/silhouettes/253-faora.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 256,
+    "name": "Fin Fang Foom",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Affiliation \"Fin Fang Four",
+      "\" former ally of the Mandarin"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "Kakarantharaian Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "He Whose Limbs Shatter Mountains and Whose Back Scrapes the Sun (translation)"
+    ],
+    "image": "/superheroes/artwork/256-fin-fang-foom.webp",
+    "silhouette": "/superheroes/silhouettes/256-fin-fang-foom.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 260,
+    "name": "Firestorm",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "The Nuclear Man"
+    ],
+    "image": "/superheroes/artwork/260-firestorm.webp",
+    "silhouette": "/superheroes/silhouettes/260-firestorm.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 261,
+    "name": "Firestorm",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Super Strength",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1978,
+    "aliases": [
+      "Ronnie",
+      "Roy",
+      "Ronald Rockwell",
+      "Flamehead"
+    ],
+    "image": "/superheroes/artwork/261-firestorm.webp",
+    "silhouette": "/superheroes/silhouettes/261-firestorm.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 265,
+    "name": "Flash II",
+    "publisher": "Black Racer",
+    "universe": "Black Racer Universe",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Super Speed",
+      "Genius Intellect",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1956,
+    "aliases": [
+      "The Scarlet Speedster",
+      "the Fastest Man Alive",
+      "the Monarch of Motion",
+      "the Sultan of Speed"
+    ],
+    "image": "/superheroes/artwork/265-flash-ii.webp",
+    "silhouette": "/superheroes/silhouettes/265-flash-ii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 266,
+    "name": "Flash III",
+    "publisher": "Speed Demon",
+    "universe": "Speed Demon Universe",
+    "team": [
+      "Justice League",
+      "Teen Titans",
+      "Titans"
+    ],
+    "powers": [
+      "Super Speed",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1960,
+    "aliases": [
+      "The Fastest Man Alive",
+      "The Scarlet Speedster; formerly",
+      "Kid Flash I"
+    ],
+    "image": "/superheroes/artwork/266-flash-iii.webp",
+    "silhouette": "/superheroes/silhouettes/266-flash-iii.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 267,
+    "name": "Flash IV",
+    "publisher": "Impulse",
+    "universe": "Impulse Universe",
+    "team": [
+      "Teen Titans",
+      "Titans"
+    ],
+    "powers": [
+      "Super Speed",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1994,
+    "aliases": [
+      "Impulse",
+      "Kid Flash II"
+    ],
+    "image": "/superheroes/artwork/267-flash-iv.webp",
+    "silhouette": "/superheroes/silhouettes/267-flash-iv.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 269,
+    "name": "Franklin Richards",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Future Foundation",
+      "formerly Power Pack"
+    ],
+    "powers": [
+      "Super Strength",
+      "Energy Manipulation",
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Franklin Benjamin",
+      "Tattletale",
+      "Psi-Lord",
+      "Ego-Spawn"
+    ],
+    "image": "/superheroes/artwork/269-franklin-richards.webp",
+    "silhouette": "/superheroes/silhouettes/269-franklin-richards.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 273,
+    "name": "Galactus",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Cosmic Entities"
+    ],
+    "powers": [
+      "Power Cosmic",
+      "Planet Consumption",
+      "Immortality",
+      "Matter Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1966,
+    "aliases": [
+      "Maker",
+      "Devourer of Worlds",
+      "Eater-of-Worlds",
+      "Ravager of Worlds"
+    ],
+    "image": "/superheroes/artwork/273-galactus.webp",
+    "silhouette": "/superheroes/silhouettes/273-galactus.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 274,
+    "name": "Gambit",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Molecular Kinetic Charging",
+      "Card Throwing",
+      "Agility",
+      "Hypnotic Charm"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1990,
+    "aliases": [
+      "Death",
+      "Le Diable Blanc",
+      "formerly Robert Lord",
+      "Cajun"
+    ],
+    "image": "/superheroes/artwork/274-gambit.webp",
+    "silhouette": "/superheroes/silhouettes/274-gambit.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 278,
+    "name": "General Zod",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Phantom Zone criminals"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Dru-Zod (possible first name)"
+    ],
+    "image": "/superheroes/artwork/278-general-zod.webp",
+    "silhouette": "/superheroes/silhouettes/278-general-zod.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 284,
+    "name": "Giganta",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Injustice League"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1944,
+    "aliases": [],
+    "image": "/superheroes/artwork/284-giganta.webp",
+    "silhouette": "/superheroes/silhouettes/284-giganta.webp",
+    "tier": "medium"
+  },
+  {
+    "id": 7,
+    "name": "Adam Monroe",
+    "publisher": "NBC - Heroes",
+    "universe": "NBC - Heroes Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Takezo Kensei",
+      "Richard Sanders"
+    ],
+    "image": "/superheroes/artwork/7-adam-monroe.webp",
+    "silhouette": "/superheroes/silhouettes/7-adam-monroe.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 8,
+    "name": "Adam Strange",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Omega Men",
+      "L.E.G.I.O.N."
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1986,
+    "aliases": [
+      "Warrior of Two Worlds",
+      "Savior of Rann"
+    ],
+    "image": "/superheroes/artwork/8-adam-strange.webp",
+    "silhouette": "/superheroes/silhouettes/8-adam-strange.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 10,
+    "name": "Agent Bob",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "A.I.M.",
+      "Deadpool"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2007,
+    "aliases": [
+      "Bob",
+      "agent of Hydra",
+      "Bob",
+      "agent of A.I.M"
+    ],
+    "image": "/superheroes/artwork/10-agent-bob.webp",
+    "silhouette": "/superheroes/silhouettes/10-agent-bob.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 13,
+    "name": "Ajax",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Weapon X"
+    ],
+    "powers": [
+      "Cyborg Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1998,
+    "aliases": [
+      "\"Frankie\"",
+      "the A-Man",
+      "the Attending"
+    ],
+    "image": "/superheroes/artwork/13-ajax.webp",
+    "silhouette": "/superheroes/silhouettes/13-ajax.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 17,
+    "name": "Alfred Pennyworth",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Outsiders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1943,
+    "aliases": [
+      "Alfred Beagle"
+    ],
+    "image": "/superheroes/artwork/17-alfred-pennyworth.webp",
+    "silhouette": "/superheroes/silhouettes/17-alfred-pennyworth.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 18,
+    "name": "Alien",
+    "publisher": "Dark Horse",
+    "universe": "Dark Horse Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Xenomorph XX121 Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1979,
+    "aliases": [],
+    "image": "/superheroes/artwork/18-alien.webp",
+    "silhouette": "/superheroes/silhouettes/18-alien.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 23,
+    "name": "Angel",
+    "publisher": "Dark Horse",
+    "universe": "Dark Horse Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation",
+      "Vampire Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Angelus",
+      "Twilight"
+    ],
+    "image": "/superheroes/artwork/23-angel.webp",
+    "silhouette": "/superheroes/silhouettes/23-angel.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 24,
+    "name": "Angel",
+    "publisher": "Archangel",
+    "universe": "Archangel Universe",
+    "team": [
+      "X-Men",
+      "Defenders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1969,
+    "aliases": [
+      "Formerly Death",
+      "Dark Angel",
+      "Avenging Angel",
+      "Archangel"
+    ],
+    "image": "/superheroes/artwork/24-angel.webp",
+    "silhouette": "/superheroes/silhouettes/24-angel.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 25,
+    "name": "Angel Dust",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Mutant Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Angel",
+      "Dusty"
+    ],
+    "image": "/superheroes/artwork/25-angel-dust.webp",
+    "silhouette": "/superheroes/silhouettes/25-angel-dust.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 26,
+    "name": "Angel Salvadore",
+    "publisher": "Tempest",
+    "universe": "Tempest Universe",
+    "team": [
+      "New Warriors",
+      "Special Class"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2001,
+    "aliases": [
+      "Tempest"
+    ],
+    "image": "/superheroes/artwork/26-angel-salvadore.webp",
+    "silhouette": "/superheroes/silhouettes/26-angel-salvadore.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 31,
+    "name": "Ant-Man II",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Fantastic Four",
+      "Defenders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1979,
+    "aliases": [
+      "Myrmidon",
+      "Scott Edward Harris Lang"
+    ],
+    "image": "/superheroes/artwork/31-ant-man-ii.webp",
+    "silhouette": "/superheroes/silhouettes/31-ant-man-ii.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 34,
+    "name": "Anti-Venom",
+    "publisher": "Toxin",
+    "universe": "Toxin Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation",
+      "Symbiote Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Eddie",
+      "Edwin Brock",
+      "Venom",
+      "Lethal Protector"
+    ],
+    "image": "/superheroes/artwork/34-anti-venom.webp",
+    "silhouette": "/superheroes/silhouettes/34-anti-venom.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 36,
+    "name": "Aquababy",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Independent"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1965,
+    "aliases": [],
+    "image": "/superheroes/artwork/36-aquababy.webp",
+    "silhouette": "/superheroes/silhouettes/36-aquababy.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 40,
+    "name": "Archangel",
+    "publisher": "Angel",
+    "universe": "Angel Universe",
+    "team": [
+      "X-Men",
+      "Defenders",
+      "X-Force"
+    ],
+    "powers": [
+      "Mutant Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "War",
+      "Dark Angel",
+      "Death",
+      "Avenging Angel"
+    ],
+    "image": "/superheroes/artwork/40-archangel.webp",
+    "silhouette": "/superheroes/silhouettes/40-archangel.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 42,
+    "name": "Ardina",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Super Strength",
+      "Super Speed",
+      "Energy Manipulation"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [],
+    "image": "/superheroes/artwork/42-ardina.webp",
+    "silhouette": "/superheroes/silhouettes/42-ardina.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 49,
+    "name": "Atlas",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability",
+      "God / Eternal Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Atlas the Great",
+      "Atlas the Untamed"
+    ],
+    "image": "/superheroes/artwork/49-atlas.webp",
+    "silhouette": "/superheroes/silhouettes/49-atlas.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 52,
+    "name": "Atom Girl",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Legion of Super-Heroes"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2004,
+    "aliases": [
+      "Shrinking Violet"
+    ],
+    "image": "/superheroes/artwork/52-atom-girl.webp",
+    "silhouette": "/superheroes/silhouettes/52-atom-girl.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 53,
+    "name": "Atom II",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Suicide Squad",
+      "Teen Titans"
+    ],
+    "powers": [
+      "Genius Intellect"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "The Mighty Mite",
+      "the Tiny Titan",
+      "the World's Smallest Hero"
+    ],
+    "image": "/superheroes/artwork/53-atom-ii.webp",
+    "silhouette": "/superheroes/silhouettes/53-atom-ii.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 56,
+    "name": "Aurora",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Super Speed",
+      "Mutant Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1979,
+    "aliases": [
+      "Sister Beaubier"
+    ],
+    "image": "/superheroes/artwork/56-aurora.webp",
+    "silhouette": "/superheroes/silhouettes/56-aurora.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 57,
+    "name": "Azazel",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability",
+      "Energy Manipulation",
+      "Neyaphem Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2003,
+    "aliases": [
+      "Semihazah",
+      "Duma",
+      "Keriel",
+      "Mastema"
+    ],
+    "image": "/superheroes/artwork/57-azazel.webp",
+    "silhouette": "/superheroes/silhouettes/57-azazel.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 58,
+    "name": "Azrael",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Order of St. Dumas",
+      "Three Ghosts of Batman"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2008,
+    "aliases": [
+      "Bat-Devil; Bat-Ghost"
+    ],
+    "image": "/superheroes/artwork/58-azrael.webp",
+    "silhouette": "/superheroes/silhouettes/58-azrael.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 61,
+    "name": "Banshee",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1967,
+    "aliases": [
+      "Death"
+    ],
+    "image": "/superheroes/artwork/61-banshee.webp",
+    "silhouette": "/superheroes/silhouettes/61-banshee.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 62,
+    "name": "Bantam",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Captain America",
+      "Pro-Registration forces"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 2006,
+    "aliases": [],
+    "image": "/superheroes/artwork/62-bantam.webp",
+    "silhouette": "/superheroes/silhouettes/62-bantam.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 66,
+    "name": "Batgirl IV",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Titans"
+    ],
+    "powers": [
+      "Master Martial Artist"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Kasumi",
+      "various mundane persona,"
+    ],
+    "image": "/superheroes/artwork/66-batgirl-iv.webp",
+    "silhouette": "/superheroes/silhouettes/66-batgirl-iv.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 68,
+    "name": "Batgirl VI",
+    "publisher": "Spoiler",
+    "universe": "Spoiler Universe",
+    "team": [
+      "Birds of Prey"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2009,
+    "aliases": [
+      "Steph",
+      "Robin",
+      "Marion Todd",
+      "Spoiler"
+    ],
+    "image": "/superheroes/artwork/68-batgirl-vi.webp",
+    "silhouette": "/superheroes/silhouettes/68-batgirl-vi.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 71,
+    "name": "Batman II",
+    "publisher": "Nightwing",
+    "universe": "Nightwing Universe",
+    "team": [
+      "Justice League"
+    ],
+    "powers": [
+      "Genius Intellect",
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Dick Grayson"
+    ],
+    "image": "/superheroes/artwork/71-batman-ii.webp",
+    "silhouette": "/superheroes/silhouettes/71-batman-ii.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 73,
+    "name": "Batwoman V",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "D.E.O",
+      "Unknowns"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2006,
+    "aliases": [],
+    "image": "/superheroes/artwork/73-batwoman-v.webp",
+    "silhouette": "/superheroes/silhouettes/73-batwoman-v.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 78,
+    "name": "Ben 10",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Energy Manipulation"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Ben Ten"
+    ],
+    "image": "/superheroes/artwork/78-ben-10.webp",
+    "silhouette": "/superheroes/silhouettes/78-ben-10.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 82,
+    "name": "Big Daddy",
+    "publisher": "Icon",
+    "universe": "Icon Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [],
+    "image": "/superheroes/artwork/82-big-daddy.webp",
+    "silhouette": "/superheroes/silhouettes/82-big-daddy.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 83,
+    "name": "Big Man",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Daily Bugle",
+      "the Enforcers"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [
+      "Patch"
+    ],
+    "image": "/superheroes/artwork/83-big-man.webp",
+    "silhouette": "/superheroes/silhouettes/83-big-man.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 84,
+    "name": "Bill Harken",
+    "publisher": "SyFy",
+    "universe": "SyFy Universe",
+    "team": [
+      "Alphas"
+    ],
+    "powers": [
+      "Alpha Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [],
+    "image": "/superheroes/artwork/84-bill-harken.webp",
+    "silhouette": "/superheroes/silhouettes/84-bill-harken.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 87,
+    "name": "Bionic Woman",
+    "publisher": "Independent",
+    "universe": "Independent Universe",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Cyborg Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Clarissa Whyte"
+    ],
+    "image": "/superheroes/artwork/87-bionic-woman.webp",
+    "silhouette": "/superheroes/silhouettes/87-bionic-woman.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 88,
+    "name": "Bird-Brain",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "New Mutants",
+      "Ani-Mate"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Unknown",
+    "firstAppearance": 1987,
+    "aliases": [
+      "Bird-Boy"
+    ],
+    "image": "/superheroes/artwork/88-bird-brain.webp",
+    "silhouette": "/superheroes/silhouettes/88-bird-brain.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 97,
+    "name": "Black Canary",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Birds of Prey"
+    ],
+    "powers": [
+      "Metahuman Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Dinah Laurel Lance Queen; Dinah Laurel Lance-Windrow"
+    ],
+    "image": "/superheroes/artwork/97-black-canary.webp",
+    "silhouette": "/superheroes/silhouettes/97-black-canary.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 98,
+    "name": "Black Canary",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice Society of America"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1947,
+    "aliases": [],
+    "image": "/superheroes/artwork/98-black-canary.webp",
+    "silhouette": "/superheroes/silhouettes/98-black-canary.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 99,
+    "name": "Black Cat",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Heroes for Hire"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1979,
+    "aliases": [
+      "Felicity Harmon"
+    ],
+    "image": "/superheroes/artwork/99-black-cat.webp",
+    "silhouette": "/superheroes/silhouettes/99-black-cat.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 100,
+    "name": "Black Flash",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Super Speed",
+      "Energy Manipulation",
+      "God / Eternal Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1963,
+    "aliases": [
+      "Barry Allen",
+      "Flashback",
+      "Slow Lightning",
+      "Black Racer"
+    ],
+    "image": "/superheroes/artwork/100-black-flash.webp",
+    "silhouette": "/superheroes/silhouettes/100-black-flash.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 102,
+    "name": "Black Knight III",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Avengers",
+      "Defenders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1967,
+    "aliases": [
+      "The Pendragon",
+      "Gann Josin",
+      "Eobar Garrington"
+    ],
+    "image": "/superheroes/artwork/102-black-knight-iii.webp",
+    "silhouette": "/superheroes/silhouettes/102-black-knight-iii.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 103,
+    "name": "Black Lightning",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Justice League",
+      "Outsiders"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1977,
+    "aliases": [],
+    "image": "/superheroes/artwork/103-black-lightning.webp",
+    "silhouette": "/superheroes/silhouettes/103-black-lightning.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 105,
+    "name": "Black Manta",
+    "publisher": "DC",
+    "universe": "DC Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Master Martial Artist"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1967,
+    "aliases": [
+      "Devil Ray",
+      "Scourge of the Seven Seas",
+      "Yellow Lantern"
+    ],
+    "image": "/superheroes/artwork/105-black-manta.webp",
+    "silhouette": "/superheroes/silhouettes/105-black-manta.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 109,
+    "name": "Blackout",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Lilin",
+      "Deathwatch"
+    ],
+    "powers": [
+      "Demon Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1990,
+    "aliases": [],
+    "image": "/superheroes/artwork/109-blackout.webp",
+    "silhouette": "/superheroes/silhouettes/109-blackout.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 110,
+    "name": "Blackwing",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Heavy Mettle",
+      "Masters of Evil"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1975,
+    "aliases": [
+      "Joe Manfredi",
+      "Joe Silvermane",
+      "Guiseppi Manfredi"
+    ],
+    "image": "/superheroes/artwork/110-blackwing.webp",
+    "silhouette": "/superheroes/silhouettes/110-blackwing.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 111,
+    "name": "Blackwulf",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Underground Legion"
+    ],
+    "powers": [
+      "Alien Physiology"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1994,
+    "aliases": [
+      "Pelops",
+      "Black Wolf"
+    ],
+    "image": "/superheroes/artwork/111-blackwulf.webp",
+    "silhouette": "/superheroes/silhouettes/111-blackwulf.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 114,
+    "name": "Bling!",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Solo Avenger"
+    ],
+    "powers": [
+      "Invulnerability"
+    ],
+    "gender": "Female",
+    "firstAppearance": 2005,
+    "aliases": [],
+    "image": "/superheroes/artwork/114-bling.webp",
+    "silhouette": "/superheroes/silhouettes/114-bling.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 115,
+    "name": "Blink",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Men"
+    ],
+    "powers": [
+      "Mutant Physiology"
+    ],
+    "gender": "Female",
+    "firstAppearance": 1994,
+    "aliases": [],
+    "image": "/superheroes/artwork/115-blink.webp",
+    "silhouette": "/superheroes/silhouettes/115-blink.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 118,
+    "name": "Blizzard II",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "Thunderbolts",
+      "Hammer Industries"
+    ],
+    "powers": [
+      "Peak Human Condition",
+      "Expert Combatant"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1987,
+    "aliases": [],
+    "image": "/superheroes/artwork/118-blizzard-ii.webp",
+    "silhouette": "/superheroes/silhouettes/118-blizzard-ii.webp",
+    "tier": "hard"
+  },
+  {
+    "id": 119,
+    "name": "Blob",
+    "publisher": "Marvel",
+    "universe": "Marvel Comics",
+    "team": [
+      "X-Cell",
+      "formerly X-Corps"
+    ],
+    "powers": [
+      "Super Strength",
+      "Invulnerability"
+    ],
+    "gender": "Male",
+    "firstAppearance": 1964,
+    "aliases": [],
+    "image": "/superheroes/artwork/119-blob.webp",
+    "silhouette": "/superheroes/silhouettes/119-blob.webp",
+    "tier": "hard"
+  }
+]

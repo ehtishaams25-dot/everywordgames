@@ -1,0 +1,19 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import GamePlayer from "@/components/GamePlayer.astro";
+import { getGame } from "@/data/games";
+
+const game = getGame("guess-superhero");
+---
+
+{game ? (
+  <SiteLayout title={`${game.name} - Free Online Superhero Guessing Game`} description={game.description} path={`/games/${game.slug}/`}>
+    <h1 class="sr-only">{game.name}</h1>
+    <GamePlayer game={game} />
+  </SiteLayout>
+) : (
+  <div style="padding: 4rem; text-align: center;">
+    <h2>Guess the Superhero</h2>
+    <p>Loading game configuration...</p>
+  </div>
+)}

@@ -2500,6 +2500,59 @@ h3 {
   color: #fff;
 }
 
+/* Superhero Progressive Mystery Reveal */
+.superhero-mystery-card {
+  background: radial-gradient(circle at 50% 30%, rgba(30, 40, 55, 0.95) 0%, rgba(13, 16, 23, 1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.mystery-stage-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(15, 20, 30, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.mystery-stage-badge .stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent, #00ffaa);
+  box-shadow: 0 0 8px var(--accent, #00ffaa);
+}
+
+.mystery-stage-badge .stage-dot.pulse {
+  animation: stageDotPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes stageDotPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.mystery-stage-badge .stage-text {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 1.2px;
+  font-size: 0.95rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.mystery-reveal-img {
+  transition: filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s ease-out !important;
+}
+
+
 /* Autocomplete Input inside center column */
 .entity-input-container {
   width: 100%;

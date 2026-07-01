@@ -1,5 +1,6 @@
 import { games, playableGames, type GameConfig } from "@/data/games";
 import { mountEntityGuessing } from "@/games/pokemon/lib/game";
+import { mountSuperheroGame } from "@/games/superhero/lib/game";
 import {
   createGuessChallenge,
   normalizeAnswer,
@@ -224,7 +225,13 @@ export function mountGame(root: HTMLElement) {
   if (game.engine === "grid-puzzle") mountMergeLetters(root, game);
   if (game.engine === "word-search") mountWordSearch(root, game);
   if (game.engine === "falling-words") mountFallingWords(root, game, () => globalDictionary);
-  if (game.engine === "entity-guessing") mountEntityGuessing(root, game);
+  if (game.engine === "entity-guessing") {
+    if (game.dataset === "superhero" || game.slug === "guess-superhero") {
+      mountSuperheroGame(root, game);
+    } else {
+      mountEntityGuessing(root, game);
+    }
+  }
 }
 
 function mountComingSoon(root: HTMLElement, game: GameConfig) {

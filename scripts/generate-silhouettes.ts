@@ -2,26 +2,28 @@ import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 
-const ARTWORK_DIR = path.resolve("public/pokemon/artwork");
-const SILHOUETTE_DIR = path.resolve("public/pokemon/silhouettes");
+const PUBLIC_DIR = path.resolve("public");
 
-if (!fs.existsSync(SILHOUETTE_DIR)) {
-  fs.mkdirSync(SILHOUETTE_DIR, { recursive: true });
-}
+async function generateSilhouettesForEntity(entityName: string) {
+  const artworkDir = path.join(PUBLIC_DIR, entityName, "artwork");
+  const silhouetteDir = path.join(PUBLIC_DIR, entityName, "silhouettes");
 
-async function generateSilhouettes() {
-  if (!fs.existsSync(ARTWORK_DIR)) {
-    console.error("Artwork directory does not exist! Run fetch-pokemon.ts first.");
+  if (!fs.existsSync(artworkDir)) {
+    console.log(`No artwork directory found for ${entityName}, skipping.`);
     return;
   }
 
-  const files = fs.readdirSync(ARTWORK_DIR).filter((f) => f.endsWith(".png"));
-  console.log(`Found ${files.length} artwork images. Generating silhouettes...`);
+  if (!fs.existsSync(silhouetteDir)) {
+    fs.mkdirSync(silhouetteDir, { recursive: true });
+  }
+
+  const files = fs.readdirSync(artworkDir).filter((f) => /\.(png|webp|jpg|jpeg)$/i.test(f));
+  console.log(`Found ${files.length} artwork images for ${entityName}. Generating silhouettes...`);
 
   let count = 0;
   for (const file of files) {
-    const inputPath = path.join(ARTWORK_DIR, file);
-    const outputPath = path.join(SILHOUETTE_DIR, file);
+    const inputPath = path.join(artworkDir, file);
+    const outputPath = path.join(silhouetteDir, file);
 
     try {
       const { data, info } = await sharp(inputPath)
@@ -29,35 +31,62 @@ async function generateSilhouettes() {
         .raw()
         .toBuffer({ resolveWithObject: true });
 
-      // Convert visible pixels to solid black (#000000) preserving alpha
+      // Convert visible pixels to 100% solid black (#000000, alpha 255) to avoid gray AI matte smoke/halos
       for (let i = 0; i < data.length; i += 4) {
         const alpha = data[i + 3];
-        if (alpha > 15) {
+        if (alpha > 30) {
           data[i] = 0;     // R
           data[i + 1] = 0; // G
           data[i + 2] = 0; // B
-          // keep alpha as is
+          data[i + 3] = 255; // 100% solid black! Zero gray smog or semi-transparency!
         } else {
-          data[i + 3] = 0; // clear faint noise
+          data[i + 3] = 0; // 0% transparent! Remove all AI background blur and smog!
         }
       }
 
-      await sharp(data, {
+      const isWebp = file.toLowerCase().endsWith(".webp");
+      const sharpInstance = sharp(data, {
         raw: { width: info.width, height: info.height, channels: 4 },
-      })
-        .png()
-        .toFile(outputPath);
+      });
+
+      if (isWebp) {
+        await sharpInstance.webp({ quality: 85 }).toFile(outputPath);
+      } else {
+        await sharpInstance.png().toFile(outputPath);
+      }
 
       count++;
-      if (count % 25 === 0 || count === files.length) {
-        console.log(`Generated ${count} / ${files.length} silhouettes.`);
+      if (count % 50 === 0 || count === files.length) {
+        console.log(`[${entityName}] Generated ${count} / ${files.length} silhouettes.`);
       }
     } catch (err) {
       console.error(`Failed to generate silhouette for ${file}:`, err);
     }
   }
 
-  console.log(`Successfully generated ${count} silhouettes in public/pokemon/silhouettes.`);
+  console.log(`Successfully generated ${count} silhouettes in public/${entityName}/silhouettes.`);
 }
 
-generateSilhouettes();
+async function main() {
+  const targetEntity = process.argv[2];
+  if (targetEntity) {
+    await generateSilhouettesForEntity(targetEntity);
+    return;
+  }
+
+  // Auto-discover all entity folders inside public/
+  const items = fs.readdirSync(PUBLIC_DIR, { withFileTypes: true });
+  for (const item of items) {
+    if (item.isDirectory()) {
+      const artDir = path.join(PUBLIC_DIR, item.name, "artwork");
+      if (fs.existsSync(artDir)) {
+        await generateSilhouettesForEntity(item.name);
+      }
+    }
+  }
+}
+
+main().catch((err) => {
+  console.error("Error generating silhouettes:", err);
+  process.exit(1);
+});
