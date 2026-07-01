@@ -98,6 +98,7 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
                ⭐ 0 XP
              </div>
           </div>
+          <a href="/#other-games">Other Games</a>
           <a href="/stats/" aria-current={path === "/stats/" ? "page" : undefined}>Profile</a>
           <a href="/achievements/" aria-current={path === "/achievements/" ? "page" : undefined}>Awards</a>
           <a href="/blog/" aria-current={path === "/blog/" ? "page" : undefined}>Blog</a>
@@ -376,6 +377,28 @@ const canonical = new URL(path, Astro.site ?? "https://everywordgames.com").toSt
           navLinks.classList.toggle('active');
         });
       }
+
+      // Smooth scroll for anchor links and tooltip elements (using event delegation for dynamic elements)
+      document.addEventListener('click', function (e) {
+        const trigger = e.target.closest('a[href^="/#"], a[href^="#"], [data-scroll-target]');
+        if (!trigger) return;
+        
+        const targetId = trigger.hasAttribute('data-scroll-target')
+          ? trigger.getAttribute('data-scroll-target')
+          : trigger.getAttribute('href')?.split('#')[1];
+          
+        if (!targetId) return;
+        
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+          history.pushState(null, '', `#${targetId}`);
+          if (navLinks && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+          }
+        }
+      });
     </script>
   </body>
 </html>

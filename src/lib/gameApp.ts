@@ -1,4 +1,5 @@
 import { games, playableGames, type GameConfig } from "@/data/games";
+import { mountEntityGuessing } from "@/games/pokemon/lib/game";
 import {
   createGuessChallenge,
   normalizeAnswer,
@@ -223,6 +224,7 @@ export function mountGame(root: HTMLElement) {
   if (game.engine === "grid-puzzle") mountMergeLetters(root, game);
   if (game.engine === "word-search") mountWordSearch(root, game);
   if (game.engine === "falling-words") mountFallingWords(root, game, () => globalDictionary);
+  if (game.engine === "entity-guessing") mountEntityGuessing(root, game);
 }
 
 function mountComingSoon(root: HTMLElement, game: GameConfig) {
@@ -1089,6 +1091,13 @@ export function renderGameHeader(
       ${pills.length > 0 ? `<div class="toolbar" style="margin: 0;">${pills.map((pill) => `<span class="pill">${escapeHtml(pill)}</span>`).join("")}</div>` : ""}
     </div>
     <button class="button secondary small" type="button" data-restart style="margin: 0; white-space: nowrap; flex-shrink: 0;">${buttonLabel}</button>
+    <div class="htp-tooltip-wrap">
+      <a href="#how-to-play" class="htp-question-btn" aria-label="How to play instructions" data-scroll-target="how-to-play">?</a>
+      <div class="htp-tooltip-card" role="tooltip" data-scroll-target="how-to-play" style="pointer-events: auto; cursor: pointer;">
+        <div class="htp-tooltip-title">💡 How to Play?</div>
+        <div class="htp-tooltip-desc">Need instructions or hints? Click here to scroll down to the rules and guide for this game!</div>
+      </div>
+    </div>
   </div>`;
 }
 

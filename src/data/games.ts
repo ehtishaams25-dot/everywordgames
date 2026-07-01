@@ -2,6 +2,7 @@ export type GameEngine =
   | "word-guess"
   | "multi-word-guess"
   | "guessing"
+  | "entity-guessing"
   | "word-puzzle"
   | "grid-puzzle"
   | "word-search"
@@ -13,6 +14,7 @@ export type GameCategory =
   | "geography"
   | "entertainment"
   | "brands"
+  | "character-guess"
   | "word-games"
   | "grid-games"
   | "casual"
@@ -322,6 +324,34 @@ export const games: GameConfig[] = [
     difficulty: "Medium" as const,
     comingSoon: true,
   })),
+  {
+    slug: "guess-pokemon",
+    name: "Guess the Pokémon",
+    description: "Identify the mystery Pokémon from its silhouette and progressively unlocked hints.",
+    category: "character-guess",
+    engine: "entity-guessing",
+    difficulty: "Medium",
+    featured: true,
+    trending: true,
+    dataset: "pokemon",
+    attempts: 6,
+  },
+  ...[
+    ["guess-superhero", "Guess the Superhero", "Name the comic hero or villain from progressive clue unlocks."],
+    ["guess-movie-character", "Guess the Movie Character", "Identify iconic characters from film lore."],
+    ["guess-anime-character", "Guess the Anime Character", "Recognize anime legends from silhouette and origin clues."],
+    ["guess-disney-character", "Guess the Disney Character", "Spot animated favorites from magical hints."],
+    ["guess-video-game-character", "Guess the Video Game Character", "Name gaming icons from their attributes."],
+    ["guess-pokemon-evolution", "Guess the Pokémon Evolution", "Predict the evolution line and stage."],
+  ].map(([slug, name, description]) => ({
+    slug: slug as string,
+    name: name as string,
+    description: description as string,
+    category: "character-guess" as const,
+    engine: "coming-soon" as const,
+    difficulty: "Medium" as const,
+    comingSoon: true,
+  })),
 ];
 
 export const playableGames = games.filter((game) => !game.comingSoon);
@@ -333,6 +363,7 @@ export const categoryLabels: Record<GameCategory, string> = {
   geography: "Geography",
   entertainment: "Entertainment",
   brands: "Brands",
+  "character-guess": "Guessing & Characters",
   "word-games": "Word Games",
   "grid-games": "Grid Games",
   casual: "Casual Games",
@@ -342,6 +373,7 @@ export const categoryLabels: Record<GameCategory, string> = {
 
 export const siteNav = [
   { href: "/", label: "Home" },
+  { href: "/#other-games", label: "Other Games" },
   { href: "/?game=5-letter-word-guess", label: "Word Guess" },
   { href: "/?game=guess-country", label: "Guess" },
   { href: "/?game=hangman", label: "Puzzles" },

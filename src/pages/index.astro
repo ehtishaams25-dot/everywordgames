@@ -9,6 +9,7 @@ const categories = [
   { id: "puzzles", label: "PUZZLES", games: games.filter((g) => (g.category === "word-games" || g.category === "grid-games") && !g.comingSoon) },
   { id: "multi-word", label: "MULTI-WORD", games: games.filter((g) => g.category === "multi-word-guess" && !g.comingSoon) },
   { id: "casual", label: "CASUAL", games: games.filter((g) => g.category === "casual" && !g.comingSoon) },
+  { id: "character-guess", label: "GUESSING", games: games.filter((g) => g.category === "character-guess") },
 ];
 ---
 
@@ -109,7 +110,7 @@ const categories = [
   <!-- ═══════════════════════════════════════════════════════
        SECTION 2 — CATEGORIES TABS
        ═══════════════════════════════════════════════════════ -->
-  <section class="v2-tabs-section">
+  <section class="v2-tabs-section" id="other-games">
     <div class="container">
       <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; gap: 1rem;">
         <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
@@ -151,7 +152,7 @@ const categories = [
   <!-- ═══════════════════════════════════════════════════════
        SECTION 4 — DYNAMIC HOW TO PLAY
        ═══════════════════════════════════════════════════════ -->
-  <section class="v2-how-to-section">
+  <section class="v2-how-to-section" id="how-to-play">
     <div class="container">
       <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 3rem; gap: 1rem;">
         <div style="height: 2px; flex: 1; background: var(--border); opacity: 0.5;"></div>
