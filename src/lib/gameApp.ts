@@ -878,7 +878,21 @@ function mountGuessing(root: HTMLElement, game: GameConfig) {
           root,
           won ? `Correct: ${challenge.answer}` : `Answer: ${challenge.answer}`,
         );
-        showCompletionPopup(root, won, challenge.answer, reset);
+        showCompletionPopup(
+          root,
+          won,
+          challenge.answer,
+          reset,
+          (isCountryGame || isFlagGame) ? countryDataCache[challenge.answer.toLowerCase()] : undefined,
+          (isCountryGame || isFlagGame)
+            ? attempts
+                .map((name) => {
+                  const data = countryDataCache[name.toLowerCase()];
+                  return data ? { name, lat: data.lat, lng: data.lng } : null;
+                })
+                .filter((g): g is { name: string; lat: number; lng: number } => g !== null)
+            : undefined,
+        );
       } else {
         if (isCountryGame || isFlagGame) {
           if (attempts.length === maxAttempts - 1) {
@@ -1316,6 +1330,8 @@ function showCompletionPopup(
   won: boolean,
   answer: string,
   resetCallback: () => void,
+  countryData?: { lat: number; lng: number; code: string },
+  guesses?: { name: string; lat: number; lng: number }[],
 ) {
   if (won) {
     confetti({
@@ -1331,6 +1347,9 @@ function showCompletionPopup(
 
   const popup = document.createElement("div");
   popup.className = "completion-popup";
+  if (countryData) {
+    popup.style.width = "min(95%, 540px)";
+  }
 
   const title = document.createElement("h2");
   title.textContent = won ? "Solved!" : "Game Over";
@@ -1340,16 +1359,124 @@ function showCompletionPopup(
     ? `Congratulations! The answer was ${answer}.`
     : `The answer was ${answer}.`;
 
-  const button = document.createElement("button");
-  button.className = "button";
-  button.textContent = "Play Again";
-  button.onclick = () => {
+  let globeController: {
+    destroy: () => void;
+    focusOn: (lat: number, lng: number) => void;
+    resetFocus: () => void;
+  } | null = null;
+
+  const closePopup = () => {
+    if (globeController) {
+      globeController.destroy();
+      globeController = null;
+    }
     overlay.remove();
     resetCallback();
   };
 
+  const button = document.createElement("button");
+  button.className = "button";
+  button.textContent = "Play Again";
+  button.onclick = closePopup;
+
   popup.appendChild(title);
   popup.appendChild(message);
+
+  if (countryData) {
+    const globeContainer = document.createElement("div");
+    globeContainer.className = "country-globe-container";
+    globeContainer.style.cssText =
+      "width: 100%; height: 280px; margin: 0.75rem 0 0.75rem 0; border-radius: 12px; overflow: hidden; position: relative; background: #080812; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 0 25px rgba(0,0,0,0.8);";
+
+    const instruction = document.createElement("div");
+    instruction.style.cssText =
+      "position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; color: #a8b3cf; font-size: 12px; font-weight: 500; pointer-events: none; z-index: 10; text-shadow: 0 1px 3px rgba(0,0,0,0.9);";
+    instruction.innerHTML = "🌍 Hover over guesses below to rotate globe!";
+    globeContainer.appendChild(instruction);
+
+    popup.appendChild(globeContainer);
+
+    if (guesses && guesses.length > 0) {
+      const guessListContainer = document.createElement("div");
+      guessListContainer.style.cssText =
+        "width: 100%; max-height: 140px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.25rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);";
+
+      const allItems = [
+        ...guesses.map((g, i) => ({
+          ...g,
+          isAnswer: g.name.toLowerCase() === answer.toLowerCase(),
+          index: `${i + 1}`,
+        })),
+        ...(guesses.some((g) => g.name.toLowerCase() === answer.toLowerCase())
+          ? []
+          : [
+              {
+                name: answer,
+                lat: countryData.lat,
+                lng: countryData.lng,
+                isAnswer: true,
+                index: "★",
+              },
+            ]),
+      ];
+
+      allItems.forEach((item) => {
+        const badge = document.createElement("div");
+        badge.style.cssText = `
+          padding: 0.35rem 0.75rem;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          background: ${item.isAnswer ? "rgba(16, 185, 129, 0.2)" : "rgba(255, 255, 255, 0.08)"};
+          border: 1px solid ${item.isAnswer ? "rgba(16, 185, 129, 0.5)" : "rgba(255, 255, 255, 0.15)"};
+          color: ${item.isAnswer ? "#34d399" : "#e2e8f0"};
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+        `;
+        badge.innerHTML = `<span>${item.index}.</span> <span>${item.name}</span> ${item.isAnswer ? "✓" : ""}`;
+
+        badge.onmouseenter = () => {
+          badge.style.transform = "scale(1.05)";
+          badge.style.borderColor = "#38bdf8";
+          badge.style.boxShadow = "0 0 12px rgba(56, 189, 248, 0.3)";
+          if (globeController) globeController.focusOn(item.lat, item.lng);
+        };
+        badge.onmouseleave = () => {
+          badge.style.transform = "scale(1)";
+          badge.style.borderColor = item.isAnswer
+            ? "rgba(16, 185, 129, 0.5)"
+            : "rgba(255, 255, 255, 0.15)";
+          badge.style.boxShadow = "none";
+          if (globeController) globeController.resetFocus();
+        };
+
+        guessListContainer.appendChild(badge);
+      });
+
+      popup.appendChild(guessListContainer);
+    }
+
+    import("./countryGlobe")
+      .then(({ initCountryGlobe }) => {
+        initCountryGlobe(
+          globeContainer,
+          countryData.lat,
+          countryData.lng,
+          countryData.code,
+          answer,
+          guesses || [],
+        ).then((controller) => {
+          globeController = controller;
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to load 3D globe:", err);
+      });
+  }
+
   popup.appendChild(button);
   overlay.appendChild(popup);
 
