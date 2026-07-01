@@ -1,6 +1,7 @@
 import { games, playableGames, type GameConfig } from "@/data/games";
 import { mountEntityGuessing } from "@/games/pokemon/lib/game";
 import { mountSuperheroGame } from "@/games/superhero/lib/game";
+import { mountLanguageGame } from "@/games/language/lib/game";
 import {
   createGuessChallenge,
   normalizeAnswer,
@@ -231,6 +232,9 @@ export function mountGame(root: HTMLElement) {
     } else {
       mountEntityGuessing(root, game);
     }
+  }
+  if (game.engine === "language-guessing" || game.slug === "guess-language") {
+    mountLanguageGame(root, game);
   }
 }
 

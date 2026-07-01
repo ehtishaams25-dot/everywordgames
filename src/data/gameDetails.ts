@@ -40,6 +40,14 @@ export function getGameDetails(game: GameConfig): GameDetails {
       `If your guess is incorrect, a new progressive hint (such as publisher, team affiliations, powers, or debut year) will unlock to help you.`,
       `You have ${game.attempts || 6} attempts to identify the character before the full artwork is revealed!`
     );
+  } else if (game.engine === "language-guessing") {
+    howToPlay.push(
+      `Select your game mode (Classic, Daily Challenge, Endless, or Speed Mode) and difficulty level.`,
+      `Click the Play button to listen to a short spoken audio clip of someone speaking in a mystery language.`,
+      `Use the dynamic waveform visualizer and listen carefully to phonetic sounds, intonation, and rhythm.`,
+      `Depending on your difficulty setting, choose from multiple choice options or type the language name with autocomplete.`,
+      `You can replay the audio clip at any time for a -10 point penalty, or skip to the next language for 0 points.`
+    );
   } else if (game.engine === "word-puzzle") {
     if (game.slug === "hangman") {
       howToPlay.push(
@@ -136,6 +144,17 @@ export function getGameDetails(game: GameConfig): GameDetails {
     faqs.push({
       q: `Can I share my results without spoiling the character?`,
       a: `Yes! When the game ends, click the 'Share Result' button to copy a spoiler-free emoji grid (like 🟩🟩🟩🟩) that shows how many attempts you took.`
+    });
+  }
+
+  if (game.engine === "language-guessing") {
+    faqs.push({
+      q: `Where does the audio come from?`,
+      a: `Audio samples are sourced from high-quality public domain and open-source datasets (such as Wikimedia Commons and Common Voice), supplemented by intelligent speech synthesis.`
+    });
+    faqs.push({
+      q: `What is the difference between the game modes?`,
+      a: `Classic lets you play at your own pace; Daily Challenge features the exact same mystery language for everyone globally each day; Endless gives you 3 lives to survive as long as possible; and Speed Mode challenges you to identify as many languages as you can in 60 seconds!`
     });
   }
 

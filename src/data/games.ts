@@ -3,6 +3,7 @@ export type GameEngine =
   | "multi-word-guess"
   | "guessing"
   | "entity-guessing"
+  | "language-guessing"
   | "word-puzzle"
   | "grid-puzzle"
   | "word-search"
@@ -347,6 +348,18 @@ export const games: GameConfig[] = [
     trending: true,
     dataset: "superhero",
     attempts: 6,
+  },
+  {
+    slug: "guess-language",
+    name: "Guess the Language",
+    description: "Listen to spoken voice clips from around the globe and identify the language!",
+    category: "geography",
+    engine: "language-guessing",
+    difficulty: "Medium",
+    featured: true,
+    trending: true,
+    dataset: "language",
+    mode: "classic",
   },
   ...[
     ["guess-movie-character", "Guess the Movie Character", "Identify iconic characters from film lore."],
